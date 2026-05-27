@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribution Architecture — Badedampfer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:        oklch(0.63 0.095 191);
+      --teal-light:  oklch(0.90 0.040 191);
+      --teal-dark:   oklch(0.48 0.095 191);
+      --teal-faint:  oklch(0.96 0.015 191);
+      --dark:        oklch(0.16 0.020 252);
+      --mid:         oklch(0.40 0.015 252);
+      --neutral:     oklch(0.62 0.008 252);
+      --border:      oklch(0.88 0.008 252);
+      --bg:          oklch(0.99 0.003 80);
+      --bg-warm:     oklch(0.97 0.006 80);
+
+      --display: 'Big Shoulders Display', sans-serif;
+      --body:    'Jost', sans-serif;
+
+      --xs:  4px;
+      --sm:  8px;
+      --md:  16px;
+      --lg:  24px;
+      --xl:  48px;
+      --2xl: 96px;
+      --3xl: 144px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--dark);
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--md) var(--xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: var(--sm); }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+    }
+    .brand-tagline {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .doc-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: var(--3xl) var(--xl) var(--2xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .hero-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(52px, 8vw, 96px);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--xl);
+    }
+    .hero-title em { color: var(--teal); font-style: normal; }
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--xl);
+      max-width: 820px;
+    }
+    .hero-cols p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--mid);
+    }
+    .hero-cols strong { color: var(--dark); font-weight: 500; }
+
+    /* ─── LAYOUT UTILITIES ─── */
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--2xl) var(--xl);
+    }
+    .wrap + .divider,
+    .divider { width: 100%; height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .section-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.0;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      margin-bottom: var(--lg);
+    }
+    .section-intro {
+      max-width: 65ch;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--mid);
+      margin-bottom: var(--xl);
+    }
+
+    /* ─── IMPACT CARDS ─── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lg); }
+    .card {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--xl);
+    }
+    .card-person {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--sm);
+    }
+    .card h3 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--md);
+    }
+    .card p { font-size: 14px; line-height: 1.75; color: var(--mid); }
+    .card p + p { margin-top: var(--sm); }
+
+    /* ─── CHANNEL GROUPS ─── */
+    .channel-groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--lg);
+    }
+    .channel-group {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--xl);
+    }
+    .cg-tier {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .cg-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--md);
+    }
+    .ch-list { list-style: none; display: flex; flex-direction: column; gap: var(--sm); }
+    .ch-item { display: flex; align-items: flex-start; gap: var(--sm); }
+    .ch-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+    .ch-name { font-size: 14px; font-weight: 500; color: var(--dark); display: block; }
+    .ch-note { font-size: 11px; color: var(--neutral); display: block; }
+
+    /* ─── BOKUN SPLIT ─── */
+    .bokun-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lg); margin: var(--xl) 0; }
+    .bokun-col { background: var(--bg-warm); border: 1px solid var(--border); padding: var(--xl); }
+    .bokun-col.dark-col { background: var(--dark); border-color: var(--dark); }
+    .bokun-col-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--md);
+    }
+    .bokun-col.dark-col .bokun-col-title { color: var(--teal); }
+    .bokun-intro { font-size: 13px; line-height: 1.7; color: var(--mid); margin-bottom: var(--lg); }
+    .bokun-col.dark-col .bokun-intro { color: oklch(0.65 0.015 252); }
+    .bokun-col.dark-col .ch-name { color: oklch(0.90 0.03 191); }
+    .bokun-col.dark-col .ch-note { color: oklch(0.60 0.02 252); }
+
+    /* ─── TABLE ─── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    thead th {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      text-align: left;
+      padding: var(--sm) var(--md);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-warm);
+    }
+    tbody td {
+      padding: var(--md);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    tbody tr:hover td { background: var(--teal-faint); }
+    .pname { font-weight: 500; color: var(--dark); display: block; }
+    .pcat { font-size: 11px; color: var(--neutral); }
+    .tag-bokun {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--teal-dark);
+      background: var(--teal-light);
+      padding: 3px 9px;
+    }
+    .tag-direct {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--mid);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: 3px 9px;
+    }
+    .dots { display: flex; gap: 3px; }
+    .dot { width: 8px; height: 8px; background: var(--border); }
+    .dot.on { background: var(--teal); }
+    .comm { font-weight: 500; color: var(--dark); }
+    .comm-note { font-size: 11px; color: var(--neutral); display: block; }
+    td p { font-size: 12px; color: var(--mid); max-width: 40ch; line-height: 1.5; }
+
+    /* ─── ROADMAP ─── */
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: var(--md);
+      margin: var(--xl) 0;
+    }
+    .phase { background: var(--bg-warm); border: 1px solid var(--border); padding: var(--lg); }
+    .phase.current { background: var(--dark); border-color: var(--dark); }
+    .phase-num {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 52px;
+      line-height: 1;
+      color: var(--border);
+      margin-bottom: var(--sm);
+    }
+    .phase.current .phase-num { color: oklch(0.28 0.02 252); }
+    .phase-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+    .phase.current .phase-title { color: oklch(0.92 0.04 191); }
+    .phase-weeks {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.05em;
+      margin-bottom: var(--md);
+    }
+    .phase-items { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .phase-item {
+      font-size: 12px;
+      color: var(--mid);
+      padding-left: var(--sm);
+      position: relative;
+    }
+    .phase.current .phase-item { color: oklch(0.68 0.025 252); }
+    .phase-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .phase-note {
+      font-size: 11px;
+      color: var(--neutral);
+      margin-top: var(--sm);
+      font-style: italic;
+    }
+    .phase.current .phase-note { color: oklch(0.50 0.02 252); }
+
+    .callout {
+      background: var(--teal-faint);
+      border: 1px solid var(--teal-light);
+      padding: var(--xl);
+      margin-top: var(--lg);
+    }
+    .callout strong { font-weight: 600; color: var(--teal-dark); display: block; margin-bottom: 6px; font-size: 14px; }
+    .callout p { font-size: 13px; color: var(--mid); max-width: 70ch; line-height: 1.7; }
+
+    /* ─── REVENUE STATS ─── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--md);
+      margin: var(--xl) 0;
+    }
+    .stat { background: var(--bg-warm); border: 1px solid var(--border); padding: var(--xl) var(--lg); text-align: center; }
+    .stat-val {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--mid);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .stat-note { font-size: 11px; color: var(--neutral); margin-top: 4px; }
+
+    /* ─── DECISIONS ─── */
+    .decisions { display: flex; flex-direction: column; }
+    .decision {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: var(--lg);
+      align-items: start;
+      padding: var(--lg) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .decision-n {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--border);
+    }
+    .decision h4 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .decision p { font-size: 13px; color: var(--mid); line-height: 1.65; max-width: 60ch; }
+    .action-tag {
+      background: var(--teal);
+      color: white;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .action-tag.now { background: var(--dark); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: var(--xl);
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand { display: flex; align-items: center; gap: var(--sm); }
+    .footer-info { font-size: 11px; color: var(--neutral); text-align: right; line-height: 1.7; }
+
+    /* ─── ARCH FLOW ─── */
+    .arch-wrap { overflow-x: auto; margin: var(--xl) 0; }
+    .arch-flow {
+      display: grid;
+      grid-template-columns: 1fr 72px 1fr 72px 1fr;
+      gap: 0;
+      align-items: center;
+      min-width: 720px;
+    }
+    .arch-col { display: flex; flex-direction: column; gap: var(--sm); }
+    .arch-col-head {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      text-align: center;
+      padding-bottom: var(--sm);
+    }
+    .arch-node {
+      border: 1.5px solid var(--border);
+      background: var(--bg-warm);
+      padding: var(--md) var(--lg);
+      text-align: center;
+    }
+    .arch-node.primary { background: var(--dark); border-color: var(--dark); }
+    .arch-node.hub { background: var(--teal); border-color: var(--teal); }
+    .arch-node .n-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--dark);
+      display: block;
+    }
+    .arch-node.primary .n-title,
+    .arch-node.hub .n-title { color: white; }
+    .arch-node .n-sub { font-size: 11px; color: var(--neutral); }
+    .arch-node.primary .n-sub { color: oklch(0.58 0.02 252); }
+    .arch-node.hub .n-sub { color: oklch(0.90 0.04 191); }
+    .arch-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 var(--sm);
+    }
+    .arch-arrow svg { opacity: 0.4; }
+    .arch-arrow-label { font-size: 10px; color: var(--neutral); text-align: center; letter-spacing: 0.05em; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-title { animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
+    .hero-cols  { animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .site-header { padding: var(--md); }
+      .hero { padding: var(--xl) var(--md) var(--xl); }
+      .hero-cols, .two-col, .bokun-split { grid-template-columns: 1fr; }
+      .wrap { padding: var(--xl) var(--md); }
+      .footer { flex-direction: column; gap: var(--md); padding: var(--xl) var(--md); }
+      .decision { grid-template-columns: 40px 1fr; }
+      .action-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+<style>
+#pw-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:#0f0f0f;display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:16px;font-family:system-ui,sans-serif;}
+#pw-gate input{padding:10px 16px;font-size:16px;border:1px solid #333;border-radius:6px;background:#1a1a1a;color:#fff;outline:none;width:240px;}
+#pw-gate button{padding:10px 24px;background:#fff;color:#000;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:500;}
+#pw-gate .err{color:#ff4444;font-size:13px;height:16px;}
+#pw-gate label{color:#888;font-size:13px;}
+</style>
+<div id="pw-gate">
+  <label>Enter password to view this document</label>
+  <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()">Continue</button>
+  <span class="err" id="pw-err"></span>
+</div>
+<script>
+(function(){
+  const HASH='';
+  const KEY='hx_auth';
+  if(sessionStorage.getItem(KEY)===HASH){document.getElementById('pw-gate').remove();return;}
+  window.checkPw=async function(){
+    const val=document.getElementById('pw-input').value;
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+    const hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    if(hex===HASH){sessionStorage.setItem(KEY,HASH);document.getElementById('pw-gate').remove();}
+    else{document.getElementById('pw-err').textContent='Incorrect password';document.getElementById('pw-input').value='';}
+  };
+})();
+</script>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="site-header">
+  <div class="brand">
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-name">BADEDAMPFER</span>
+      <span class="brand-tagline">The Floating Tub</span>
+    </div>
+  </div>
+  <span class="doc-badge">Distribution Architecture · May 2026</span>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <p class="eyebrow">Platform Strategy / Channel Distribution</p>
+  <h1 class="hero-title">
+    From<br>
+    <em>One Boat</em><br>
+    To Every<br>
+    Channel
+  </h1>
+  <div class="hero-cols">
+    <p>
+      This document maps the full distribution architecture for Badedampfer — every platform you want to be listed on, how each one connects to your owned system, and exactly what it takes to build it.
+    </p>
+    <p>
+      <strong>The central decision:</strong> Bókun sits as the channel manager between your platform and most OTAs. Some channels need direct integration. This brief explains exactly what goes where, and why.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ BUSINESS IMPACT ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Business Impact</p>
+  <h2 class="section-title">What This Means for You</h2>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-person">Jannis — Operations</p>
+      <h3>One Dashboard.<br>Every Booking.</h3>
+      <p>
+        Right now a GetYourGuide booking and a direct booking live in different systems. One goes into their platform, one into yours. You reconcile manually.
+      </p>
+      <p>
+        With this architecture every booking from every channel flows into your Medusa spine. One place to see all reservations, revenue, and availability — no spreadsheet at month-end.
+      </p>
+      <p>
+        Availability syncs live through Bókun. If a slot books on Viator, it's gone on GetYourGuide in under 60 seconds. No more double-bookings.
+      </p>
+    </div>
+    <div class="card">
+      <p class="card-person">Dani — Growth</p>
+      <h3>12 Channels.<br>One Integration.</h3>
+      <p>
+        The OTA channels on this list reach tens of millions of tourists looking for Berlin experiences every year. Right now Badedampfer is invisible to most of them.
+      </p>
+      <p>
+        This architecture puts you in front of all of them through a single certified connection to Bókun. List once, distribute to GetYourGuide, Viator, Booking.com, Expedia, and Google in one push.
+      </p>
+      <p>
+        The DACH voucher platforms — Jochen Schweizer and mydays — are separate but high-value: they are how corporate teams, birthdays, and gift buyers find you.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ CHANNEL LANDSCAPE ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">The Full Landscape</p>
+  <h2 class="section-title">Every Channel, Mapped</h2>
+  <p class="section-intro">
+    All platforms from the wishlist, grouped by priority and type. Not all integrate the same way — the tier determines the integration strategy.
+  </p>
+  <div class="channel-groups">
+    <div class="channel-group">
+      <p class="cg-tier">Priority 1</p>
+      <p class="cg-title">Core Experience OTAs</p>
+      <ul class="ch-list">
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">GetYourGuide</span><span class="ch-note">40M+ travellers, Germany's dominant platform</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Viator (Tripadvisor Experiences)</span><span class="ch-note">Bókun's parent company — native, fastest to activate</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Tripadvisor</span><span class="ch-note">Review platform + bookings via Viator</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="channel-group">
+      <p class="cg-tier">Priority 1 · DACH</p>
+      <p class="cg-title">Voucher &amp; Gift Platforms</p>
+      <ul class="ch-list">
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Jochen Schweizer</span><span class="ch-note">Germany's largest experience gift brand, JSMD Group</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">mydays</span><span class="ch-note">Same JSMD Group — one supplier portal covers both</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="channel-group">
+      <p class="cg-tier">Berlin Ecosystem</p>
+      <p class="cg-title">Local Tourism</p>
+      <ul class="ch-list">
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">visitBerlin</span><span class="ch-note">Official Berlin tourism listing + booking partner</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Berlin Welcome Card</span><span class="ch-note">BVG partnership — card-holder discount model</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="channel-group">
+      <p class="cg-tier">Additional</p>
+      <p class="cg-title">Distribution Channels</p>
+      <ul class="ch-list">
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Google Things To Do</span><span class="ch-note">Free via approved connectivity partner (Bókun qualifies)</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Booking.com Experiences</span><span class="ch-note">Growing experiences vertical, Bókun connected</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Expedia Activities</span><span class="ch-note">Expedia Local Expert, Bókun connected</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Tiqets</span><span class="ch-note">Tickets &amp; attractions platform, direct supplier API</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Airbnb Experiences</span><span class="ch-note">Manual listing — approval-based, no API</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="channel-group">
+      <p class="cg-tier">Optional / Later Stage</p>
+      <p class="cg-title">Future Distribution</p>
+      <ul class="ch-list">
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Hotel concierge systems</span><span class="ch-note">B2B API partnerships or physical collateral in hotels</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Cruise / travel aggregators</span><span class="ch-note">Niche B2B — high per-booking value</span></div>
+        </li>
+        <li class="ch-item">
+          <span class="ch-dot"></span>
+          <div><span class="ch-name">Local resellers / affiliates</span><span class="ch-note">Promo code affiliate program in Medusa</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ WHY BOKUN ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Architecture Decision</p>
+  <h2 class="section-title">Why Bókun Is the Hub</h2>
+  <p class="section-intro">
+    Bókun is owned by TripAdvisor — the same group that owns Viator. It is a certified channel manager built specifically for experience operators, handling availability sync between your platform and every major OTA. Instead of maintaining 8 separate API integrations, you build one: Medusa ↔ Bókun. Bókun handles the rest.
+  </p>
+
+  <!-- Architecture flow diagram -->
+  <div class="arch-wrap">
+    <div class="arch-flow">
+      <div class="arch-col">
+        <div class="arch-col-head">Your Platform</div>
+        <div class="arch-node primary">
+          <span class="n-title">Medusa</span>
+          <span class="n-sub">Commerce spine</span>
+        </div>
+        <div class="arch-node primary">
+          <span class="n-title">Bookings Module</span>
+          <span class="n-sub">Availability, capacity</span>
+        </div>
+        <div class="arch-node primary">
+          <span class="n-title">Stripe Connect</span>
+          <span class="n-sub">Direct payments + splits</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#1a1c28" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="arch-arrow-label">API<br>sync</div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="#1a1c28" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <div class="arch-col">
+        <div class="arch-col-head">Channel Manager</div>
+        <div class="arch-node hub" style="padding: 28px 24px;">
+          <span class="n-title" style="font-size: 18px; margin-bottom: 4px;">Bókun</span>
+          <span class="n-sub">TripAdvisor-owned<br>certified OTA connector</span>
+        </div>
+        <div class="arch-node" style="text-align:center;">
+          <span class="n-title" style="font-size:12px;">Bókun Marketplace</span>
+          <span class="n-sub">Internal reseller network</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#1a1c28" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="arch-arrow-label">Certified<br>connectors</div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="#1a1c28" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <div class="arch-col">
+        <div class="arch-col-head">OTA Channels</div>
+        <div class="arch-node"><span class="n-title">GetYourGuide</span><span class="n-sub">Priority 1</span></div>
+        <div class="arch-node"><span class="n-title">Viator</span><span class="n-sub">Native connection</span></div>
+        <div class="arch-node"><span class="n-title">Booking.com</span><span class="n-sub">Experiences</span></div>
+        <div class="arch-node"><span class="n-title">Expedia</span><span class="n-sub">Activities</span></div>
+        <div class="arch-node"><span class="n-title">Google Things To Do</span><span class="n-sub">Free listing</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bokun-split">
+    <div class="bokun-col dark-col">
+      <p class="bokun-col-title">Goes Through Bókun</p>
+      <p class="bokun-intro">
+        One integration with Bókun's API gives certified connectivity to all of these. Availability syncs in both directions. Bookings flow back to your Medusa spine automatically.
+      </p>
+      <ul class="ch-list">
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">GetYourGuide</span><span class="ch-note">~20-28% commission · OTA-collected payment</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Viator / Tripadvisor</span><span class="ch-note">~20-26% commission · native Bókun connection</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Booking.com Experiences</span><span class="ch-note">~20-25% commission · hotel guest crossover</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Expedia Activities</span><span class="ch-note">~20-30% commission · US travellers</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Google Things To Do</span><span class="ch-note">Free listing · drives traffic to direct booking</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="bokun-col">
+      <p class="bokun-col-title">Needs Direct Integration</p>
+      <p class="bokun-intro">
+        These channels do not connect through Bókun. Each needs its own path — mostly supplier registration, not complex API work.
+      </p>
+      <ul class="ch-list">
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div>
+            <span class="ch-name">Jochen Schweizer / mydays</span>
+            <span class="ch-note">JSMD Group supplier portal — same portal covers both brands. ~30-35% commission. Voucher redemption via your Medusa checkout.</span>
+          </div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Tiqets</span><span class="ch-note">Direct supplier API. Popular in Germany, Netherlands, Belgium. ~20% commission.</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">visitBerlin</span><span class="ch-note">Tourism partner listing — drives traffic to your site, not a booking API.</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Berlin Welcome Card</span><span class="ch-note">BVG partnership. Promo code at checkout. Business development, not engineering.</span></div>
+        </li>
+        <li class="ch-item"><span class="ch-dot"></span>
+          <div><span class="ch-name">Airbnb Experiences</span><span class="ch-note">Manual listing. Airbnb-approval required. No API. Manual calendar block when Airbnb books.</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ INTEGRATION TABLE ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Channel Breakdown</p>
+  <h2 class="section-title">Platform by Platform</h2>
+  <p class="section-intro">
+    Integration method, development complexity, and commission for every channel. Complexity reflects custom engineering work required on your side — not the OTA's certification process.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Integration</th>
+          <th>Complexity</th>
+          <th>Commission</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pname">GetYourGuide</span><span class="pcat">Core OTA · Priority 1</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">20-28%</span><span class="comm-note">OTA-collected</span></td>
+          <td><p>Germany's largest experience platform. Requires Bókun supplier certification (mostly paperwork). GYG collects from customer and remits monthly.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Viator</span><span class="pcat">Core OTA · TripAdvisor</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">20-26%</span><span class="comm-note">OTA-collected</span></td>
+          <td><p>TripAdvisor owns both Viator and Bókun — this is the most natural connection and the fastest to activate. Start here.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Tripadvisor</span><span class="pcat">Reviews + Bookings</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">~20%</span><span class="comm-note">via Viator</span></td>
+          <td><p>Booking integration via Viator relationship. Review presence is separate — claim the listing directly and manage reviews there.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Booking.com Experiences</span><span class="pcat">Additional OTA</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">20-25%</span><span class="comm-note">OTA-collected</span></td>
+          <td><p>Growing experiences vertical. Booking.com pushes experiences to accommodation bookers — good hotel-guest crossover for Berlin visitors.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Expedia Activities</span><span class="pcat">Additional OTA</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">20-30%</span><span class="comm-note">OTA-collected</span></td>
+          <td><p>Expedia Local Expert. Primarily US travellers. Lower Berlin volume but zero marginal cost once Bókun is live.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Google Things To Do</span><span class="pcat">Search &amp; Discovery</span></td>
+          <td><span class="tag-bokun">via Bókun</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">Free</span><span class="comm-note">No commission</span></td>
+          <td><p>Free listings on Google Search and Maps. Drives high-intent traffic directly to your booking page. Bókun is an approved Google connectivity partner. High priority.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Jochen Schweizer</span><span class="pcat">DACH Gift / Voucher</span></td>
+          <td><span class="tag-direct">Direct portal</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div></div></td>
+          <td><span class="comm">30-35%</span><span class="comm-note">High-margin gifting</span></td>
+          <td><p>JSMD Group supplier portal. Same registration covers mydays. Voucher redemption requires a checkout flow in Medusa to validate and redeem codes.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">mydays</span><span class="pcat">DACH Gift / Voucher</span></td>
+          <td><span class="tag-direct">Direct (same as JS)</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">30-35%</span><span class="comm-note">Merged with JS</span></td>
+          <td><p>Same JSMD portal as Jochen Schweizer. Once registered, activating mydays as a second brand is minimal additional work.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Tiqets</span><span class="pcat">Tickets / Attractions</span></td>
+          <td><span class="tag-direct">Direct API</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">~20%</span><span class="comm-note">OTA-collected</span></td>
+          <td><p>Strong in Germany, Netherlands, Belgium. Has a supplier API for availability sync. Worth evaluating — check if Bókun connectivity is added later to simplify.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">visitBerlin</span><span class="pcat">Local Tourism</span></td>
+          <td><span class="tag-direct">Partner listing</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">Annual fee</span><span class="comm-note">Tourism partnership</span></td>
+          <td><p>Official Berlin tourism. Listing on berlin.de drives credibility and organic discovery. Not a booking API — links to your site. Business development, not code.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Berlin Welcome Card</span><span class="pcat">Local Tourism</span></td>
+          <td><span class="tag-direct">BVG partnership</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">Discount model</span><span class="comm-note">No commission</span></td>
+          <td><p>Card-holder discount via BVG deal. Promo code in Medusa checkout — no API needed. Purely business development to get the partnership in place.</p></td>
+        </tr>
+        <tr>
+          <td><span class="pname">Airbnb Experiences</span><span class="pcat">Additional (manual)</span></td>
+          <td><span class="tag-direct">Manual listing</span></td>
+          <td><div class="dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></td>
+          <td><span class="comm">~20%</span><span class="comm-note">Airbnb-collected</span></td>
+          <td><p>No API. Airbnb manages the experience listing independently of your spine. Must manually block calendar when Airbnb books. Low automation priority.</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ PAYMENT ARCHITECTURE ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Important Architecture Note</p>
+  <h2 class="section-title">Who Collects the Money</h2>
+  <p class="section-intro">
+    This surprises most operators. On the major OTAs, you do not process the payment — they do. Understanding this changes how you think about Stripe's role in the architecture.
+  </p>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-person">OTA-Collected (most channels)</p>
+      <h3>They Charge.<br>They Remit.</h3>
+      <p>
+        GetYourGuide, Viator, Booking.com, and Expedia collect payment from the customer. They hold funds and remit to you monthly — minus their commission.
+      </p>
+      <p>
+        Stripe is not involved in these transactions. You receive bank transfers from the OTA. This means cash flow is delayed by 30-45 days on those bookings.
+      </p>
+      <p>
+        Accounting implication: you need to track OTA receivables as a separate line. Medusa records the booking; the OTA manages the payment lifecycle.
+      </p>
+    </div>
+    <div class="card">
+      <p class="card-person">Operator-Collected (direct + vouchers)</p>
+      <h3>You Charge.<br>Stripe Handles It.</h3>
+      <p>
+        For direct bookings on your website, Stripe processes payment at checkout. This is where Stripe Connect matters — franchise locations have their own Stripe accounts, and the platform fee splits automatically at payment time.
+      </p>
+      <p>
+        Jochen Schweizer / mydays vouchers are redeemed on your checkout. The voucher is pre-paid by the gift buyer; you receive the redemption value minus JSMD's commission.
+      </p>
+      <p>
+        Immediate cash flow. Full control of the customer relationship.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ ROADMAP ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Build Strategy</p>
+  <h2 class="section-title">Phases &amp; Timeline</h2>
+  <p class="section-intro">
+    This is not a weekend project. But it is also not three years. The architecture makes it faster than it looks — build one owned spine first, then every channel integration is additive, not architectural.
+  </p>
+
+  <div class="roadmap">
+    <div class="phase current">
+      <div class="phase-num">01</div>
+      <div class="phase-title">The Spine</div>
+      <div class="phase-weeks">6-8 weeks</div>
+      <ul class="phase-items">
+        <li class="phase-item">Medusa commerce engine, self-hosted</li>
+        <li class="phase-item">Custom bookings module — time-slots, capacity, availability</li>
+        <li class="phase-item">Stripe Connect — direct payments + franchise fee splits</li>
+        <li class="phase-item">Next.js booking flow — your brand, your UI</li>
+        <li class="phase-item">Admin dashboard for Jannis + crew</li>
+        <li class="phase-item">Novu notifications — WhatsApp + email confirmations</li>
+      </ul>
+      <p class="phase-note">Can start immediately. No third-party dependency.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">02</div>
+      <div class="phase-title">Bókun Hub</div>
+      <div class="phase-weeks">2-3 weeks</div>
+      <ul class="phase-items">
+        <li class="phase-item">Bókun account setup + product listing</li>
+        <li class="phase-item">Medusa ↔ Bókun API availability sync</li>
+        <li class="phase-item">Booking callback handler — OTA booking → Medusa order</li>
+        <li class="phase-item">Webhook to notify Jannis on every external booking</li>
+      </ul>
+      <p class="phase-note">Start Bókun account in week 1 — OTA approvals begin from account creation.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">03</div>
+      <div class="phase-title">OTA Activation</div>
+      <div class="phase-weeks">4-8 weeks</div>
+      <ul class="phase-items">
+        <li class="phase-item">Viator activation via Bókun — fastest, start here</li>
+        <li class="phase-item">GetYourGuide supplier certification</li>
+        <li class="phase-item">Google Things To Do — free listing live</li>
+        <li class="phase-item">Booking.com + Expedia activation</li>
+      </ul>
+      <p class="phase-note">~60% of this timeline is waiting on OTA approval, not blocked on code.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">04</div>
+      <div class="phase-title">DACH Voucher</div>
+      <div class="phase-weeks">2-3 weeks</div>
+      <ul class="phase-items">
+        <li class="phase-item">JSMD Group supplier portal registration</li>
+        <li class="phase-item">Jochen Schweizer product listing</li>
+        <li class="phase-item">mydays activation — same portal, minimal extra work</li>
+        <li class="phase-item">Voucher redemption checkout flow in Medusa</li>
+      </ul>
+      <p class="phase-note">Register in JSMD portal as early as possible — approval takes time.</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-num">05</div>
+      <div class="phase-title">Berlin Layer</div>
+      <div class="phase-weeks">2-4 weeks</div>
+      <ul class="phase-items">
+        <li class="phase-item">visitBerlin partner listing + content</li>
+        <li class="phase-item">Berlin Welcome Card promo code in Medusa</li>
+        <li class="phase-item">Tiqets supplier API (if prioritised)</li>
+        <li class="phase-item">Airbnb Experiences manual listing</li>
+      </ul>
+      <p class="phase-note">visitBerlin + Berlin Welcome Card are largely partnership deals, not code.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Total realistic timeline: 4-5 months from start to all channels live</strong>
+    <p>
+      The engineering work is roughly 12-14 weeks. The remaining time is OTA approval processes, supplier registrations, and content preparation — mostly waiting on third parties, not blocked on code. You can be live on your own site and Viator and Google within the first 10 weeks.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ REVENUE IMPACT ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Revenue Impact</p>
+  <h2 class="section-title">What This Unlocks</h2>
+  <p class="section-intro">
+    Conservative estimates for what channel distribution adds to a Berlin floating hot tub experience that runs 3-4 sessions per day at ~€250-400 per session.
+  </p>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">8+</div>
+      <div class="stat-label">Active Channels</div>
+      <div class="stat-note">After Phase 3 completion</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">30-60</div>
+      <div class="stat-label">Extra Bookings/mo</div>
+      <div class="stat-note">Conservative OTA contribution</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">0s</div>
+      <div class="stat-label">Manual Reconciliation</div>
+      <div class="stat-note">All channels flow into Medusa</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">60s</div>
+      <div class="stat-label">Availability Sync</div>
+      <div class="stat-note">OTA booking → all channels updated</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">1</div>
+      <div class="stat-label">System of Record</div>
+      <div class="stat-note">Medusa owns every booking from every source</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">∞</div>
+      <div class="stat-label">Franchise Scale</div>
+      <div class="stat-note">Architecture supports Vienna, Hamburg, Munich from day one</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ NEXT STEPS ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Next Steps</p>
+  <h2 class="section-title">What We Need to Start</h2>
+  <p class="section-intro">
+    Phase 1 can begin immediately without waiting on any third party. These are the decisions and inputs needed before the first line of code is written.
+  </p>
+  <div class="decisions">
+    <div class="decision">
+      <div class="decision-n">01</div>
+      <div>
+        <h4>Hosting Decision</h4>
+        <p>Medusa can be self-hosted (full ownership, ~€50-100/mo infra cost, you own everything) or via Medusa Cloud (managed, faster week-one start, monthly fee). Self-hosting is the right long-term answer for franchise scale. Cloud removes early friction. Which matters more right now?</p>
+      </div>
+      <span class="action-tag">Decide</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">02</div>
+      <div>
+        <h4>Stripe Account Setup</h4>
+        <p>Badedampfer needs a verified Stripe business account with VAT number and bank account. For the franchise model: a Stripe Connect platform account is required. Verification takes 1-5 days and cannot be rushed. Start this in parallel with week 1, not as an afterthought in week 5.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">03</div>
+      <div>
+        <h4>Bókun Account Creation</h4>
+        <p>Create a Bókun supplier account and begin listing products (boats, time-slots, pricing). OTA certification processes — especially GetYourGuide — start their clock from account creation date. Starting this in parallel with Phase 1 build saves 4-6 weeks of waiting.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">04</div>
+      <div>
+        <h4>Product Inventory Definition</h4>
+        <p>How many boats? What are the distinct product types — standard rental, premium, group? What are the time-slot windows, session durations, and maximum capacity per slot? This is the data model that every other layer builds on. Needs Jannis's input before anything else is modelled.</p>
+      </div>
+      <span class="action-tag">Jannis to Input</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">05</div>
+      <div>
+        <h4>Franchise Architecture Scope</h4>
+        <p>Is this build for Berlin only right now, with franchise support designed in but not activated? Or is Vienna a live requirement from day one? This affects the Stripe Connect setup and multi-tenant data model in Phase 1. Getting this wrong means refactoring the spine later.</p>
+      </div>
+      <span class="action-tag">Scope Decision</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">06</div>
+      <div>
+        <h4>JSMD Supplier Registration</h4>
+        <p>Jochen Schweizer and mydays operate through the JSMD Group supplier portal. Approval timelines can be 4-8 weeks. Register as early as possible so that Phase 4 is not blocked waiting on their approval while the rest of the platform is live.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-brand">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;line-height:1.2;">
+      <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:14px;letter-spacing:0.06em;color:#1a1c28;">BADEDAMPFER</span>
+      <span style="font-size:10px;color:oklch(0.63 0.095 191);letter-spacing:0.14em;text-transform:uppercase;">The Floating Tub</span>
+    </div>
+  </div>
+  <div class="footer-info">
+    <div style="font-weight:500;color:oklch(0.40 0.015 252);">Distribution Architecture</div>
+    <div>Prepared by Hyperion for Jannis Wetzlaugk · May 2026</div>
+    <div>Verify OTA terms, commission rates, and certification timelines before locking the build.</div>
+  </div>
+</footer>
+
+</body>
+</html>

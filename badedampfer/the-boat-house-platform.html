@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Boat House — Platform Plan for Badedampfer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:        oklch(0.63 0.095 191);
+      --teal-light:  oklch(0.90 0.040 191);
+      --teal-dark:   oklch(0.48 0.095 191);
+      --teal-faint:  oklch(0.96 0.015 191);
+      --dark:        oklch(0.16 0.020 252);
+      --mid:         oklch(0.40 0.015 252);
+      --neutral:     oklch(0.62 0.008 252);
+      --border:      oklch(0.88 0.008 252);
+      --bg:          oklch(0.99 0.003 80);
+      --bg-warm:     oklch(0.97 0.006 80);
+      --bg-deep:     oklch(0.94 0.010 80);
+
+      --display: 'Big Shoulders Display', sans-serif;
+      --body:    'Jost', sans-serif;
+
+      --xs:  4px;
+      --sm:  8px;
+      --md:  16px;
+      --lg:  24px;
+      --xl:  48px;
+      --2xl: 96px;
+      --3xl: 144px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--dark);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--md) var(--xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: var(--sm); }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+    }
+    .brand-tagline {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .doc-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: var(--3xl) var(--xl) var(--2xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .hero-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(54px, 9vw, 112px);
+      line-height: 0.9;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--xl);
+    }
+    .hero-title em { color: var(--teal); font-style: normal; }
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--xl);
+      max-width: 880px;
+    }
+    .hero-cols p { font-size: 15.5px; line-height: 1.8; color: var(--mid); }
+    .hero-cols strong { color: var(--dark); font-weight: 500; }
+
+    /* ─── LAYOUT ─── */
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--2xl) var(--xl);
+    }
+    .divider { width: 100%; height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .section-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 0.98;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      margin-bottom: var(--lg);
+    }
+    .section-intro {
+      max-width: 65ch;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--mid);
+      margin-bottom: var(--xl);
+    }
+
+    /* ─── THESIS PANEL ─── */
+    .thesis {
+      background: var(--dark);
+      color: white;
+      padding: var(--2xl) var(--xl);
+    }
+    .thesis-inner { max-width: 1200px; margin: 0 auto; }
+    .thesis .section-label { color: var(--teal); }
+    .thesis-headline {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(32px, 4.5vw, 56px);
+      line-height: 1.0;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: white;
+      max-width: 22ch;
+      margin-bottom: var(--xl);
+    }
+    .thesis-headline em { color: var(--teal); font-style: normal; }
+    .thesis-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--xl);
+      max-width: 920px;
+    }
+    .thesis-cols p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: oklch(0.78 0.012 252);
+    }
+    .thesis-cols strong { color: white; font-weight: 500; }
+    .thesis-quote {
+      margin-top: var(--xl);
+      padding: var(--lg) var(--xl);
+      border: 1px solid oklch(0.30 0.02 252);
+      background: oklch(0.20 0.018 252);
+      max-width: 880px;
+    }
+    .thesis-quote p {
+      font-style: italic;
+      font-size: 14px;
+      color: oklch(0.82 0.012 252);
+      line-height: 1.7;
+      margin-bottom: var(--sm);
+    }
+    .thesis-quote-attr {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-style: normal;
+    }
+
+    /* ─── OWN vs RENT ─── */
+    .own-rent {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--lg);
+      margin: var(--xl) 0;
+    }
+    .or-col {
+      padding: var(--xl);
+      border: 1px solid var(--border);
+    }
+    .or-col.own { background: var(--bg-warm); }
+    .or-col.rent { background: var(--bg-warm); }
+    .or-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--xs);
+    }
+    .or-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--md);
+    }
+    .or-list { list-style: none; display: flex; flex-direction: column; gap: var(--sm); }
+    .or-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sm);
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+    .or-item::before {
+      content: '';
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--teal);
+      margin-top: 8px;
+    }
+    .or-item strong { color: var(--dark); font-weight: 500; }
+
+    /* ─── NOT DOING ─── */
+    .not-doing-list { display: flex; flex-direction: column; gap: 0; margin-top: var(--lg); }
+    .not-doing-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--lg);
+      align-items: start;
+      padding: var(--md) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .not-doing-x {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 28px;
+      line-height: 1;
+      color: oklch(0.85 0.005 252);
+    }
+    .not-doing-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .not-doing-desc { font-size: 13.5px; color: var(--mid); line-height: 1.65; max-width: 75ch; }
+
+    /* ─── STACK DIAGRAM ─── */
+    .stack-diagram {
+      margin: var(--xl) 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .layer {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--lg) var(--xl);
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: var(--lg);
+      align-items: center;
+    }
+    .layer.owned { background: var(--dark); border-color: var(--dark); }
+    .layer.owned .layer-num,
+    .layer.owned .layer-title,
+    .layer.owned .layer-desc { color: white; }
+    .layer.owned .layer-num { color: var(--teal); }
+    .layer.owned .layer-tag { background: var(--teal); color: white; border-color: var(--teal); }
+
+    .layer.rented .layer-tag { background: var(--bg-deep); color: var(--mid); }
+
+    .layer-num {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 36px;
+      line-height: 1;
+      color: var(--neutral);
+    }
+    .layer-body { display: flex; flex-direction: column; gap: 4px; }
+    .layer-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+    .layer-desc { font-size: 13px; color: var(--mid); line-height: 1.5; }
+    .layer-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--mid);
+      align-self: center;
+    }
+
+    /* ─── SOURCE TABLE ─── */
+    .source-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sm);
+      margin-top: var(--lg);
+    }
+    .source-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      gap: var(--lg);
+      padding: var(--lg) var(--xl);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      align-items: start;
+    }
+    .source-name {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+    .source-name-sub {
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: block;
+      margin-top: 2px;
+    }
+    .source-col-head {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      margin-bottom: var(--xs);
+    }
+    .source-col-head.yes { color: var(--teal); }
+    .source-col-head.no { color: oklch(0.55 0.08 25); }
+    .source-col p { font-size: 13px; color: var(--mid); line-height: 1.55; }
+
+    /* ─── 15 MODULES GRID ─── */
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--md);
+      margin-top: var(--lg);
+    }
+    .module {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sm);
+    }
+    .module.new {
+      background: var(--dark);
+      border-color: var(--dark);
+    }
+    .module-head {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sm);
+      margin-bottom: var(--xs);
+    }
+    .module-num {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--border);
+    }
+    .module.new .module-num { color: oklch(0.32 0.02 252); }
+    .module-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+    .module.new .module-title { color: white; }
+    .module-desc {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .module.new .module-desc { color: oklch(0.72 0.015 252); }
+    .module-source {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--teal);
+      padding-top: var(--sm);
+      border-top: 1px solid var(--border);
+      margin-top: var(--xs);
+    }
+    .module.new .module-source {
+      color: var(--teal);
+      border-top-color: oklch(0.32 0.02 252);
+    }
+    .module-new-flag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--teal);
+      background: oklch(0.22 0.02 252);
+      padding: 2px 7px;
+      margin-bottom: var(--xs);
+      align-self: flex-start;
+    }
+
+    /* ─── BOKUN LINK PANEL ─── */
+    .bokun-panel {
+      background: var(--teal-faint);
+      border: 1px solid var(--teal-light);
+      padding: var(--xl);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--xl);
+      align-items: center;
+      margin: var(--xl) 0;
+    }
+    .bokun-panel-text h4 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--xs);
+    }
+    .bokun-panel-text p {
+      font-size: 13.5px;
+      color: var(--mid);
+      line-height: 1.7;
+      max-width: 65ch;
+    }
+    .bokun-panel-link {
+      background: var(--dark);
+      color: white;
+      padding: var(--md) var(--lg);
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .bokun-panel-link:hover { background: var(--teal); }
+
+    /* ─── SECURITY PILLARS ─── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--md);
+      margin: var(--xl) 0;
+    }
+    .pillar {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--lg);
+    }
+    .pillar-icon {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 36px;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: var(--sm);
+    }
+    .pillar-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .pillar-desc { font-size: 12.5px; color: var(--mid); line-height: 1.55; }
+
+    /* ─── BUILD PHASES (timeline) ─── */
+    .phases-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sm);
+      margin: var(--xl) 0;
+    }
+    .phase-row {
+      display: grid;
+      grid-template-columns: 80px 220px 1fr 110px;
+      gap: var(--md);
+      align-items: stretch;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--md) var(--lg);
+    }
+    .phase-row.zero { background: var(--dark); border-color: var(--dark); }
+    .phase-row.zero .phase-num-big,
+    .phase-row.zero .phase-row-title,
+    .phase-row.zero .phase-row-desc,
+    .phase-row.zero .phase-row-weeks { color: white; }
+    .phase-row.zero .phase-num-big { color: var(--teal); }
+    .phase-num-big {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--border);
+      align-self: center;
+    }
+    .phase-row-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: var(--dark);
+      line-height: 1.15;
+      align-self: center;
+    }
+    .phase-row-desc {
+      font-size: 13px;
+      color: var(--mid);
+      line-height: 1.55;
+      align-self: center;
+    }
+    .phase-row-weeks {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      color: var(--teal);
+      align-self: center;
+      text-align: right;
+    }
+
+    /* ─── IMPACT (Jannis/Dani) ─── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lg); margin-top: var(--lg); }
+    .card {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--xl);
+    }
+    .card-person {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--sm);
+    }
+    .card h3 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--md);
+      line-height: 1.05;
+    }
+    .impact-list { list-style: none; display: flex; flex-direction: column; gap: var(--sm); margin-top: var(--md); }
+    .impact-list li {
+      font-size: 13.5px;
+      color: var(--mid);
+      line-height: 1.65;
+      padding-left: var(--md);
+      position: relative;
+    }
+    .impact-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 6px;
+      height: 1px;
+      background: var(--teal);
+    }
+    .impact-list li strong { color: var(--dark); font-weight: 500; }
+
+    /* ─── COMMITMENT PANEL ─── */
+    .commitment {
+      background: var(--dark);
+      color: white;
+      padding: var(--2xl) var(--xl);
+    }
+    .commitment-inner { max-width: 1200px; margin: 0 auto; }
+    .commitment .section-label { color: var(--teal); }
+    .commitment-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(32px, 4.5vw, 52px);
+      line-height: 1.0;
+      text-transform: uppercase;
+      color: white;
+      max-width: 18ch;
+      margin-bottom: var(--xl);
+      letter-spacing: -0.01em;
+    }
+    .commitment-cols {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--xl);
+      max-width: 1000px;
+    }
+    .commitment-cols p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: oklch(0.78 0.012 252);
+      margin-bottom: var(--md);
+    }
+    .commitment-cols strong { color: white; font-weight: 500; }
+    .commitment-facts { display: flex; flex-direction: column; gap: var(--md); }
+    .fact {
+      padding: var(--md) var(--lg);
+      background: oklch(0.20 0.018 252);
+      border: 1px solid oklch(0.28 0.02 252);
+    }
+    .fact-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+    .fact-value {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+      text-transform: uppercase;
+    }
+    .fact-note { font-size: 12px; color: oklch(0.68 0.015 252); margin-top: 4px; line-height: 1.5; }
+
+    /* ─── DECISIONS ─── */
+    .decisions { display: flex; flex-direction: column; }
+    .decision {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: var(--lg);
+      align-items: start;
+      padding: var(--lg) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .decision-n {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--border);
+    }
+    .decision h4 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .decision p { font-size: 13px; color: var(--mid); line-height: 1.65; max-width: 65ch; }
+    .action-tag {
+      background: var(--teal);
+      color: white;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .action-tag.now { background: var(--dark); }
+    .action-tag.thomas { background: var(--teal-dark); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: var(--xl);
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand { display: flex; align-items: center; gap: var(--sm); }
+    .footer-info { font-size: 11px; color: var(--neutral); text-align: right; line-height: 1.7; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-title { animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both; }
+    .hero-cols  { animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .source-row { grid-template-columns: 1fr; }
+      .phase-row { grid-template-columns: 60px 1fr; }
+      .phase-row > :nth-child(3),
+      .phase-row > :nth-child(4) { grid-column: 1 / -1; }
+      .commitment-cols, .hero-cols, .two-col, .own-rent, .bokun-panel { grid-template-columns: 1fr; }
+      .bokun-panel { gap: var(--md); }
+    }
+    @media (max-width: 768px) {
+      .site-header { padding: var(--md); }
+      .hero, .wrap, .thesis, .commitment { padding-left: var(--md); padding-right: var(--md); }
+      .hero { padding-top: var(--xl); padding-bottom: var(--xl); }
+      .wrap { padding-top: var(--xl); padding-bottom: var(--xl); }
+      .decision { grid-template-columns: 40px 1fr; }
+      .action-tag { display: none; }
+      .footer { flex-direction: column; gap: var(--md); padding: var(--xl) var(--md); }
+    }
+  </style>
+</head>
+<body>
+<style>
+#pw-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:#0f0f0f;display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:16px;font-family:system-ui,sans-serif;}
+#pw-gate input{padding:10px 16px;font-size:16px;border:1px solid #333;border-radius:6px;background:#1a1a1a;color:#fff;outline:none;width:240px;}
+#pw-gate button{padding:10px 24px;background:#fff;color:#000;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:500;}
+#pw-gate .err{color:#ff4444;font-size:13px;height:16px;}
+#pw-gate label{color:#888;font-size:13px;}
+</style>
+<div id="pw-gate">
+  <label>Enter password to view this document</label>
+  <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()">Continue</button>
+  <span class="err" id="pw-err"></span>
+</div>
+<script>
+(function(){
+  const HASH='';
+  const KEY='hx_auth';
+  if(sessionStorage.getItem(KEY)===HASH){document.getElementById('pw-gate').remove();return;}
+  window.checkPw=async function(){
+    const val=document.getElementById('pw-input').value;
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+    const hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    if(hex===HASH){sessionStorage.setItem(KEY,HASH);document.getElementById('pw-gate').remove();}
+    else{document.getElementById('pw-err').textContent='Incorrect password';document.getElementById('pw-input').value='';}
+  };
+})();
+</script>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="site-header">
+  <div class="brand">
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-name">BADEDAMPFER</span>
+      <span class="brand-tagline">The Floating Tub</span>
+    </div>
+  </div>
+  <span class="doc-badge">The Boat House · Platform Plan · May 2026</span>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <p class="eyebrow">Platform Plan — Prepared for Jannis &amp; Dani</p>
+  <h1 class="hero-title">
+    The<br>
+    <em>Boat House</em><br>
+    Platform
+  </h1>
+  <div class="hero-cols">
+    <p>
+      One owned platform that runs the whole business. Bookings, payments, staff, channels, accounting, safety, franchise — all in one place, all owned by Badedampfer.
+    </p>
+    <p>
+      <strong>Not built from scratch. Not bought as a product.</strong> Assembled from the best open-source projects in the world, wrapped in your brand, your data, your control.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ THESIS ═══════════════════════════════ -->
+<section class="thesis">
+  <div class="thesis-inner">
+    <p class="section-label">The Thesis</p>
+    <h2 class="thesis-headline">Own the valuable core.<br><em>Rent only what has real moats.</em></h2>
+    <div class="thesis-cols">
+      <p>
+        The whole strategy comes down to a single principle. Every booking, every customer, every transaction, every piece of franchise data — that's the valuable core of Badedampfer, and we own all of it.
+      </p>
+      <p>
+        The two things we don't try to build are the two with real moats around them: <strong>Stripe</strong> (because if payment and tax handling is wrong, it's a tax problem, not a feature bug) and <strong>Bókun</strong> (because access to the big OTAs is gated by a certification process, not by code).
+      </p>
+    </div>
+    <div class="thesis-quote">
+      <p>
+        &ldquo;AI coding assistants have drastically changed the way engineers write code, but they also made finding vulnerabilities in software much easier, especially in publicly-available code. To address this new risk, the codebase of the commercial edition will no longer be publicly available.&rdquo;
+      </p>
+      <span class="thesis-quote-attr">Cal.com — announcing the closed-sourcing of their booking platform, April 2026</span>
+    </div>
+    <p style="font-size: 13px; color: oklch(0.70 0.012 252); margin-top: var(--md); max-width: 75ch; line-height: 1.75;">
+      This quote shapes how we build. Assembling from open-source is the right strategy. Doing it carelessly is a security risk. So security and reliability are designed in from day one — not added at the end.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ NOT DOING ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Boundary Setting</p>
+  <h2 class="section-title">What We're Explicitly Not Doing</h2>
+  <p class="section-intro">
+    Every "no" here is a decision that makes the platform faster to build and stronger long-term.
+  </p>
+  <div class="not-doing-list">
+    <div class="not-doing-row">
+      <span class="not-doing-x">01</span>
+      <div>
+        <div class="not-doing-title">Not Building From a Blank File</div>
+        <div class="not-doing-desc">Building a booking platform from zero is years of work. We're not doing that. The booking-and-availability math, the commerce primitives, the notification plumbing — all of these are already solved by mature open-source projects. We assemble them.</div>
+      </div>
+    </div>
+    <div class="not-doing-row">
+      <span class="not-doing-x">02</span>
+      <div>
+        <div class="not-doing-title">Not Buying Checkfront</div>
+        <div class="not-doing-desc">Checkfront would handle most of this — but you'd give up ownership of your customer data, pay a percentage of every booking, and be locked into their roadmap. For a business about to franchise across cities, that's the wrong trade. Once we own the platform, every new city is additive revenue, not additional commission.</div>
+      </div>
+    </div>
+    <div class="not-doing-row">
+      <span class="not-doing-x">03</span>
+      <div>
+        <div class="not-doing-title">Not Keeping the Zapier Mesh</div>
+        <div class="not-doing-desc">The current setup is 18 tools held together by Zapier flows and human action. Every flow is one place something can silently break. The new architecture replaces all of it with one source of truth and direct, owned connections.</div>
+      </div>
+    </div>
+    <div class="not-doing-row">
+      <span class="not-doing-x">04</span>
+      <div>
+        <div class="not-doing-title">Not Depending on Mattia's Custom Tools</div>
+        <div class="not-doing-desc">The Consciousphere financial app and the running-schedule app only Mattia understands — one already abandoned ("not currently maintained"). Critical operations can't live in one person's head. The new platform absorbs everything they do, with proper access controls so anyone on the team can read what they need.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ ARCHITECTURE STACK ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">The Architecture</p>
+  <h2 class="section-title">Five Layers, One Platform</h2>
+  <p class="section-intro">
+    Read top to bottom. The owned layers are dark; the rented ones are light. Everything below the experience layer is invisible to your customers — but it's where the heavy lifting happens.
+  </p>
+
+  <div class="stack-diagram">
+    <div class="layer owned">
+      <div class="layer-num">05</div>
+      <div class="layer-body">
+        <div class="layer-title">Experience Layer</div>
+        <div class="layer-desc">Your customer-facing website + staff dashboards. Your brand, your design, your URL. Built on Next.js.</div>
+      </div>
+      <div class="layer-tag">Owned</div>
+    </div>
+    <div class="layer rented">
+      <div class="layer-num">04</div>
+      <div class="layer-body">
+        <div class="layer-title">Distribution Layer</div>
+        <div class="layer-desc">Bókun acts as a certified bridge to all the major OTAs — GetYourGuide, Viator, Booking.com, Expedia, Google.</div>
+      </div>
+      <div class="layer-tag">Rented (Bókun)</div>
+    </div>
+    <div class="layer rented">
+      <div class="layer-num">03</div>
+      <div class="layer-body">
+        <div class="layer-title">Money Layer</div>
+        <div class="layer-desc">Stripe Connect splits revenue across franchises automatically. Stripe Tax handles VAT in every country you operate in.</div>
+      </div>
+      <div class="layer-tag">Rented (Stripe)</div>
+    </div>
+    <div class="layer owned">
+      <div class="layer-num">02</div>
+      <div class="layer-body">
+        <div class="layer-title">Scheduling Layer</div>
+        <div class="layer-desc">The booking engine — owns availability, capacity, time-slots. Borrows the hard-won logic from Cal.diy (the open-source scheduling project).</div>
+      </div>
+      <div class="layer-tag">Owned</div>
+    </div>
+    <div class="layer owned">
+      <div class="layer-num">01</div>
+      <div class="layer-body">
+        <div class="layer-title">Foundation</div>
+        <div class="layer-desc">Medusa — the open-source commerce backbone. Provides the proven structure: products, orders, customers, discounts, vouchers, multi-location support.</div>
+      </div>
+      <div class="layer-tag">Owned</div>
+    </div>
+  </div>
+
+  <p style="font-size: 13px; color: var(--mid); text-align: center; max-width: 70ch; margin: 0 auto; line-height: 1.7;">
+    The two rented layers handle the parts of the business where being wrong is catastrophic (taxes, payment compliance, OTA certification). Everything else stays owned — because everything else is where competitive advantage lives.
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ WHAT EACH PROJECT CONTRIBUTES ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">The Open-Source Stack</p>
+  <h2 class="section-title">What Each Project Contributes</h2>
+  <p class="section-intro">
+    For every project on this list, we take a specific, defined piece. We are deliberate about what we don't take, because every line of borrowed code is also a line of responsibility.
+  </p>
+
+  <div class="source-grid">
+    <div class="source-row">
+      <div>
+        <div class="source-name">Medusa</div>
+        <span class="source-name-sub">Commerce backbone · MIT</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The whole architecture — Medusa's proven way of organising the work. The commerce building blocks: products, carts, orders, discounts, vouchers, refunds. The native multi-location support that maps directly onto franchising.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Their default storefront. We build our own customer-facing website on top, so nothing about the look or behaviour is dictated by Medusa.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Cal.diy</div>
+        <span class="source-name-sub">Scheduling logic · MIT</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The math. Timezone handling, daylight-savings transitions, recurring availability windows — the three places teams burn weeks of debugging. We use their logic as the reference, then wire it into our own booking module.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>The Cal.diy app itself. We don't run their UI or their login system. Borrowing the logic without forking the whole app means we never inherit their security exposure.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Stripe</div>
+        <span class="source-name-sub">Payments &amp; tax · Commercial</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>Everything. Card processing, Stripe Connect for franchise splits, Stripe Tax for European VAT, refund handling. This is the one layer where being contractually right matters more than ownership.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Nothing — full rental. The trade-off is conscious: Stripe takes a small percentage, and in exchange they're on the hook if anything tax-critical goes wrong.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Bókun</div>
+        <span class="source-name-sub">OTA bridge · Free, TripAdvisor-owned</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The certified connection to every major OTA. Bókun is owned by TripAdvisor, which is why the integration with Viator is native — and why GetYourGuide, Booking.com, Expedia, and Google all work through it.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Their booking engine. We use Bókun as a pipe only — our system is the source of truth, Bókun is just how we distribute. (Detail in the channel doc.)</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Novu</div>
+        <span class="source-name-sub">Notifications · Open-source</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The whole notification engine. WhatsApp confirmations to customers, shift alerts to crew, cancellation messages, review-request emails — all flow through one system instead of fifteen Zapier chains.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Their hosted version. We self-host it so notification data never leaves your control.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Documenso</div>
+        <span class="source-name-sub">Digital signatures · AGPL</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The signing flow. Customers sign waivers digitally before stepping on a boat. Every signature is timestamped, legally valid in Germany, stored against the booking.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>The source code itself. Documenso uses a license (AGPL) that requires anyone who modifies it to share their changes publicly. We use it only through its API — we never modify the source — so this restriction never applies to us.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Twenty</div>
+        <span class="source-name-sub">CRM · AGPL</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>The CRM. Franchise partners, B2B customers (hotels, event planners, corporate gift buyers), pipeline tracking — managed in one place. Same API-only integration approach as Documenso.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Direct integration into the source code. Twenty connects to The Boat House via API only — so customer data and CRM data stay separate, with clear boundaries.</p>
+      </div>
+    </div>
+
+    <div class="source-row">
+      <div>
+        <div class="source-name">Sentry</div>
+        <span class="source-name-sub">Error tracking · Commercial / OSS</span>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head yes">What We Take</div>
+        <p>Real-time error tracking. The moment anything breaks in production — a failed payment, a stuck booking, a broken integration — we know about it before a customer reports it.</p>
+      </div>
+      <div class="source-col">
+        <div class="source-col-head no">What We Don't Take</div>
+        <p>Nothing — pure observability service. Stays out of the data path, in only when something is wrong.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 15 MODULES ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">The Full Functionality Map</p>
+  <h2 class="section-title">Fifteen Modules,<br>Everything Covered</h2>
+  <p class="section-intro">
+    This is the proof that nothing is missing. Every function the business needs has a home in the platform. Each module names the open-source piece it's built from, so it's clear which work is custom and which is borrowed.
+  </p>
+
+  <div class="modules">
+    <div class="module">
+      <div class="module-head"><span class="module-num">01</span><span class="module-title">Bookings</span></div>
+      <p class="module-desc">Time-slots, capacity per slot, double-booking prevention, reschedules, cancellations. The core engine that says "yes this 3pm Saturday is available" or "no it's gone."</p>
+      <div class="module-source">From: Cal.diy logic · Custom module</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">02</span><span class="module-title">Products &amp; Pricing</span></div>
+      <p class="module-desc">Boat types, tour variants, add-ons (sauna, drinks, music, photo package, longer sessions). Seasonal pricing rules. Group vs solo configurations.</p>
+      <div class="module-source">From: Medusa products</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">03</span><span class="module-title">Discounts &amp; Vouchers</span></div>
+      <p class="module-desc">Promo codes, gift cards, partner discounts (Berlin Welcome Card), Jochen Schweizer / mydays voucher redemption, repeat-customer perks.</p>
+      <div class="module-source">From: Medusa discounts · Custom redemption</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">04</span><span class="module-title">Checkout &amp; Payments</span></div>
+      <p class="module-desc">Cart, secure card payment, automatic franchise revenue splits, VAT calculation, refunds, payment-failure recovery. Cash flow goes straight into the right bank account.</p>
+      <div class="module-source">From: Stripe Connect + Medusa cart</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">05</span><span class="module-title">Customers</span></div>
+      <p class="module-desc">Customer profiles, full booking history, repeat-customer flags, communication preferences, language. Every booking from every channel tied to one person.</p>
+      <div class="module-source">From: Medusa customers + Twenty CRM</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">06</span><span class="module-title">Staff &amp; Shifts</span></div>
+      <p class="module-desc">Rota and roles for Cami, Richie, Mattia, and crew. Time-clock for shifts worked. Replaces the abandoned scheduling app entirely — nothing lives in Mattia's head anymore.</p>
+      <div class="module-source">From: Custom (built on Medusa pattern)</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">07</span><span class="module-title">Channels</span></div>
+      <p class="module-desc">Your direct website, the Bókun bridge to OTAs, the JSMD voucher portal, and direct partner deals — all flowing into one inbox of bookings.</p>
+      <div class="module-source">From: Custom + Bókun integration</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">08</span><span class="module-title">Reports &amp; Finance</span></div>
+      <p class="module-desc">Daily, weekly, monthly. By channel, by location, by add-on. OTA receivables (because OTAs pay 30-45 days later) tracked separately. Profitability per session, per crew member.</p>
+      <div class="module-source">From: Custom + Stripe + Medusa data</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">09</span><span class="module-title">Communications</span></div>
+      <p class="module-desc">WhatsApp booking confirmations. 24-hour-before reminders. Post-trip thank-you and review requests. Cancellation flows. Crew shift alerts. All from one notification system.</p>
+      <div class="module-source">From: Novu (self-hosted)</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">10</span><span class="module-title">Waivers &amp; Contracts</span></div>
+      <p class="module-desc">Digital signature collected before the trip, legally valid in Germany. Stored against the booking, retrievable later if there's ever an incident or insurance question.</p>
+      <div class="module-source">From: Documenso (API only)</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">11</span><span class="module-title">Reviews &amp; Reputation</span></div>
+      <p class="module-desc">TripAdvisor and Google reviews aggregated into one feed. Prompts to respond to new reviews. Automatic ask-for-a-review email after every booking.</p>
+      <div class="module-source">From: Custom + TripAdvisor/Google APIs</div>
+    </div>
+    <div class="module">
+      <div class="module-head"><span class="module-num">12</span><span class="module-title">Franchise Operations</span></div>
+      <p class="module-desc">Each franchise location has its own books, its own staff, its own payment account. Central oversight sees everything; each franchisee sees only their own. Onboarding flow for new cities.</p>
+      <div class="module-source">From: Medusa Sales Channels + Stripe Connect + Custom</div>
+    </div>
+
+    <div class="module new">
+      <span class="module-new-flag">NEW</span>
+      <div class="module-head"><span class="module-num">13</span><span class="module-title">Accounting (Country-Aware)</span></div>
+      <p class="module-desc"><strong style="color: oklch(0.90 0.03 191);">DATEV first</strong> — the standard every German tax accountant uses. Lexware as an option. Auto-generated invoices in the correct local format. VAT reports per country. When you expand into Austria, Austrian rules turn on automatically.</p>
+      <div class="module-source">DATEV API + Lexware + Stripe Tax</div>
+    </div>
+    <div class="module new">
+      <span class="module-new-flag">NEW</span>
+      <div class="module-head"><span class="module-num">14</span><span class="module-title">Health, Safety &amp; Platform Reliability</span></div>
+      <p class="module-desc">Pre-trip safety briefing acknowledgment. Equipment checks logged per session (lifejackets, gas levels, weather call). Incident reporting with timestamps. <strong style="color: oklch(0.90 0.03 191);">Plus platform health:</strong> uptime monitoring, automatic alerts when anything breaks, error tracking via Sentry.</p>
+      <div class="module-source">Custom + Sentry + Novu alerts</div>
+    </div>
+    <div class="module new">
+      <span class="module-new-flag">NEW</span>
+      <div class="module-head"><span class="module-num">15</span><span class="module-title">Migration &amp; Onboarding</span></div>
+      <p class="module-desc">The careful move from the current setup to the new one. Customer records out of existing tools. Booking history preserved. A parallel-running period where both systems are live. Mattia's tools archived cleanly, then retired.</p>
+      <div class="module-source">One-off · runs at launch only</div>
+    </div>
+  </div>
+
+  <p style="font-size: 13px; color: var(--neutral); text-align: center; max-width: 70ch; margin: var(--xl) auto 0; line-height: 1.7; font-style: italic;">
+    Modules 13, 14, and 15 are the newest additions — driven by what the German market specifically requires, the safety reality of running boats on the Spree, and the practical question of how we move from the current setup to the new one without disruption.
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ BOKUN LINK ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Distribution Detail</p>
+  <h2 class="section-title">How Bókun Plugs In</h2>
+  <p class="section-intro">
+    Channel distribution has its own detailed plan. The short version: Bókun acts as the certified bridge to every major OTA (GetYourGuide, Viator, Booking.com, Expedia, Google), so one integration covers most of the wishlist. Some channels — Jochen Schweizer, mydays, visitBerlin, Berlin Welcome Card — need their own direct paths.
+  </p>
+
+  <div class="bokun-panel">
+    <div class="bokun-panel-text">
+      <h4>Read the Distribution Architecture</h4>
+      <p>The companion document walks through every platform on the wishlist: how it connects, what commission it takes, how complex the integration is, who collects the payment, and how long activation takes. Read alongside this plan.</p>
+    </div>
+    <a class="bokun-panel-link" href="./distribution-architecture.html">Open the Channel Doc →</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ SECURITY & RELIABILITY ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Built To Last</p>
+  <h2 class="section-title">Security &amp; Reliability,<br>by Design</h2>
+  <p class="section-intro">
+    The Cal.com quote at the top of this document is the reason this section exists. Assembling from open-source is the right strategy — but only if it's done with security and reliability designed in from day one, not added later as a panic response.
+  </p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">01</div>
+      <div class="pillar-title">Franchise Data Stays in Its Own Lane</div>
+      <p class="pillar-desc">Each city's bookings, customers, and revenue are isolated from every other city's. Tested explicitly on every release — not assumed.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">02</div>
+      <div class="pillar-title">No Modified Open-Source</div>
+      <p class="pillar-desc">Anything with a strict open-source license (Documenso, Twenty) is used via API only. We never modify the source — so we never inherit obligations to publish our code.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">03</div>
+      <div class="pillar-title">Always-On Error Tracking</div>
+      <p class="pillar-desc">Every failure in production fires an alert the moment it happens. We hear about problems before customers do.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">04</div>
+      <div class="pillar-title">No Hardcoded Secrets</div>
+      <p class="pillar-desc">Every key, password, and API token lives in a secrets manager — not in the code. Rotation is one command, not a code change.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">05</div>
+      <div class="pillar-title">Audit Trail on Everything</div>
+      <p class="pillar-desc">Every booking, payment, refund, and staff action is logged with who, when, and what. If anything ever needs to be reconstructed, it can be.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">06</div>
+      <div class="pillar-title">The Concurrency Test</div>
+      <p class="pillar-desc">The classic booking-system bug: two customers grab the same last slot at the same instant. The booking module is built and tested to prevent this from day one.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ BUILD PHASES ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">The Build Plan</p>
+  <h2 class="section-title">Phases &amp; Honest Timeline</h2>
+  <p class="section-intro">
+    Roughly five to six months from start to fully live across all channels. The engineering takes about three to four months of focused work; the rest is OTA approval processes, supplier registrations, and the careful migration period — most of which happens in parallel with build work.
+  </p>
+
+  <div class="phases-timeline">
+    <div class="phase-row zero">
+      <div class="phase-num-big">00</div>
+      <div class="phase-row-title">Migration Prep</div>
+      <div class="phase-row-desc">Audit and extract data from every current tool. Map old fields to new. Set up the parallel-running plan. This starts on day one and runs alongside Phase 1.</div>
+      <div class="phase-row-weeks">Weeks 1-3</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">01</div>
+      <div class="phase-row-title">The Foundation</div>
+      <div class="phase-row-desc">Medusa set up and configured. Booking module written. Stripe Connect wired in. Multi-franchise data model live and tested. This is the platform's spine — nothing else works without it.</div>
+      <div class="phase-row-weeks">Weeks 1-8</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">02</div>
+      <div class="phase-row-title">Direct Booking Flow</div>
+      <div class="phase-row-desc">Customer-facing website. Cart, add-ons, checkout, payment confirmation, digital waiver. The flow customers actually touch. By end of this phase, you can take direct bookings on your own site.</div>
+      <div class="phase-row-weeks">Weeks 7-10</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">03</div>
+      <div class="phase-row-title">Staff &amp; Ops Dashboards</div>
+      <div class="phase-row-desc">The internal tools Jannis and the crew use every day. Shifts, daily ops view, today's bookings, equipment checks. Mattia's tools are formally retired in this phase.</div>
+      <div class="phase-row-weeks">Weeks 9-12</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">04</div>
+      <div class="phase-row-title">Communications &amp; Safety</div>
+      <div class="phase-row-desc">Novu wired up. WhatsApp confirmations, reminders, review requests. Safety briefing acknowledgments. Sentry monitoring. Platform alerts.</div>
+      <div class="phase-row-weeks">Weeks 11-13</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">05</div>
+      <div class="phase-row-title">Bókun Bridge + OTA Activation</div>
+      <div class="phase-row-desc">Bókun account set up. Availability sync built. Viator and GetYourGuide certifications begin. Google Things To Do listing live. (Most of this timeline is waiting on OTA approval, not blocked on code.)</div>
+      <div class="phase-row-weeks">Weeks 12-18</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">06</div>
+      <div class="phase-row-title">DACH Voucher + Berlin Layer</div>
+      <div class="phase-row-desc">Jochen Schweizer / mydays voucher redemption built. visitBerlin listing live. Berlin Welcome Card discount in place. Tiqets connector (optional, scope-dependent).</div>
+      <div class="phase-row-weeks">Weeks 16-19</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">07</div>
+      <div class="phase-row-title">Accounting &amp; Reports</div>
+      <div class="phase-row-desc">DATEV connector live. Automated invoicing in the correct German format. Financial reports — by channel, by location, by month. VAT export ready for the accountant.</div>
+      <div class="phase-row-weeks">Weeks 17-20</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num-big">08</div>
+      <div class="phase-row-title">Cutover &amp; Old-System Retirement</div>
+      <div class="phase-row-desc">Final migration from old tools. Parallel-running period ends. Old tools archived. Team trained on the new system. The Boat House is the only system Badedampfer runs on.</div>
+      <div class="phase-row-weeks">Weeks 19-22</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ WHAT IT MEANS ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Business Impact</p>
+  <h2 class="section-title">What This Means in Practice</h2>
+  <div class="two-col">
+    <div class="card">
+      <p class="card-person">For Jannis — Day-to-Day Operations</p>
+      <h3>The Whole Business in One View.</h3>
+      <ul class="impact-list">
+        <li><strong>One inbox of bookings</strong> from every channel — Saturday morning is one screen, not five tabs.</li>
+        <li><strong>Manual reconciliation gone.</strong> Money in, money out, all matched automatically. Your accountant gets a clean DATEV export.</li>
+        <li><strong>Mattia's tools retired.</strong> Nothing critical lives in one person's head. Shift schedules, safety checks, all in the platform.</li>
+        <li><strong>Real-time alerts</strong> when anything breaks. You hear about problems before customers do.</li>
+        <li><strong>Saturday at 7am with guests on the boats</strong> is no longer a fragile chain of tools held together by hope.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="card-person">For Dani — Growth &amp; Strategy</p>
+      <h3>Built for Cities, Not Just for Berlin.</h3>
+      <ul class="impact-list">
+        <li><strong>Franchise-ready from day one.</strong> Adding Vienna isn't a rebuild — it's a configuration. Multi-tenant from the foundation.</li>
+        <li><strong>OTA reach to 50M+ tourists</strong> through one Bókun bridge. Listed on GetYourGuide, Viator, Booking.com, Expedia, Google.</li>
+        <li><strong>The DACH gifting market open</strong> through Jochen Schweizer and mydays — corporate gifts, birthdays, anniversaries.</li>
+        <li><strong>Stripe Connect splits</strong> mean every franchise location's money lands in their own account automatically. No reconciliation between cities.</li>
+        <li><strong>The platform is the IP.</strong> It's a defensible asset that grows in value with every booking that flows through it.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ COMMITMENT / WHO BUILDS THIS ═══════════════════════════════ -->
+<section class="commitment">
+  <div class="commitment-inner">
+    <p class="section-label">What This Requires</p>
+    <h2 class="commitment-title">A real build needs a real builder.</h2>
+    <div class="commitment-cols">
+      <div>
+        <p>
+          The honest version: <strong>this is not a weekend project, and it's not a part-time side gig.</strong> "Assemble from open-source" is faster and far safer than building from scratch, but a custom booking module on Medusa's architecture, wired to Stripe Connect, plugged into Bókun, with a clean franchise-ready UI and German accounting integration — that's a real four-to-five months of focused engineering work.
+        </p>
+        <p>
+          That work needs <strong>one full-time owner-builder</strong>, not three part-time contractors. Spread across multiple people it loses coherence; spread across nights and weekends it never finishes. The platform IS the company's IP — it deserves a single mind with full context, building it from end to end.
+        </p>
+        <p>
+          And the build doesn't end at launch. The person building it becomes the platform's maintainer — running migrations as new channels are added, handling Sentry alerts, writing the next franchise onboarding flow when Vienna goes live. <strong>This is a long-term role, not a project.</strong>
+        </p>
+        <p style="margin-top: var(--lg); color: white;">
+          The right structure reflects that: not a fixed project fee, but a proper engagement — equity, employment, or a hybrid that aligns the builder with the business they're building. The platform is too important to the company's future to be built on a transactional basis.
+        </p>
+      </div>
+      <div class="commitment-facts">
+        <div class="fact">
+          <div class="fact-label">Build Effort</div>
+          <div class="fact-value">5-6 Months</div>
+          <div class="fact-note">Full-time, focused. Includes migration period and parallel-running phase.</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Team Shape</div>
+          <div class="fact-value">One Builder</div>
+          <div class="fact-note">Owner-builder with full context, not split across contractors.</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Post-Launch Role</div>
+          <div class="fact-value">Maintainer</div>
+          <div class="fact-note">The platform grows as the business grows. New channels, new cities, new add-ons.</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Engagement Model</div>
+          <div class="fact-value">Long-Term</div>
+          <div class="fact-note">Equity, employment, or hybrid. The structure should reflect that this person builds the company's most important asset.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ DECISIONS NEEDED ═══════════════════════════════ -->
+<div class="wrap">
+  <p class="section-label">Decisions to Start</p>
+  <h2 class="section-title">What We Need to Begin</h2>
+  <p class="section-intro">
+    Phase 0 and Phase 1 can begin without waiting on any third party. Three of these need to start now — their approval clocks tick from creation date, not from when we're ready to use them.
+  </p>
+  <div class="decisions">
+    <div class="decision">
+      <div class="decision-n">01</div>
+      <div>
+        <h4>Engagement &amp; Structure for the Builder</h4>
+        <p>Before any code: the right working relationship with Thomas as the builder and maintainer. Employment, equity, or a hybrid. This is the most important decision because everything else depends on it.</p>
+      </div>
+      <span class="action-tag thomas">First Conversation</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">02</div>
+      <div>
+        <h4>Hosting Decision</h4>
+        <p>Medusa can be self-hosted (full ownership, around €50-100/month infrastructure) or run on Medusa Cloud (managed, faster to start, monthly fee). Self-hosting is the right long-term call for a franchise business. Cloud removes early friction. Pick which matters more right now.</p>
+      </div>
+      <span class="action-tag">Decide</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">03</div>
+      <div>
+        <h4>Stripe Account Setup</h4>
+        <p>Badedampfer needs a verified Stripe business account with VAT number and bank account, plus a Stripe Connect platform account for franchise splits. Verification takes one to five working days and cannot be rushed. Start in parallel with Phase 1.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">04</div>
+      <div>
+        <h4>Bókun Account Creation</h4>
+        <p>Create the Bókun supplier account and begin listing products (boats, time-slots, pricing). OTA certification clocks (especially GetYourGuide's) start from account creation date. Starting in Week 1 saves four to six weeks later.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">05</div>
+      <div>
+        <h4>JSMD Supplier Registration</h4>
+        <p>Jochen Schweizer and mydays share the same JSMD Group supplier portal. Approval can take four to eight weeks. Register as early as possible so Phase 6 isn't blocked waiting on their approval while everything else is live.</p>
+      </div>
+      <span class="action-tag now">Start Now</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">06</div>
+      <div>
+        <h4>Product Inventory Definition</h4>
+        <p>How many boats? What are the distinct products — standard rental, premium, group session? What are the time-slot windows, session durations, capacity per slot? This is the data model that everything else builds on. Needs Jannis's input early.</p>
+      </div>
+      <span class="action-tag">Jannis to Input</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">07</div>
+      <div>
+        <h4>Franchise Scope</h4>
+        <p>Berlin only with franchise support designed in but not yet activated, or Vienna live from day one? Affects how multi-tenancy and Stripe Connect are set up in Phase 1. Getting this wrong means refactoring the foundation later.</p>
+      </div>
+      <span class="action-tag">Scope Decision</span>
+    </div>
+    <div class="decision">
+      <div class="decision-n">08</div>
+      <div>
+        <h4>Accountant Coordination (DATEV)</h4>
+        <p>Loop in the Badedampfer accountant now. Confirm DATEV is the target format (it almost certainly is — it's the German standard). Establish the chart of accounts the platform should map to. Plan the first reconciliation handoff.</p>
+      </div>
+      <span class="action-tag">Phase 0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-brand">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;line-height:1.2;">
+      <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:14px;letter-spacing:0.06em;color:#1a1c28;">BADEDAMPFER</span>
+      <span style="font-size:10px;color:oklch(0.63 0.095 191);letter-spacing:0.14em;text-transform:uppercase;">The Floating Tub</span>
+    </div>
+  </div>
+  <div class="footer-info">
+    <div style="font-weight:500;color:oklch(0.40 0.015 252);">The Boat House — Platform Plan</div>
+    <div>Prepared for Jannis Wetzlaugk &amp; Dani · May 2026</div>
+    <div>Companion: distribution-architecture.html</div>
+  </div>
+</footer>
+
+</body>
+</html>

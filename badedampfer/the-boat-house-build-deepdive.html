@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Boat House — Engineering Deep Dive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:        oklch(0.63 0.095 191);
+      --teal-light:  oklch(0.90 0.040 191);
+      --teal-dark:   oklch(0.48 0.095 191);
+      --teal-faint:  oklch(0.96 0.015 191);
+      --dark:        oklch(0.16 0.020 252);
+      --darker:      oklch(0.11 0.018 252);
+      --mid:         oklch(0.40 0.015 252);
+      --neutral:     oklch(0.62 0.008 252);
+      --border:      oklch(0.88 0.008 252);
+      --bg:          oklch(0.99 0.003 80);
+      --bg-warm:     oklch(0.97 0.006 80);
+      --bg-deep:     oklch(0.94 0.010 80);
+      --code-bg:     oklch(0.97 0.008 250);
+      --code-border: oklch(0.90 0.010 250);
+      --warn:        oklch(0.62 0.13 50);
+      --warn-light:  oklch(0.95 0.04 50);
+      --crit:        oklch(0.55 0.16 25);
+
+      --display: 'Big Shoulders Display', sans-serif;
+      --body:    'Jost', sans-serif;
+      --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+      --xs:  4px;
+      --sm:  8px;
+      --md:  16px;
+      --lg:  24px;
+      --xl:  48px;
+      --2xl: 96px;
+      --3xl: 144px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--dark);
+      font-size: 16px;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--md) var(--xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: var(--sm); }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+    }
+    .brand-tagline {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .doc-badge {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: var(--3xl) var(--xl) var(--2xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .hero-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(54px, 9vw, 116px);
+      line-height: 0.9;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--xl);
+    }
+    .hero-title em { color: var(--teal); font-style: normal; }
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--xl);
+      max-width: 880px;
+    }
+    .hero-cols p { font-size: 15.5px; line-height: 1.8; color: var(--mid); }
+    .hero-cols strong { color: var(--dark); font-weight: 500; }
+    .hero-cols code { font-family: var(--mono); background: var(--code-bg); padding: 1px 6px; font-size: 13px; color: var(--teal-dark); }
+
+    /* ─── TOC ─── */
+    .toc {
+      margin-top: var(--xl);
+      padding: var(--lg) var(--xl);
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+    }
+    .toc-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--xs) var(--lg);
+    }
+    .toc a {
+      font-size: 13px;
+      color: var(--mid);
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: var(--sm);
+      padding: 4px 0;
+    }
+    .toc a:hover { color: var(--teal-dark); }
+    .toc a span {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+      min-width: 24px;
+    }
+
+    /* ─── LAYOUT ─── */
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--2xl) var(--xl);
+    }
+    .divider { width: 100%; height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--md);
+    }
+    .section-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 0.98;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      margin-bottom: var(--lg);
+    }
+    .section-intro {
+      max-width: 70ch;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--mid);
+      margin-bottom: var(--xl);
+    }
+    .section-intro strong { color: var(--dark); font-weight: 500; }
+    .section-intro code { font-family: var(--mono); background: var(--code-bg); padding: 1px 6px; font-size: 13px; color: var(--teal-dark); }
+
+    p.body { font-size: 14.5px; color: var(--mid); line-height: 1.75; max-width: 75ch; margin-bottom: var(--md); }
+    p.body strong { color: var(--dark); font-weight: 500; }
+    p.body code { font-family: var(--mono); background: var(--code-bg); padding: 1px 6px; font-size: 13px; color: var(--teal-dark); }
+    h3.sub {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin: var(--xl) 0 var(--md);
+      letter-spacing: -0.005em;
+    }
+    h4.subsub {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin: var(--lg) 0 var(--sm);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── DROPDOWNS (details/summary) ─── */
+    details.dd {
+      border: 1px solid var(--border);
+      background: var(--bg-warm);
+      margin-bottom: var(--sm);
+    }
+    details.dd[open] {
+      background: var(--bg);
+    }
+    details.dd summary {
+      cursor: pointer;
+      padding: var(--md) var(--lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--md);
+      list-style: none;
+      user-select: none;
+    }
+    details.dd summary::-webkit-details-marker { display: none; }
+    details.dd summary::after {
+      content: '+';
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 22px;
+      color: var(--teal);
+      transition: transform 0.2s;
+      line-height: 0.8;
+    }
+    details.dd[open] summary::after { content: '–'; }
+    .dd-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+    }
+    .dd-meta {
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .dd-head { flex: 1; }
+    .dd-body {
+      padding: var(--md) var(--lg) var(--lg);
+      border-top: 1px solid var(--border);
+    }
+    .dd-body p {
+      font-size: 13.5px;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: var(--sm);
+    }
+    .dd-body p strong { color: var(--dark); font-weight: 500; }
+    .dd-body p code { font-family: var(--mono); background: var(--code-bg); padding: 1px 6px; font-size: 12.5px; color: var(--teal-dark); }
+    .dd-body ul {
+      list-style: none;
+      margin: var(--sm) 0;
+    }
+    .dd-body ul li {
+      font-size: 13px;
+      color: var(--mid);
+      line-height: 1.65;
+      padding-left: var(--md);
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .dd-body ul li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      color: var(--teal);
+      font-weight: 700;
+    }
+    .dd-body ul li strong { color: var(--dark); font-weight: 500; }
+    .dd-body ul li code { font-family: var(--mono); background: var(--code-bg); padding: 1px 5px; font-size: 12px; color: var(--teal-dark); }
+
+    /* ─── CODE BLOCKS ─── */
+    pre {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.65;
+      background: var(--darker);
+      color: oklch(0.85 0.012 252);
+      padding: var(--md) var(--lg);
+      overflow-x: auto;
+      border: 1px solid var(--dark);
+      margin: var(--md) 0;
+    }
+    pre code { font-family: inherit; background: none; padding: 0; color: inherit; font-size: inherit; }
+    pre .c { color: oklch(0.55 0.015 252); font-style: italic; } /* comment */
+    pre .k { color: oklch(0.75 0.10 290); } /* keyword */
+    pre .s { color: oklch(0.78 0.08 130); } /* string */
+    pre .n { color: oklch(0.85 0.08 70); }  /* number */
+    pre .t { color: var(--teal); }          /* type */
+    pre .f { color: oklch(0.80 0.10 60); }  /* function */
+    pre .p { color: oklch(0.70 0.015 252); } /* punctuation */
+
+    /* ─── SCHEMA TABLE ─── */
+    table.schema {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: var(--md) 0;
+      font-family: var(--mono);
+    }
+    table.schema th {
+      font-family: var(--body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      text-align: left;
+      padding: var(--sm) var(--md);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-warm);
+    }
+    table.schema td {
+      padding: 10px var(--md);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    table.schema td.col-name { color: var(--teal-dark); font-weight: 500; }
+    table.schema td.col-type { color: var(--mid); font-size: 12px; }
+    table.schema td.col-note { font-family: var(--body); font-size: 12.5px; color: var(--mid); line-height: 1.5; }
+    table.schema td .pk {
+      display: inline-block;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      background: var(--teal);
+      color: white;
+      margin-left: var(--sm);
+    }
+    table.schema td .fk {
+      display: inline-block;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      background: var(--bg-deep);
+      color: var(--mid);
+      margin-left: var(--sm);
+    }
+    table.schema td .idx {
+      display: inline-block;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      margin-left: var(--sm);
+    }
+
+    /* ─── CRON TABLE ─── */
+    table.cron {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: var(--md) 0;
+    }
+    table.cron th {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      text-align: left;
+      padding: var(--sm) var(--md);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-warm);
+    }
+    table.cron td {
+      padding: var(--md);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    table.cron td.cron-name {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+    table.cron td.cron-schedule {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--teal-dark);
+      background: var(--code-bg);
+      padding: 4px var(--sm);
+      white-space: nowrap;
+      width: 1%;
+    }
+    table.cron td.cron-purpose { font-size: 12.5px; color: var(--mid); }
+    table.cron td.cron-purpose code { font-family: var(--mono); background: var(--code-bg); padding: 1px 5px; font-size: 11.5px; color: var(--teal-dark); }
+
+    /* ─── CONFIDENCE MATRIX ─── */
+    .confidence {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--md);
+      margin: var(--xl) 0;
+    }
+    .conf-col {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--lg);
+    }
+    .conf-col.high { background: oklch(0.96 0.025 150); border-color: oklch(0.85 0.04 150); }
+    .conf-col.med  { background: var(--warn-light); border-color: oklch(0.85 0.06 50); }
+    .conf-col.low  { background: oklch(0.96 0.025 25); border-color: oklch(0.85 0.06 25); }
+    .conf-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      margin-bottom: var(--sm);
+    }
+    .conf-col.high .conf-tag { background: oklch(0.55 0.12 150); color: white; }
+    .conf-col.med .conf-tag  { background: var(--warn); color: white; }
+    .conf-col.low .conf-tag  { background: var(--crit); color: white; }
+    .conf-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--sm);
+      line-height: 1.1;
+    }
+    .conf-col p {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.6;
+      margin-bottom: var(--sm);
+    }
+    .conf-col ul {
+      list-style: none;
+      margin-top: var(--sm);
+    }
+    .conf-col ul li {
+      font-size: 12px;
+      color: var(--mid);
+      line-height: 1.55;
+      padding-left: var(--md);
+      position: relative;
+      margin-bottom: var(--xs);
+    }
+    .conf-col ul li::before {
+      content: '·';
+      position: absolute;
+      left: 4px;
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+    .conf-col ul li strong { color: var(--dark); font-weight: 500; }
+
+    /* ─── ARCHITECTURE DIAGRAM ─── */
+    .arch-block {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border);
+      padding: 2px;
+      margin: var(--md) 0;
+    }
+    .arch-box {
+      background: var(--bg-warm);
+      padding: var(--md);
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .arch-box.head {
+      background: var(--bg-deep);
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--neutral);
+      min-height: auto;
+      padding: var(--sm) var(--md);
+      text-align: center;
+      justify-content: center;
+    }
+    .arch-box.dark { background: var(--dark); color: white; }
+    .arch-box.teal { background: var(--teal); color: white; }
+    .arch-box-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .arch-box.dark .arch-box-title,
+    .arch-box.teal .arch-box-title { color: white; }
+    .arch-box-sub { font-size: 11px; color: var(--mid); line-height: 1.4; }
+    .arch-box.dark .arch-box-sub { color: oklch(0.65 0.012 252); }
+    .arch-box.teal .arch-box-sub { color: oklch(0.90 0.04 191); }
+
+    /* ─── PHASE / SPRINTS ─── */
+    .sprint-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--md);
+      margin: var(--xl) 0;
+    }
+    .sprint {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      padding: var(--lg);
+    }
+    .sprint.current { background: var(--dark); border-color: var(--dark); }
+    .sprint-weeks {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--teal);
+      margin-bottom: var(--sm);
+    }
+    .sprint-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--xs);
+      line-height: 1.1;
+    }
+    .sprint.current .sprint-title { color: white; }
+    .sprint-outcome {
+      font-size: 12px;
+      color: var(--teal);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: var(--md);
+    }
+    .sprint p {
+      font-size: 12.5px;
+      color: var(--mid);
+      line-height: 1.65;
+      margin-bottom: var(--sm);
+    }
+    .sprint.current p { color: oklch(0.72 0.015 252); }
+    .sprint p strong { color: var(--dark); font-weight: 500; }
+    .sprint.current p strong { color: white; }
+    .sprint ul { list-style: none; margin-top: var(--sm); }
+    .sprint ul li {
+      font-size: 11.5px;
+      color: var(--mid);
+      line-height: 1.5;
+      padding-left: var(--md);
+      position: relative;
+      margin-bottom: 3px;
+    }
+    .sprint.current ul li { color: oklch(0.72 0.015 252); }
+    .sprint ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    /* ─── CALLOUT ─── */
+    .callout {
+      background: var(--teal-faint);
+      border: 1px solid var(--teal-light);
+      padding: var(--lg) var(--xl);
+      margin: var(--lg) 0;
+    }
+    .callout-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: var(--xs);
+    }
+    .callout-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: var(--sm);
+    }
+    .callout p {
+      font-size: 13.5px;
+      color: var(--mid);
+      line-height: 1.7;
+      max-width: 75ch;
+    }
+    .callout p strong { color: var(--dark); font-weight: 500; }
+    .callout p code { font-family: var(--mono); background: var(--code-bg); padding: 1px 6px; font-size: 12.5px; color: var(--teal-dark); }
+
+    .callout.warn { background: var(--warn-light); border-color: oklch(0.85 0.06 50); }
+    .callout.warn .callout-label { color: var(--warn); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: var(--xl);
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand { display: flex; align-items: center; gap: var(--sm); }
+    .footer-info { font-size: 11px; color: var(--neutral); text-align: right; line-height: 1.7; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero-cols, .confidence, .arch-block { grid-template-columns: 1fr; }
+      .toc-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .site-header { padding: var(--md); }
+      .hero, .wrap { padding-left: var(--md); padding-right: var(--md); }
+      .hero { padding-top: var(--xl); padding-bottom: var(--xl); }
+      .wrap { padding-top: var(--xl); padding-bottom: var(--xl); }
+      pre { font-size: 11.5px; padding: var(--md); }
+      table.schema, table.cron { font-size: 11.5px; }
+      .footer { flex-direction: column; gap: var(--md); padding: var(--xl) var(--md); }
+    }
+  </style>
+</head>
+<body>
+<style>
+#pw-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:#0f0f0f;display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:16px;font-family:system-ui,sans-serif;}
+#pw-gate input{padding:10px 16px;font-size:16px;border:1px solid #333;border-radius:6px;background:#1a1a1a;color:#fff;outline:none;width:240px;}
+#pw-gate button{padding:10px 24px;background:#fff;color:#000;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:500;}
+#pw-gate .err{color:#ff4444;font-size:13px;height:16px;}
+#pw-gate label{color:#888;font-size:13px;}
+</style>
+<div id="pw-gate">
+  <label>Enter password to view this document</label>
+  <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+  <button onclick="checkPw()">Continue</button>
+  <span class="err" id="pw-err"></span>
+</div>
+<script>
+(function(){
+  const HASH='';
+  const KEY='hx_auth';
+  if(sessionStorage.getItem(KEY)===HASH){document.getElementById('pw-gate').remove();return;}
+  window.checkPw=async function(){
+    const val=document.getElementById('pw-input').value;
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(val));
+    const hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    if(hex===HASH){sessionStorage.setItem(KEY,HASH);document.getElementById('pw-gate').remove();}
+    else{document.getElementById('pw-err').textContent='Incorrect password';document.getElementById('pw-input').value='';}
+  };
+})();
+</script>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="site-header">
+  <div class="brand">
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-name">BADEDAMPFER</span>
+      <span class="brand-tagline">The Boat House · Engineering</span>
+    </div>
+  </div>
+  <span class="doc-badge">Build Deep Dive · Engineering Plan</span>
+</header>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <p class="eyebrow">The Boat House — Technical Build, Granular Edition</p>
+  <h1 class="hero-title">
+    The<br>
+    <em>Build.</em>
+  </h1>
+  <div class="hero-cols">
+    <p>
+      The engineering plan in technical detail. Database schemas, the exact open-source pieces we take and how we extend them, every cron job, every event subscriber, every API endpoint. Written for one engineer to read on a flight and walk off with a clear mental model of <strong>what gets built, in what order, and where the dragons live</strong>.
+    </p>
+    <p>
+      Stack: <code>Medusa v2</code> · <code>PostgreSQL 16</code> · <code>Redis 7</code> · <code>Next.js 16</code> · <code>Stripe</code> · <code>Bókun API</code> · <code>Novu</code> · <code>Documenso</code> · <code>Twenty</code> · <code>Sentry</code>. TypeScript end-to-end. Self-hosted on a small EU-region VPS cluster behind Cloudflare. Everything else is detail.
+    </p>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-label">Contents — Tap to Jump</div>
+    <div class="toc-grid">
+      <a href="#birds-eye"><span>01</span> Bird's-Eye Architecture</a>
+      <a href="#why-medusa"><span>02</span> Why Medusa, Specifically</a>
+      <a href="#stack"><span>03</span> The Stack, Each Piece</a>
+      <a href="#booking-engine"><span>04</span> The Booking Engine</a>
+      <a href="#schemas"><span>05</span> Database Schemas</a>
+      <a href="#workflows"><span>06</span> Workflows &amp; Saga Pattern</a>
+      <a href="#cron"><span>07</span> Scheduled Jobs</a>
+      <a href="#events"><span>08</span> Event Subscribers</a>
+      <a href="#api"><span>09</span> API Surface</a>
+      <a href="#race"><span>10</span> The Race-Condition Problem</a>
+      <a href="#integrations"><span>11</span> External Integrations</a>
+      <a href="#franchise"><span>12</span> Multi-Tenancy &amp; Franchise</a>
+      <a href="#security"><span>13</span> Security &amp; Reliability</a>
+      <a href="#observability"><span>14</span> Observability</a>
+      <a href="#sprints"><span>15</span> Quick Wins &amp; Sprint Plan</a>
+      <a href="#confidence"><span>16</span> Confidence vs Headaches</a>
+      <a href="#day-one"><span>17</span> The First 10 Days of Code</a>
+    </div>
+  </nav>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 01 BIRD'S-EYE ═══════════════════════════════ -->
+<div class="wrap" id="birds-eye">
+  <p class="section-label">01 · Bird's-Eye View</p>
+  <h2 class="section-title">The Whole Thing<br>on One Page</h2>
+  <p class="section-intro">
+    Four columns: where the request enters, what owns the data, where the money/distribution layers sit, and what we observe with. Everything in this document is detail on one of these boxes.
+  </p>
+
+  <div class="arch-block">
+    <div class="arch-box head">Edge / Clients</div>
+    <div class="arch-box head">Core Platform</div>
+    <div class="arch-box head">Rented Layers</div>
+    <div class="arch-box head">Observability</div>
+
+    <div class="arch-box">
+      <div class="arch-box-title">Customer Site</div>
+      <div class="arch-box-sub">Next.js 16 SSR + RSC. The booking flow customers touch.</div>
+    </div>
+    <div class="arch-box dark">
+      <div class="arch-box-title">Medusa v2 API</div>
+      <div class="arch-box-sub">Workflows · modules · subscribers · jobs. The spine.</div>
+    </div>
+    <div class="arch-box teal">
+      <div class="arch-box-title">Stripe</div>
+      <div class="arch-box-sub">Connect splits · Tax/VAT · refunds. Money layer.</div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-box-title">Sentry</div>
+      <div class="arch-box-sub">Error tracking · performance · release tracking.</div>
+    </div>
+
+    <div class="arch-box">
+      <div class="arch-box-title">Admin Console</div>
+      <div class="arch-box-sub">Medusa admin (extended) for Jannis, crew, accountants.</div>
+    </div>
+    <div class="arch-box dark">
+      <div class="arch-box-title">PostgreSQL 16</div>
+      <div class="arch-box-sub">Single source of truth. Strict tenant scoping.</div>
+    </div>
+    <div class="arch-box teal">
+      <div class="arch-box-title">Bókun API</div>
+      <div class="arch-box-sub">OTA bridge: GYG · Viator · Booking · Expedia · Google.</div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-box-title">BetterStack / Grafana</div>
+      <div class="arch-box-sub">Uptime · logs · dashboards. Cheap, alert-first.</div>
+    </div>
+
+    <div class="arch-box">
+      <div class="arch-box-title">OTA Webhooks</div>
+      <div class="arch-box-sub">Inbound from Bókun → booking creation.</div>
+    </div>
+    <div class="arch-box dark">
+      <div class="arch-box-title">Redis 7</div>
+      <div class="arch-box-sub">BullMQ job queue · session · cache · distributed locks.</div>
+    </div>
+    <div class="arch-box teal">
+      <div class="arch-box-title">Novu</div>
+      <div class="arch-box-sub">WhatsApp · email · SMS orchestration (self-hosted).</div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-box-title">PostHog</div>
+      <div class="arch-box-sub">Funnel analytics on the customer booking flow.</div>
+    </div>
+
+    <div class="arch-box">
+      <div class="arch-box-title">Mobile Crew App</div>
+      <div class="arch-box-sub">Phase 2: PWA for crew shift check-in &amp; safety logs.</div>
+    </div>
+    <div class="arch-box dark">
+      <div class="arch-box-title">S3 / R2 Storage</div>
+      <div class="arch-box-sub">Cloudflare R2 (no egress fees). Photos · waivers · exports.</div>
+    </div>
+    <div class="arch-box teal">
+      <div class="arch-box-title">Documenso · Twenty</div>
+      <div class="arch-box-sub">Waivers + CRM. AGPL: integrated by API only.</div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-box-title">PagerDuty</div>
+      <div class="arch-box-sub">Wakes the on-call (you) when prod breaks at 7am Saturday.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">The Architectural Bet</div>
+    <div class="callout-title">Medusa v2 is the spine; everything else is a satellite.</div>
+    <p>
+      The single most important architectural commitment is that <strong>Medusa is the source of truth</strong>. Every booking — whether it originates on our website, on Viator, on GetYourGuide, on Jochen Schweizer, or as a manual entry by Jannis — exists as a row in Medusa's database. External systems are <strong>satellites</strong> we sync to, never sources of truth. This rule is what stops the current Zapier mesh's failure mode from re-emerging.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 02 WHY MEDUSA ═══════════════════════════════ -->
+<div class="wrap" id="why-medusa">
+  <p class="section-label">02 · Foundation Choice</p>
+  <h2 class="section-title">Why Medusa, Specifically</h2>
+  <p class="section-intro">
+    Three patterns from Medusa v2 do the structural heavy lifting for us — <strong>modules</strong>, <strong>workflows</strong>, and <strong>sales channels</strong>. Each maps directly onto a problem we'd otherwise solve from scratch.
+  </p>
+
+  <details class="dd" open>
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Modules → Domain isolation, swappable services</div>
+        <div class="dd-meta">Pattern · Boundary discipline</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        A Medusa module owns its own data, its own service class, and its own migrations. Modules expose a service interface; they never reach into each other's tables. This is the discipline that keeps the codebase readable as it grows from one boat to twenty.
+      </p>
+      <p>
+        We ship with the built-in modules (<code>product</code>, <code>cart</code>, <code>order</code>, <code>customer</code>, <code>pricing</code>, <code>promotion</code>, <code>tax</code>, <code>stock-location</code>, <code>sales-channel</code>, <code>gift-card</code>, <code>stripe</code>) and add <strong>six custom modules</strong>: <code>bookings</code>, <code>boats</code>, <code>shifts</code>, <code>safety</code>, <code>accounting</code>, <code>migration</code>.
+      </p>
+      <p>
+        <strong>Why this matters:</strong> if Bókun ever changes their API or we want to swap notification providers, only the relevant module changes. The rest of the codebase doesn't notice.
+      </p>
+<pre><code><span class="c">// src/modules/bookings/index.ts — example custom module shape</span>
+<span class="k">import</span> { Module } <span class="k">from</span> <span class="s">"@medusajs/framework/utils"</span>
+<span class="k">import</span> BookingsService <span class="k">from</span> <span class="s">"./service"</span>
+
+<span class="k">export const</span> BOOKINGS_MODULE <span class="p">=</span> <span class="s">"bookings"</span>
+
+<span class="k">export default</span> <span class="f">Module</span><span class="p">(</span>BOOKINGS_MODULE<span class="p">,</span> <span class="p">{</span>
+  service<span class="p">:</span> BookingsService<span class="p">,</span>
+<span class="p">})</span></code></pre>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Workflows → Saga pattern with free compensation</div>
+        <div class="dd-meta">Pattern · Transactional integrity</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        A workflow is a typed sequence of steps. Each step can declare a compensation — what to do if a later step fails. The framework guarantees that if step 4 fails, steps 1-3 get their compensations called in reverse order. This is the saga pattern, free.
+      </p>
+      <p>
+        <strong>Critical for us</strong> because a booking creation touches multiple modules: <code>bookings</code> (reserve slot), <code>cart</code> (price line items), <code>customer</code> (create or attach customer), <code>payment</code> (Stripe intent), <code>order</code> (finalize). Any of these can fail. Without saga discipline, a partial failure leaves the slot reserved but no payment captured — a phantom booking.
+      </p>
+<pre><code><span class="c">// src/workflows/create-booking.ts</span>
+<span class="k">import</span> {
+  createWorkflow<span class="p">,</span>
+  WorkflowResponse<span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="s">"@medusajs/framework/workflows-sdk"</span>
+
+<span class="k">export const</span> createBookingWorkflow <span class="p">=</span> <span class="f">createWorkflow</span><span class="p">(</span>
+  <span class="s">"create-booking"</span><span class="p">,</span>
+  <span class="p">(</span>input<span class="p">:</span> CreateBookingInput<span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">const</span> lock <span class="p">=</span> <span class="f">acquireSlotLockStep</span><span class="p">(</span>input<span class="p">)</span>            <span class="c">// Redis lock</span>
+    <span class="k">const</span> verified <span class="p">=</span> <span class="f">verifyAvailabilityStep</span><span class="p">(</span>input<span class="p">)</span>     <span class="c">// SELECT FOR UPDATE</span>
+    <span class="k">const</span> booking <span class="p">=</span> <span class="f">reserveBookingStep</span><span class="p">(</span>verified<span class="p">)</span>         <span class="c">// status=pending</span>
+    <span class="k">const</span> cart <span class="p">=</span> <span class="f">createBookingCartStep</span><span class="p">(</span>booking<span class="p">)</span>          <span class="c">// medusa cart</span>
+    <span class="k">const</span> intent <span class="p">=</span> <span class="f">createPaymentIntentStep</span><span class="p">(</span>cart<span class="p">)</span>        <span class="c">// stripe</span>
+    <span class="k">return new</span> <span class="f">WorkflowResponse</span><span class="p">({</span> booking<span class="p">,</span> cart<span class="p">,</span> intent <span class="p">})</span>
+    <span class="c">// If reserveBookingStep succeeds and createPaymentIntentStep fails,</span>
+    <span class="c">// the booking row is auto-rolled back via the compensation handler.</span>
+  <span class="p">}</span>
+<span class="p">)</span></code></pre>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Sales Channels → Native franchise multi-tenancy</div>
+        <div class="dd-meta">Pattern · Data isolation by design</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Medusa's Sales Channel module exists so a single product catalogue can be sold through different storefronts with different pricing and availability. We repurpose it as the <strong>franchise primitive</strong>: each Badedampfer location (Berlin, Vienna, Wörthersee in 2028) is a Sales Channel.
+      </p>
+      <p>
+        Every Boat, every Booking, every Stripe Connect account, every staff member is scoped to a Sales Channel ID. Queries that don't pass a channel filter return zero rows by default (enforced in the service layer). Berlin admins see Berlin; Vienna admins see Vienna; central admin (Jannis) sees everything.
+      </p>
+      <p>
+        <strong>This is what makes adding Wörthersee a configuration change in Year 3 rather than a refactor.</strong>
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 03 THE STACK ═══════════════════════════════ -->
+<div class="wrap" id="stack">
+  <p class="section-label">03 · The Stack</p>
+  <h2 class="section-title">Each Piece, in Detail</h2>
+  <p class="section-intro">
+    What each component does, why it's here, what version, and the one thing that could trip us up about it. Open the rows that interest you.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Medusa v2</div>
+        <div class="dd-meta">Commerce backbone · Node.js / TypeScript · MIT</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> the four-layer commerce engine — API routes, workflows, modules, Postgres data store. Provides cart, order, customer, product, pricing, promotion, gift-card, tax, sales-channel, stock-location, and Stripe modules out of the box.
+      </p>
+      <p>
+        <strong>Version target:</strong> latest stable v2. Pin to a specific minor (e.g. <code>2.4.x</code>) at install; upgrade deliberately, never on autopilot.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> v2 is a substantial rewrite from v1; the community docs are still catching up in places. When the official docs are thin, read the source — Medusa is open-source for a reason. <strong>Don't take random tutorial code from 2023</strong> — most of it is v1 and won't work.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">PostgreSQL 16</div>
+        <div class="dd-meta">Primary database · Self-hosted, replicated</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> source of truth for everything. Medusa uses MikroORM as its data mapper and runs migrations through it.
+      </p>
+      <p>
+        <strong>Why Postgres specifically:</strong> we need <code>SELECT ... FOR UPDATE</code> row locks for the booking race-condition problem. We need <code>JSONB</code> for the metadata fields. We need <code>tstzrange</code> for time-range columns if we go down that road for advanced availability queries. Postgres gives us all three.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> connection pooling. Medusa workflows can hold connections during long steps; we'll need PgBouncer in front in production. Set <code>statement_timeout</code> on the connection pool to prevent runaway queries.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Redis 7</div>
+        <div class="dd-meta">Cache · Queue · Distributed locks</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> three jobs. (1) Job queue via BullMQ (cron schedules, async work, retries). (2) Cache for hot reads like "is this slot available?" — the same query a customer hits when browsing. (3) Distributed locks for the booking concurrency problem.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> persistence. We must run Redis with AOF persistence enabled (<code>appendonly yes</code>), not the default RDB-only mode — otherwise a Redis crash loses in-flight jobs. For locks specifically, use Redlock pattern with explicit TTLs so a crashed worker can't permanently hold a slot reservation.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Next.js 16 (Turbopack)</div>
+        <div class="dd-meta">Customer site · Admin extensions · TypeScript</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> two surfaces. The customer-facing booking site at <code>badedampfer.de</code> (and <code>.at</code>). Custom admin pages that extend Medusa's built-in admin where its UI isn't enough — daily ops view, safety checklist UI, accounting export panel.
+      </p>
+      <p>
+        <strong>Turbopack:</strong> dev-server speed matters for builder velocity. Pin Turbopack at production-stable; webpack is the fallback if any caching bug bites.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> server components vs client components is a real architectural decision per page. Booking calendar interaction is client-heavy; the home page can be RSC. Don't blanket either way.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Stripe (Payments · Connect · Tax)</div>
+        <div class="dd-meta">Money layer · Test mode in dev · Live keys via secrets vault</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>Stripe Payments:</strong> the obvious — card processing. PaymentIntents API, server-side confirmation, 3DS where required (mandatory in EU).
+      </p>
+      <p>
+        <strong>Stripe Connect:</strong> franchise splits. Each franchise location (Berlin, Vienna...) is a Connected Account. Payments come into the platform account; the share for that location is transferred immediately via <code>application_fee_amount</code>. Berlin's money lands in Berlin's Stripe; Vienna's in Vienna's; platform fee stays with the central entity.
+      </p>
+      <p>
+        <strong>Stripe Tax:</strong> automatic VAT calculation per jurisdiction. Customer in DE sees DE VAT; customer in AT sees AT VAT; B2B customers with valid VAT IDs get reverse-charge. The Tax product is rented for this reason — being wrong on VAT is a tax problem, not a feature bug.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> the difference between <code>destination charges</code> (Connect account receives payment directly) and <code>separate charges + transfers</code> (platform receives, then transfers). For our model — central brand, distributed locations — separate charges + transfers is correct. Get this wrong day one, refactoring later is painful.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Bókun API</div>
+        <div class="dd-meta">OTA bridge · Free for suppliers · TripAdvisor-owned</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What we use:</strong> the Supplier API. Two operations are foundational: <code>POST /availability</code> to push our slot availability to Bókun (so OTAs see it), and webhooks <code>booking.created</code> / <code>booking.cancelled</code> to receive OTA bookings into our system.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> Bókun's API has improved a lot but isn't Stripe-quality. Expect: occasional 5xx responses, inconsistent date formatting in some endpoints, eventual-consistency on availability writes. We build defensively — retry with exponential backoff, idempotency keys on every write, a periodic reconciliation job that compares our state to Bókun's and flags drift.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Novu (Self-Hosted)</div>
+        <div class="dd-meta">Notification orchestration · MIT · Docker</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> one API call from us; Novu fans out to the right channels (WhatsApp, email, SMS) based on user preferences. Templates managed in Novu's UI so we don't redeploy to change the wording of a confirmation email.
+      </p>
+      <p>
+        <strong>WhatsApp specifically:</strong> Novu connects to WhatsApp via Twilio or Meta Business API. Twilio is faster to set up but more expensive per message; Meta Business is cheaper at scale but takes weeks to approve. Start Twilio, migrate later.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> Novu's self-hosted version requires its own Postgres/MongoDB/Redis. Adds infra surface. Worth it for control; not worth it if we're going to be fighting their deployment more than building features.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Documenso (Self-Hosted, AGPL)</div>
+        <div class="dd-meta">Digital waivers · Via API only · Never modify source</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> sends the safety waiver to the customer pre-trip; collects a legally-valid digital signature; stores the signed PDF; fires a webhook back to us when signed.
+      </p>
+      <p>
+        <strong>Why API-only matters:</strong> Documenso is AGPL-licensed. If we modify the source, we are obligated to publish our modifications. Using it as an external service via REST API does not trigger this — the AGPL boundary is "you must distribute source if you distribute the modified binary." We don't distribute, and we don't modify, so we are safe.
+      </p>
+      <p>
+        <strong>Our integration:</strong> our <code>bookings</code> module hits Documenso's <code>POST /documents</code> endpoint to send a waiver pre-fill, sets a webhook to our <code>POST /webhooks/documenso</code> endpoint, updates the booking row's <code>waiver_signed_at</code> when the webhook fires.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Twenty (Self-Hosted, AGPL)</div>
+        <div class="dd-meta">CRM for franchise partners + B2B · Via API only</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> CRM for non-end-customer relationships. Franchise partner pipeline (potential Wörthersee operators), B2B accounts (hotel concierges, corporate event buyers, embassies in Vienna), press contacts.
+      </p>
+      <p>
+        <strong>Why separate from Medusa customers:</strong> end customers are a different domain — high volume, transactional, retention-focused, hosted in Medusa's <code>customer</code> module. CRM relationships are low-volume, narrative, pipeline-focused. Forcing both into one table is the classic CRM-bloat mistake.
+      </p>
+      <p>
+        <strong>Same AGPL rule as Documenso:</strong> we never modify the source.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Sentry</div>
+        <div class="dd-meta">Error tracking · Performance · Release health</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> catches every unhandled exception in both the Medusa backend and the Next.js frontend, groups them by stack-trace fingerprint, alerts on new errors, gives us session replays for frontend bugs.
+      </p>
+      <p>
+        <strong>The free tier is enough for the first six months.</strong> Paid plan starts mattering when we cross ~50k events/month.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> sample rate. Default 100% sampling will burn through quota fast. Set <code>tracesSampleRate</code> to 0.1 in production for performance traces, 1.0 for errors (always).
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Cloudflare R2 (S3-compatible)</div>
+        <div class="dd-meta">Object storage · Zero egress fees</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it stores:</strong> customer photos (post-trip), signed waiver PDFs, DATEV export files (kept for audit), invoice PDFs.
+      </p>
+      <p>
+        <strong>Why R2 over S3:</strong> Cloudflare R2 charges nothing for egress. AWS S3 charges per GB out. For a business that serves photos and PDFs on every page view, this is a meaningful cost difference at scale.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> R2 doesn't have full feature-parity with S3 — but everything we need (PUT, GET, signed URLs, lifecycle rules) works. Don't use any S3-specific features like Object Lock without checking R2's support page.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">PostHog</div>
+        <div class="dd-meta">Product analytics · Self-hostable · Free tier generous</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>What it does:</strong> tracks the customer booking funnel — landing page view, slot picker opened, add-on selected, checkout started, payment confirmed. Tells us where customers drop off.
+      </p>
+      <p>
+        <strong>Why not just Google Analytics:</strong> GA4 is great for traffic acquisition; PostHog is better for product funnels. We want both — GA for marketing dashboards, PostHog for product decisions.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">DATEV / Lexware Integration</div>
+        <div class="dd-meta">Custom module · CSV-based export · No API</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>The reality:</strong> DATEV doesn't offer an open API for the standard chart-of-accounts integration most German accountants use. The accepted exchange format is a CSV export following the DATEV-Format specification.
+      </p>
+      <p>
+        <strong>What we build:</strong> a custom <code>accounting</code> module with one main job — generate a monthly DATEV-compliant CSV. The format is well-documented; libraries exist but most are abandoned, so we'll write our own thin generator. Same module also supports Lexware as a swappable output format.
+      </p>
+      <p>
+        <strong>Watch out for:</strong> the German chart of accounts varies by accountant (SKR03 vs SKR04). Talk to the Badedampfer Steuerberater early to confirm which one and to lock the account mappings. Hardcoding the wrong one means re-mapping every transaction later.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 04 BOOKING ENGINE ═══════════════════════════════ -->
+<div class="wrap" id="booking-engine">
+  <p class="section-label">04 · The Booking Engine</p>
+  <h2 class="section-title">The Hard Part,<br>Where Cal.diy Helps</h2>
+  <p class="section-intro">
+    The booking engine is the one piece where most amateur platforms quietly break. Three problems make it hard: <strong>timezones and DST transitions</strong>, <strong>availability under concurrency</strong>, and <strong>recurring patterns with exceptions</strong>. Cal.diy's MIT-licensed scheduling code is our reference for the first and third; we solve concurrency ourselves in Postgres.
+  </p>
+
+  <h3 class="sub">What "availability" actually means</h3>
+  <p class="body">
+    A boat is available at a moment in time when: (1) a <code>time_slot_template</code> says that day-of-week and time-of-day are operating hours, (2) no <code>availability_exception</code> overrides that day to closed, (3) no existing <code>booking</code> with status in <code>(pending, confirmed, checked_in)</code> overlaps that time range. The third condition is where concurrency bites.
+  </p>
+
+  <h3 class="sub">Three queries, in order</h3>
+  <p class="body">
+    The availability check is a sequence: cheap reads first (use the cache), expensive checks last (hit the database with locks only when committing). The customer-facing "show me what's available next Saturday" view runs against a denormalised availability cache in Redis, refreshed by a cron. The actual booking write runs the expensive <code>SELECT FOR UPDATE</code> path.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">What we borrow from Cal.diy</div>
+        <div class="dd-meta">Logic only · We don't fork the app</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Cal.diy's <code>getAvailability</code> module is the gold standard for: combining recurring schedules with date-specific overrides, handling DST transitions correctly across timezones, calculating buffer times between bookings without off-by-one bugs, supporting "team" schedules where multiple resources are bookable.
+      </p>
+      <p>
+        <strong>How we use it:</strong> our <code>bookings</code> module's <code>computeAvailabilityForBoat(boat_id, date_range)</code> function studies Cal.diy's implementation, takes the logic patterns (especially the timezone handling and the buffer math), and rewrites them into Medusa-idiomatic code. We do not import the Cal.diy package; we write our own function using their MIT-licensed source as a reference.
+      </p>
+      <p>
+        <strong>Why not just import it:</strong> Cal.diy is a full app with auth, multi-tenancy, plugins. Importing the package would pull in 200+ transitive dependencies. We want the math, not the app.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Timezone handling rule</div>
+        <div class="dd-meta">Everything UTC in DB · Render local in UI</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Every timestamp in the database is stored as <code>timestamp with time zone</code>, normalised to UTC. When the customer-facing site renders a slot, it converts to the customer's browser timezone (or Berlin/Vienna if no browser hint exists). When the OTA pushes a booking from a different timezone, we normalise on ingest.
+      </p>
+      <p>
+        <strong>The classic mistake:</strong> storing local-time without TZ and reasoning about it as if it were UTC. Day-saving transitions in March and October will eventually produce a phantom 3am booking or skip a 2:30am slot that should have existed. Postgres <code>timestamptz</code> + the <code>luxon</code> library on the application side prevents this.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Buffer time</div>
+        <div class="dd-meta">Turnaround between rentals · 30-45min default</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Between two consecutive bookings on the same boat, we need turnaround time: clean the tub, refill if needed, briefing the next group. This is a per-<code>time_slot_template</code> field <code>buffer_minutes</code> with a sensible default of 30 minutes.
+      </p>
+      <p>
+        Availability computation must respect buffer. A 14:00-16:00 booking with a 30-minute buffer makes the 16:00-18:00 slot unavailable on the same boat — but available on the next boat. Easy to get wrong in the SQL.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 05 SCHEMAS ═══════════════════════════════ -->
+<div class="wrap" id="schemas">
+  <p class="section-label">05 · Database Schemas</p>
+  <h2 class="section-title">The Actual Tables</h2>
+  <p class="section-intro">
+    Custom modules only — we don't redocument Medusa's built-in tables (product, cart, order, customer, sales_channel, etc.) because those are well-documented elsewhere. Schemas shown here are simplified — the real Medusa <code>model.define()</code> code adds standard columns (<code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code>) automatically.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">boats — the physical inventory</div>
+        <div class="dd-meta">Module: boats · One row per boat</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">Prefixed UUID, e.g. <code>boat_01HX...</code></td></tr>
+          <tr><td class="col-name">name</td><td class="col-type">text</td><td class="col-note">Human name: "Treptow 1", "Treptow 2", "Alte Donau Premier"</td></tr>
+          <tr><td class="col-name">type</td><td class="col-type">enum</td><td class="col-note"><code>standard | premium | group | sauna</code> — drives default pricing &amp; capacity</td></tr>
+          <tr><td class="col-name">capacity_max</td><td class="col-type">int</td><td class="col-note">Maximum guests. Defaults from type but overridable.</td></tr>
+          <tr><td class="col-name">sales_channel_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ <code>sales_channel.id</code> — the franchise location</td></tr>
+          <tr><td class="col-name">status</td><td class="col-type">enum</td><td class="col-note"><code>active | maintenance | retired | seasonal_closed</code></td></tr>
+          <tr><td class="col-name">stock_location_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ Medusa's stock_location for inventory tracking of consumables</td></tr>
+          <tr><td class="col-name">metadata</td><td class="col-type">jsonb</td><td class="col-note">Boat-specific notes — heater type, sauna spec, photo URL</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: var(--md);">
+        <strong>Indexes:</strong> <code>(sales_channel_id, status)</code> for the most common query — "what active boats are in Berlin?". <code>(status)</code> for cross-channel maintenance dashboards.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">time_slot_templates — recurring availability rules</div>
+        <div class="dd-meta">Module: bookings · One row per (boat, day-of-week, slot)</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">tst_...</td></tr>
+          <tr><td class="col-name">boat_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ <code>boat.id</code></td></tr>
+          <tr><td class="col-name">day_of_week</td><td class="col-type">int</td><td class="col-note">0=Sun, 1=Mon ... 6=Sat (ISO weekday alternative considered, picked POSIX for JS-native)</td></tr>
+          <tr><td class="col-name">start_time</td><td class="col-type">time</td><td class="col-note">Local time without TZ, applied with the boat's location TZ</td></tr>
+          <tr><td class="col-name">duration_minutes</td><td class="col-type">int</td><td class="col-note">90 or 120 typical, 180 for premium</td></tr>
+          <tr><td class="col-name">buffer_minutes</td><td class="col-type">int</td><td class="col-note">Default 30, configurable per slot</td></tr>
+          <tr><td class="col-name">season_start</td><td class="col-type">date null</td><td class="col-note">Optional — slot only active in season window</td></tr>
+          <tr><td class="col-name">season_end</td><td class="col-type">date null</td><td class="col-note">Optional — pair with season_start</td></tr>
+          <tr><td class="col-name">price_modifier</td><td class="col-type">numeric(5,2)</td><td class="col-note">Multiplier on base price — 1.20 for prime-time slots</td></tr>
+          <tr><td class="col-name">active</td><td class="col-type">boolean</td><td class="col-note">Soft toggle without deleting the row</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: var(--md);">
+        <strong>Index:</strong> <code>(boat_id, day_of_week, active)</code> — the hot query for availability computation.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">availability_exceptions — date-specific overrides</div>
+        <div class="dd-meta">Module: bookings · Weather closures, special events, holidays</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">aex_...</td></tr>
+          <tr><td class="col-name">boat_id<span class="fk">FK</span></td><td class="col-type">text null</td><td class="col-note">Null = all boats in this channel (e.g. winter closure)</td></tr>
+          <tr><td class="col-name">sales_channel_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">Always set — channel scoping</td></tr>
+          <tr><td class="col-name">date_from</td><td class="col-type">date</td><td class="col-note">Inclusive</td></tr>
+          <tr><td class="col-name">date_to</td><td class="col-type">date</td><td class="col-note">Inclusive — same as date_from for single days</td></tr>
+          <tr><td class="col-name">type</td><td class="col-type">enum</td><td class="col-note"><code>closed | open_extra | modified</code></td></tr>
+          <tr><td class="col-name">reason</td><td class="col-type">text</td><td class="col-note">Free text: "weather", "private event", "maintenance"</td></tr>
+          <tr><td class="col-name">slots_override</td><td class="col-type">jsonb null</td><td class="col-note">If type=modified, the alternate slots for this date range</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">bookings — the central table</div>
+        <div class="dd-meta">Module: bookings · One row per booking · The most queried table in the system</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">book_...</td></tr>
+          <tr><td class="col-name">boat_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ boat.id</td></tr>
+          <tr><td class="col-name">customer_id<span class="fk">FK</span></td><td class="col-type">text null</td><td class="col-note">→ Medusa's customer.id; null for guest bookings until payment</td></tr>
+          <tr><td class="col-name">order_id<span class="fk">FK</span></td><td class="col-type">text null</td><td class="col-note">→ Medusa's order.id; set once payment captured</td></tr>
+          <tr><td class="col-name">sales_channel_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">Denormalised for channel-scoped queries</td></tr>
+          <tr><td class="col-name">starts_at</td><td class="col-type">timestamptz</td><td class="col-note">UTC. The slot start.</td></tr>
+          <tr><td class="col-name">ends_at</td><td class="col-type">timestamptz</td><td class="col-note">UTC. starts_at + duration + buffer for the lock window</td></tr>
+          <tr><td class="col-name">guest_count</td><td class="col-type">int</td><td class="col-note">Must be ≤ boat.capacity_max</td></tr>
+          <tr><td class="col-name">status</td><td class="col-type">enum</td><td class="col-note"><code>pending | confirmed | checked_in | completed | cancelled | no_show | weather_cancelled</code></td></tr>
+          <tr><td class="col-name">source_channel</td><td class="col-type">enum</td><td class="col-note"><code>direct | gyg | viator | booking_com | expedia | google | jochen_schweizer | mydays | jollydays | manual | corporate</code></td></tr>
+          <tr><td class="col-name">external_id</td><td class="col-type">text null</td><td class="col-note">The OTA's booking reference</td></tr>
+          <tr><td class="col-name">bokun_id</td><td class="col-type">text null</td><td class="col-note">Bókun's internal id (when applicable)</td></tr>
+          <tr><td class="col-name">waiver_signed_at</td><td class="col-type">timestamptz null</td><td class="col-note">Set by Documenso webhook</td></tr>
+          <tr><td class="col-name">safety_briefing_completed_at</td><td class="col-type">timestamptz null</td><td class="col-note">Set by crew at check-in</td></tr>
+          <tr><td class="col-name">cancellation_reason</td><td class="col-type">text null</td><td class="col-note">Free text + structured if from API</td></tr>
+          <tr><td class="col-name">metadata</td><td class="col-type">jsonb</td><td class="col-note">Add-ons, special requests, photo opt-in, language preference</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: var(--md);">
+        <strong>Critical indexes:</strong>
+      </p>
+      <ul>
+        <li><code>(boat_id, starts_at, ends_at) WHERE status IN ('pending','confirmed','checked_in')</code><span class="idx">partial</span> — the availability check</li>
+        <li><code>(sales_channel_id, starts_at)</code><span class="idx">btree</span> — daily ops view</li>
+        <li><code>(source_channel, external_id)</code><span class="idx">unique</span> — prevents duplicate OTA imports</li>
+        <li><code>(customer_id, starts_at DESC)</code><span class="idx">btree</span> — customer booking history</li>
+      </ul>
+      <p style="margin-top: var(--md);">
+        <strong>Exclusion constraint (PostgreSQL-specific, important):</strong> we add a GIST exclusion constraint on <code>(boat_id WITH =, tstzrange(starts_at, ends_at) WITH &amp;&amp;) WHERE status IN ('pending','confirmed','checked_in')</code> — Postgres will physically refuse to insert two overlapping bookings on the same boat. Belt-and-braces on top of the application-level lock.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">shifts — staff scheduling</div>
+        <div class="dd-meta">Module: shifts · Replaces Mattia's abandoned tool</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">shft_...</td></tr>
+          <tr><td class="col-name">staff_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ staff_member.id</td></tr>
+          <tr><td class="col-name">sales_channel_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">Berlin / Vienna scope</td></tr>
+          <tr><td class="col-name">starts_at</td><td class="col-type">timestamptz</td><td class="col-note">Scheduled start</td></tr>
+          <tr><td class="col-name">ends_at</td><td class="col-type">timestamptz</td><td class="col-note">Scheduled end</td></tr>
+          <tr><td class="col-name">clock_in_at</td><td class="col-type">timestamptz null</td><td class="col-note">Actual check-in via PWA</td></tr>
+          <tr><td class="col-name">clock_out_at</td><td class="col-type">timestamptz null</td><td class="col-note">Actual check-out</td></tr>
+          <tr><td class="col-name">role</td><td class="col-type">enum</td><td class="col-note"><code>manager | skipper | turnaround | host</code></td></tr>
+          <tr><td class="col-name">status</td><td class="col-type">enum</td><td class="col-note"><code>scheduled | confirmed | in_progress | completed | no_show</code></td></tr>
+          <tr><td class="col-name">notes</td><td class="col-type">text null</td><td class="col-note">Handover notes from previous shift</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">safety_logs — equipment checks &amp; incidents</div>
+        <div class="dd-meta">Module: safety · Compliance trail</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">slog_...</td></tr>
+          <tr><td class="col-name">boat_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">→ boat.id</td></tr>
+          <tr><td class="col-name">booking_id<span class="fk">FK</span></td><td class="col-type">text null</td><td class="col-note">Null for routine non-booking checks (start/end of day)</td></tr>
+          <tr><td class="col-name">staff_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">Who performed the check</td></tr>
+          <tr><td class="col-name">type</td><td class="col-type">enum</td><td class="col-note"><code>pre_session | post_session | daily_open | daily_close | incident</code></td></tr>
+          <tr><td class="col-name">checklist</td><td class="col-type">jsonb</td><td class="col-note">Structured checklist items + check states</td></tr>
+          <tr><td class="col-name">water_temp_c</td><td class="col-type">numeric(4,1) null</td><td class="col-note">For hot tub — daily reading</td></tr>
+          <tr><td class="col-name">weather_decision</td><td class="col-type">enum</td><td class="col-note"><code>go | hold | cancel</code></td></tr>
+          <tr><td class="col-name">incident_description</td><td class="col-type">text null</td><td class="col-note">Free text — appended to insurance log</td></tr>
+          <tr><td class="col-name">photos</td><td class="col-type">jsonb null</td><td class="col-note">R2 keys for incident photos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">accounting_exports — audit of every DATEV/Lexware run</div>
+        <div class="dd-meta">Module: accounting · One row per export run</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <table class="schema">
+        <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="col-name">id<span class="pk">PK</span></td><td class="col-type">text</td><td class="col-note">exp_...</td></tr>
+          <tr><td class="col-name">sales_channel_id<span class="fk">FK</span></td><td class="col-type">text</td><td class="col-note">One export per channel per period</td></tr>
+          <tr><td class="col-name">format</td><td class="col-type">enum</td><td class="col-note"><code>datev | lexware</code></td></tr>
+          <tr><td class="col-name">period_start</td><td class="col-type">date</td><td class="col-note">Usually first of month</td></tr>
+          <tr><td class="col-name">period_end</td><td class="col-type">date</td><td class="col-note">Usually last of month</td></tr>
+          <tr><td class="col-name">storage_key</td><td class="col-type">text</td><td class="col-note">R2 path to the CSV file</td></tr>
+          <tr><td class="col-name">row_count</td><td class="col-type">int</td><td class="col-note">For reconciliation against expected</td></tr>
+          <tr><td class="col-name">checksum</td><td class="col-type">text</td><td class="col-note">SHA-256 of file — proves file integrity to accountant</td></tr>
+          <tr><td class="col-name">generated_by</td><td class="col-type">text</td><td class="col-note">User or "cron" for automated</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 06 WORKFLOWS ═══════════════════════════════ -->
+<div class="wrap" id="workflows">
+  <p class="section-label">06 · Workflows</p>
+  <h2 class="section-title">The Saga Pattern,<br>Used Properly</h2>
+  <p class="section-intro">
+    Workflows are how Medusa v2 expresses transactional intent that crosses multiple modules. Each workflow is a sequence of steps; each step has a compensation. If step N fails, steps 1...N-1 get their compensations run in reverse. This document lists the workflows we own and what they touch.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">create-booking</div>
+        <div class="dd-meta">Steps: 6 · Critical path</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        The customer's "Book Now" hits this. Touches <code>bookings</code> (lock + reserve), <code>cart</code> (create + add line items), <code>customer</code> (create or attach), <code>stripe</code> (PaymentIntent), <code>order</code> (create on payment), <code>novu</code> (confirmation notification).
+      </p>
+      <p><strong>Compensations on failure:</strong> release slot lock, mark booking cancelled, void PaymentIntent, delete cart. No phantom rows left.</p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">cancel-booking</div>
+        <div class="dd-meta">Steps: 4 · Customer-initiated or staff-initiated</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Updates booking status, frees the slot, calculates refund amount per the cancellation policy, issues Stripe refund, sends cancellation notification, syncs cancellation to Bókun if OTA-originated.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">import-ota-booking</div>
+        <div class="dd-meta">Steps: 5 · Triggered by Bókun webhook</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        OTAs collect payment themselves, so this workflow doesn't touch Stripe. It does: verify booking doesn't already exist (idempotency on Bókun id), create customer if new, reserve slot via the same lock pattern as direct bookings (with conflict resolution if the slot has somehow been double-sold), create booking with source_channel set, fire welcome notification, log to safety reminder queue.
+      </p>
+      <p>
+        <strong>Edge case:</strong> Bókun marks a slot booked while we marked it booked from a direct customer in the same minute. Our exclusion constraint will reject one. The losing side gets retried with the next available slot suggestion to staff for manual handling. This will happen occasionally; it must not crash the system.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">redeem-voucher</div>
+        <div class="dd-meta">Steps: 4 · JSMD vouchers + own gift cards</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Validates voucher code with the voucher provider (Jochen Schweizer / mydays API or our own gift_card module), applies the credit to the cart, completes the booking. Handles partial vouchers (€200 voucher used for €150 booking → remaining €50 is either lost, refunded to provider, or kept as credit, depending on JSMD's rules; our default is "lost" because that's their standard).
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">generate-accounting-export</div>
+        <div class="dd-meta">Steps: 3 · Run monthly via cron</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Queries all orders + refunds + voucher redemptions for the period, applies the chart-of-accounts mapping, generates the DATEV CSV, uploads to R2, records the export in <code>accounting_exports</code>, emails the accountant a download link.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 07 CRON ═══════════════════════════════ -->
+<div class="wrap" id="cron">
+  <p class="section-label">07 · Scheduled Jobs</p>
+  <h2 class="section-title">Cron — Everything<br>That Runs on a Schedule</h2>
+  <p class="section-intro">
+    Medusa v2 jobs run via the in-process scheduler backed by BullMQ on Redis. Schedules in standard 5-field cron format. Every job is idempotent — running it twice produces the same result as running it once.
+  </p>
+
+  <table class="cron">
+    <thead>
+      <tr><th>Job</th><th>Schedule</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cron-name">sync-bokun-availability</td>
+        <td class="cron-schedule">*/5 * * * *</td>
+        <td class="cron-purpose">Push our current availability state for the next 90 days to Bókun via <code>PUT /availability</code>. Diffs against last-known state — only pushes deltas.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">reconcile-bokun-bookings</td>
+        <td class="cron-schedule">*/15 * * * *</td>
+        <td class="cron-purpose">Fetch all bookings from Bókun for the last 24h; cross-check against our local <code>bookings</code> table by <code>bokun_id</code>. Catches webhook drops. Flags discrepancies for staff review.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">expire-pending-bookings</td>
+        <td class="cron-schedule">*/10 * * * *</td>
+        <td class="cron-purpose">Find <code>bookings</code> in status=pending older than 15 minutes (cart abandoned). Run the cancel-booking workflow on each — releases the slot.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">refresh-availability-cache</td>
+        <td class="cron-schedule">*/3 * * * *</td>
+        <td class="cron-purpose">Recompute the public availability view for the next 14 days and write to Redis. The booking-flow's first query hits this cache.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">send-trip-reminders</td>
+        <td class="cron-schedule">0 * * * *</td>
+        <td class="cron-purpose">For each booking starting in [23h, 25h] from now, send the 24-hour reminder via Novu (WhatsApp + email).</td>
+      </tr>
+      <tr>
+        <td class="cron-name">request-waivers</td>
+        <td class="cron-schedule">0 9,15,21 * * *</td>
+        <td class="cron-purpose">For bookings 24-48h out without a signed waiver, send the Documenso signature request.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">post-trip-followup</td>
+        <td class="cron-schedule">0 18 * * *</td>
+        <td class="cron-purpose">Daily 6pm: for each booking that ended today, send the thank-you + review-request email. 4 hours later, a second WhatsApp nudge.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">voucher-expiry-reminders</td>
+        <td class="cron-schedule">0 10 * * *</td>
+        <td class="cron-purpose">For vouchers expiring in 30, 14, or 7 days, send the holder a reminder. Reduces refund obligations on unredeemed JSMD vouchers.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">weather-check</td>
+        <td class="cron-schedule">0 6,12,18 * * *</td>
+        <td class="cron-purpose">Hit DWD (Berlin) / ZAMG (Vienna) APIs. If forecast for any operating day exceeds risk thresholds, queue alerts to ops manager. Auto-cancel decisions remain manual.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">aggregate-reviews</td>
+        <td class="cron-schedule">0 */4 * * *</td>
+        <td class="cron-purpose">Every 4 hours: pull new TripAdvisor + Google reviews for each location. Push to the reputation dashboard. Notify if rating &lt;4 stars.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">monthly-datev-export</td>
+        <td class="cron-schedule">0 4 1 * *</td>
+        <td class="cron-purpose">1st of each month, 4am: generate DATEV CSV for previous month, upload to R2, email accountant.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">stripe-reconciliation</td>
+        <td class="cron-schedule">0 3 * * *</td>
+        <td class="cron-purpose">Daily 3am: fetch Stripe Balance Transactions for the past 24h, reconcile against our order/refund records. Flag drift.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">ota-receivables-report</td>
+        <td class="cron-schedule">0 7 * * 1</td>
+        <td class="cron-purpose">Mondays 7am: compute what each OTA owes us, expected remit dates, ageing buckets. Email to accountant + Jannis.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">platform-health-probe</td>
+        <td class="cron-schedule">* * * * *</td>
+        <td class="cron-purpose">Every minute: hit critical endpoints (Stripe API, Bókun API, Novu, R2). Failures trigger PagerDuty after 2 consecutive misses.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">db-backup</td>
+        <td class="cron-schedule">0 2 * * *</td>
+        <td class="cron-purpose">Nightly 2am: pg_dump → R2 with rotating retention (7 daily, 4 weekly, 12 monthly). Restore drills monthly.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">refresh-bokun-token</td>
+        <td class="cron-schedule">0 0 */7 * *</td>
+        <td class="cron-purpose">Weekly: rotate the Bókun API session. Some endpoints have token TTLs we discovered the hard way.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 08 EVENT SUBSCRIBERS ═══════════════════════════════ -->
+<div class="wrap" id="events">
+  <p class="section-label">08 · Event Subscribers</p>
+  <h2 class="section-title">What Fires<br>When Things Happen</h2>
+  <p class="section-intro">
+    Medusa v2 fires events on state changes. Subscribers are event handlers that react asynchronously. We use them for the "side effects" — notifications, syncs, logs — that aren't part of the core transactional flow.
+  </p>
+
+  <table class="cron">
+    <thead><tr><th>Event</th><th>Subscriber</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="cron-name">order.placed</td>
+        <td class="cron-schedule">on-order-placed</td>
+        <td class="cron-purpose">Confirms the related booking (status → confirmed), fires confirmation notification, schedules waiver request, syncs to Bókun if direct booking, increments Sales Channel revenue counter.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">booking.confirmed</td>
+        <td class="cron-schedule">on-booking-confirmed</td>
+        <td class="cron-purpose">Queues Documenso waiver send, refreshes availability cache for that boat, logs to PostHog event stream.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">booking.cancelled</td>
+        <td class="cron-schedule">on-booking-cancelled</td>
+        <td class="cron-purpose">Frees the slot (cache invalidate), syncs cancellation to Bókun, schedules refund via Stripe if applicable, notifies customer + ops.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">documenso.signed (webhook)</td>
+        <td class="cron-schedule">on-waiver-signed</td>
+        <td class="cron-purpose">Sets <code>waiver_signed_at</code> on the booking. Stores signed PDF path in R2. Notifies ops "ready for check-in".</td>
+      </tr>
+      <tr>
+        <td class="cron-name">stripe.payment_intent.payment_failed</td>
+        <td class="cron-schedule">on-payment-failed</td>
+        <td class="cron-purpose">Sends customer the "your payment didn't go through" recovery email with a one-click retry link. Marks booking back to pending with extended expiry.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">stripe.charge.dispute.created</td>
+        <td class="cron-schedule">on-chargeback</td>
+        <td class="cron-purpose">PagerDuty alerts the team. Auto-assembles dispute evidence (booking record, signed waiver, communication log) for Stripe submission.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">bokun.booking.created (webhook)</td>
+        <td class="cron-schedule">on-ota-booking</td>
+        <td class="cron-purpose">Runs the <code>import-ota-booking</code> workflow.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">bokun.booking.cancelled (webhook)</td>
+        <td class="cron-schedule">on-ota-cancellation</td>
+        <td class="cron-purpose">Runs the cancel-booking workflow with OTA-cancellation flag (skip Stripe refund — OTA handles it).</td>
+      </tr>
+      <tr>
+        <td class="cron-name">shift.clock_in</td>
+        <td class="cron-schedule">on-clock-in</td>
+        <td class="cron-purpose">Creates start-of-day safety log entry. Reminds staff of today's bookings + weather notes.</td>
+      </tr>
+      <tr>
+        <td class="cron-name">safety.incident</td>
+        <td class="cron-schedule">on-incident</td>
+        <td class="cron-purpose">Notifies ops manager immediately. Creates insurance-log entry. Adds the incident to the next weekly review.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 09 API SURFACE ═══════════════════════════════ -->
+<div class="wrap" id="api">
+  <p class="section-label">09 · API Surface</p>
+  <h2 class="section-title">The Endpoints We Add</h2>
+  <p class="section-intro">
+    Medusa exposes its built-in resources (products, carts, orders, customers) at <code>/store</code> and <code>/admin</code>. Our custom routes extend these for the booking-specific surface. Authentication: bearer JWT on <code>/admin</code> (staff), session cookie or PAT on <code>/store</code> (customers).
+  </p>
+
+  <h3 class="sub">Customer-Facing (/store)</h3>
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">GET /store/availability</div>
+        <div class="dd-meta">Public · Cache-friendly</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Query params: <code>sales_channel</code>, <code>date_from</code>, <code>date_to</code>, optional <code>boat_type</code>. Returns slot list with prices, capacity, and a one-use availability token bound to the requesting session.
+      </p>
+      <p>
+        Reads from Redis cache (3-minute TTL). Falls through to DB only if cache miss. Public, no auth.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /store/bookings</div>
+        <div class="dd-meta">Authenticated session · Triggers create-booking workflow</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Body: <code>{ boat_id, starts_at, guest_count, add_ons, customer, availability_token }</code>. Returns the created cart with PaymentIntent client secret for client-side Stripe Elements confirmation.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">GET /store/bookings/:id</div>
+        <div class="dd-meta">Customer's own bookings only</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Returns the booking with order, line items, waiver status, and the reschedule/cancel options based on time-from-now + cancellation policy.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /store/bookings/:id/cancel</div>
+        <div class="dd-meta">Triggers cancel-booking workflow</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Body: <code>{ reason? }</code>. Computes refund amount per policy, runs the workflow. Returns the new booking state + refund expectation.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /store/vouchers/validate</div>
+        <div class="dd-meta">Pre-checkout voucher code check</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Body: <code>{ code, expected_amount }</code>. Validates with JSMD / Jollydays / own gift card module. Returns redeemable amount and any restrictions.
+      </p>
+    </div>
+  </details>
+
+  <h3 class="sub">Admin (/admin)</h3>
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">GET /admin/dashboard/today</div>
+        <div class="dd-meta">The crew's home screen</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Returns today's bookings per boat, with check-in status, waiver state, customer special requests, weather decision. The screen Jannis opens at 8am every Saturday.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /admin/bookings/:id/check-in</div>
+        <div class="dd-meta">Staff marks the customer arrived</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Sets <code>safety_briefing_completed_at</code>, attaches the staff member ID, transitions booking to <code>checked_in</code>. Triggers the pre-session safety log entry.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /admin/safety/incident</div>
+        <div class="dd-meta">Logs an incident with photo upload</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Multipart form. Photos go to R2. Fires <code>safety.incident</code> event. Used by crew via the mobile PWA.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">GET /admin/reports/channel-performance</div>
+        <div class="dd-meta">Per-OTA revenue, commission, net</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Date-ranged. Breaks down: bookings by source, gross revenue, commission paid, net, occupancy rate per channel.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /admin/accounting/export</div>
+        <div class="dd-meta">Manual trigger for the DATEV CSV</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Body: <code>{ format, period_start, period_end, sales_channel_id }</code>. Runs the generate-accounting-export workflow. Returns a download link (R2 signed URL valid 24h).
+      </p>
+    </div>
+  </details>
+
+  <h3 class="sub">Webhooks (inbound /webhooks)</h3>
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /webhooks/stripe</div>
+        <div class="dd-meta">All Stripe events · Signature-verified</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Verifies signature header. Dispatches based on event type to internal event bus. Idempotent on Stripe event ID — duplicates ignored.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /webhooks/bokun</div>
+        <div class="dd-meta">OTA booking creation/cancellation</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Verifies HMAC signature. Routes to the right event handler. Returns 200 quickly; processing happens async.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">POST /webhooks/documenso</div>
+        <div class="dd-meta">Waiver signed events</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        On <code>document.signed</code>, finds the booking by Documenso doc ID, sets <code>waiver_signed_at</code>, triggers the on-waiver-signed handler.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 10 RACE CONDITION ═══════════════════════════════ -->
+<div class="wrap" id="race">
+  <p class="section-label">10 · The Race-Condition Problem</p>
+  <h2 class="section-title">Two Customers,<br>One Last Slot</h2>
+  <p class="section-intro">
+    The classic booking-system bug. Two customers click "Book" at 14:00:00.000 for the last 15:00 slot Saturday. Without explicit protection, both can succeed. The platform sells the same boat to two parties. Operationally catastrophic; we engineer to make it impossible.
+  </p>
+
+  <h3 class="sub">Three lines of defence</h3>
+  <p class="body">
+    Belt, braces, and a safety net. <strong>Each one alone is sufficient most of the time; together they make the race impossible.</strong>
+  </p>
+
+  <h4 class="subsub">Defence 1 — Redis distributed lock (cheap, fast, application-level)</h4>
+  <p class="body">
+    At workflow step 1, acquire a Redis lock keyed by <code>booking-slot:{boat_id}:{starts_at}</code> using the Redlock pattern. TTL: 30 seconds (longer than the slowest payment-intent creation). Two concurrent requests for the same slot: one acquires, the other gets <code>SLOT_CONTENDED</code> and is told to retry.
+  </p>
+
+  <h4 class="subsub">Defence 2 — Postgres SELECT FOR UPDATE (transactional)</h4>
+  <p class="body">
+    Inside the create-booking transaction, after the Redis lock is held, we do <code>SELECT id FROM bookings WHERE boat_id = $1 AND tstzrange(starts_at, ends_at) &amp;&amp; tstzrange($2, $3) AND status IN ('pending','confirmed','checked_in') FOR UPDATE</code>. This row-level locks any existing overlapping bookings; we then check the result count is zero before inserting.
+  </p>
+
+  <h4 class="subsub">Defence 3 — PostgreSQL exclusion constraint (database-level guarantee)</h4>
+  <p class="body">
+    The hard wall. We add a GIST exclusion constraint that physically forbids two overlapping bookings on the same boat for active statuses. If somehow (bug, attacker, time-travel) two writes try to land in the same instant past defences 1 and 2, Postgres rejects the second insert at the database level. Application code catches <code>EXCLUSION_VIOLATION</code> errors specifically and returns <code>SLOT_NO_LONGER_AVAILABLE</code> to the client.
+  </p>
+
+  <pre><code><span class="c">-- The constraint that makes double-booking impossible at the DB level</span>
+<span class="k">ALTER TABLE</span> bookings
+  <span class="k">ADD CONSTRAINT</span> no_overlapping_bookings
+  <span class="k">EXCLUDE USING</span> GIST <span class="p">(</span>
+    boat_id <span class="k">WITH</span> <span class="p">=,</span>
+    <span class="f">tstzrange</span><span class="p">(</span>starts_at<span class="p">,</span> ends_at<span class="p">)</span> <span class="k">WITH</span> <span class="p">&amp;&amp;</span>
+  <span class="p">)</span>
+  <span class="k">WHERE</span> <span class="p">(</span>status <span class="k">IN</span> <span class="p">(</span><span class="s">'pending'</span><span class="p">,</span> <span class="s">'confirmed'</span><span class="p">,</span> <span class="s">'checked_in'</span><span class="p">));</span></code></pre>
+
+  <div class="callout">
+    <div class="callout-label">Tested under load</div>
+    <div class="callout-title">2000 concurrent requests for the same slot → exactly 1 succeeds</div>
+    <p>
+      Before going to production, we write a load test that fires 2000 simultaneous booking requests for the same boat/slot from different sessions. The expected (and required) outcome: exactly one returns success, 1999 return <code>SLOT_NO_LONGER_AVAILABLE</code>. If any other outcome — two successes, zero successes, a 500 error — production gets blocked until the issue is fixed. <strong>This test runs in CI on every PR that touches the bookings module.</strong>
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 11 INTEGRATIONS ═══════════════════════════════ -->
+<div class="wrap" id="integrations">
+  <p class="section-label">11 · External Integrations</p>
+  <h2 class="section-title">The Outside World</h2>
+  <p class="section-intro">
+    Every external integration sits behind an adapter — a single file in <code>src/modules/&lt;name&gt;/adapter.ts</code> that exposes a clean interface to the rest of the codebase. Switching providers (e.g. swapping Novu for Twilio direct) means changing one file.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Bókun adapter</div>
+        <div class="dd-meta">Module: channels-bokun · The OTA bridge</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>pushAvailability(boat_id, slots[])</code>, <code>handleIncomingBooking(bokun_payload)</code>, <code>cancelBookingInBokun(bokun_id, reason)</code>. Behind it: HTTP client with retry middleware, signature verification, idempotency-key generation.
+      </p>
+      <p>
+        <strong>Defensive choices:</strong> every outbound request carries an idempotency key (Bókun's API supports this). Failures hit a dead-letter queue we monitor. Reconciliation cron catches webhook misses.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Stripe adapter</div>
+        <div class="dd-meta">Already provided by Medusa's Stripe Module · We extend</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Medusa ships with a Stripe payment provider module that handles basic charges. We extend it for the Connect-specific flows — application_fee_amount, destination transfers, dispute handling.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">JSMD voucher adapter</div>
+        <div class="dd-meta">Jochen Schweizer + mydays · Same portal</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>validateVoucher(code)</code>, <code>redeemVoucher(code, amount)</code>. JSMD's portal is comparatively basic; expect to find inconsistencies between documentation and actual API behaviour. Build with explicit logging from day one so the inevitable support tickets we file at JSMD can be backed up with request/response dumps.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Documenso adapter</div>
+        <div class="dd-meta">Waiver signing · Self-hosted, REST API</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>requestWaiverSignature(booking, customer)</code>, <code>fetchSignedDocument(doc_id)</code>. Templated waivers stored in Documenso's UI; we reference by template ID and pre-fill customer details.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Twenty CRM adapter</div>
+        <div class="dd-meta">Franchise partner + B2B pipeline</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>upsertCompany()</code>, <code>upsertContact()</code>, <code>logActivity()</code>. Used when a booking comes from a corporate channel or when a franchise enquiry hits the contact form.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Novu adapter</div>
+        <div class="dd-meta">One API, multiple channels</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>trigger(templateId, subscriberId, payload)</code>. Subscribers in Novu map to Medusa customer IDs + staff IDs. Templates are managed in Novu's UI — copy changes are not deploys.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">DATEV adapter</div>
+        <div class="dd-meta">CSV generation, no live API</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Exposes: <code>generateDATEVCSV(transactions[], skr_version)</code>. Implements the DATEV-Format v8 specification. SKR03 vs SKR04 selection is a config flag set per legal entity.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 12 FRANCHISE ═══════════════════════════════ -->
+<div class="wrap" id="franchise">
+  <p class="section-label">12 · Multi-Tenancy</p>
+  <h2 class="section-title">Franchise Isolation,<br>in Practice</h2>
+  <p class="section-intro">
+    Every booking, customer (where collected by location), boat, shift, safety log, and accounting export is scoped to a <code>sales_channel_id</code>. The rule is enforced in the service layer — base classes require a channel scope on every query.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">The scoping discipline</div>
+        <div class="dd-meta">Enforced in code · Tested explicitly</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        We extend Medusa's repository pattern with a <code>ScopedRepository</code> base class. Every <code>list()</code>, <code>find()</code>, <code>findOne()</code> requires a <code>sales_channel_id</code> in the filter. Calls without it throw at compile time (TypeScript discriminated union) and at runtime (defensive guard).
+      </p>
+      <p>
+        A dedicated test suite — <code>multi-tenancy.test.ts</code> — runs on every PR. It seeds two channels, creates data in each, then attempts cross-channel reads. Any leak fails the build.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Admin authentication scopes</div>
+        <div class="dd-meta">Who sees what</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Staff accounts have a <code>scope</code>: either a specific <code>sales_channel_id</code> or <code>"global"</code> (only the founding team). The JWT carries this; every request validates that the queried scope ⊆ the token's scope.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Stripe Connect mapping</div>
+        <div class="dd-meta">One Connect account per location</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Each Sales Channel stores its Stripe Connect account ID in metadata. The platform charges the customer; the platform fee stays in the platform account; the remainder transfers to the location's connected account. Vienna's transfers happen in EUR with no FX (both eurozone).
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 13 SECURITY ═══════════════════════════════ -->
+<div class="wrap" id="security">
+  <p class="section-label">13 · Security &amp; Reliability</p>
+  <h2 class="section-title">Built To Last</h2>
+  <p class="section-intro">
+    The Cal.com closed-source story is the active reminder. Public open-source code + AI assistance lowers the bar for vulnerability discovery. We design accordingly.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Secrets management</div>
+        <div class="dd-meta">No keys in code · Doppler or 1Password Secrets Automation</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Stripe live keys, Bókun API tokens, DB passwords — none of these touch a repository. Production injects them at runtime via the platform's secret store. Local development uses a separate set of test/dev keys.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Authentication</div>
+        <div class="dd-meta">Customers: passwordless email + magic link · Staff: JWT</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Customers don't get passwords — magic-link only. Reduces credential stuffing surface to zero. Staff use JWT with 8-hour expiry plus refresh-token rotation. MFA enforced on all staff with channel-scope greater than their own location.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Rate limiting</div>
+        <div class="dd-meta">Per-IP and per-account · Redis-backed</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Availability endpoint: 60 requests/minute/IP. Booking creation: 5 attempts/minute/account. Voucher validation: 10 attempts/minute/IP (prevents code-guessing). Webhook endpoints: signature-verified, no rate limit but per-source.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Input validation</div>
+        <div class="dd-meta">Zod schemas at every public boundary</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Every API route validates its body against a Zod schema before any business logic runs. Internal calls between modules use typed interfaces (TypeScript). Webhooks validate payload structure even after signature verification.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Audit log</div>
+        <div class="dd-meta">Every state change with who/when/what</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        A separate <code>audit_log</code> table captures: actor (user or system), action, resource, before/after diff, timestamp. Inserts append-only — no updates, no deletes. Retained 7 years for accounting compliance.
+      </p>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Disaster recovery</div>
+        <div class="dd-meta">Backups + drills · Monthly restore test</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        Nightly Postgres dumps to R2. R2 has its own redundancy. We run a monthly restore drill — spin up a fresh DB from yesterday's backup and verify a known booking exists. Once a quarter, full DR drill — bring up the entire stack from cold in a separate region.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 14 OBSERVABILITY ═══════════════════════════════ -->
+<div class="wrap" id="observability">
+  <p class="section-label">14 · Observability</p>
+  <h2 class="section-title">Knowing When Things<br>Are Wrong</h2>
+  <p class="section-intro">
+    Three layers: errors (Sentry), uptime + dashboards (BetterStack or Grafana Cloud free tier), and product analytics (PostHog). Critical alerts page; the rest accumulate quietly.
+  </p>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Critical alerts → PagerDuty</div>
+        <div class="dd-meta">These wake the on-call</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li><strong>Payment provider down</strong> (Stripe 5xx for &gt;2 minutes)</li>
+        <li><strong>Database unreachable</strong></li>
+        <li><strong>Booking creation error rate &gt;5%</strong> over 10-minute window</li>
+        <li><strong>Stripe dispute opened</strong></li>
+        <li><strong>Bókun reconciliation drift &gt;5 bookings</strong></li>
+        <li><strong>Health probe failure</strong> for 3 consecutive minutes</li>
+        <li><strong>Disk &gt;85%</strong> on DB host</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Warning alerts → Slack</div>
+        <div class="dd-meta">Don't wake but need attention same day</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li><strong>New Sentry error fingerprint</strong> in production</li>
+        <li><strong>Bókun API 4xx rate &gt;1%</strong></li>
+        <li><strong>Slow queries</strong> (p95 &gt;500ms) on hot path</li>
+        <li><strong>Backup job failed</strong></li>
+        <li><strong>OTA payment past expected remit date</strong></li>
+        <li><strong>Review with rating &lt;4 stars</strong></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Dashboards</div>
+        <div class="dd-meta">Three views Jannis can read at 8am Saturday</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <p>
+        <strong>Operational</strong>: today's bookings, today's revenue, today's weather decision, who's working.
+      </p>
+      <p>
+        <strong>Channel performance</strong>: weekly revenue by source, occupancy by boat, top customer cities.
+      </p>
+      <p>
+        <strong>Financial</strong>: monthly P&amp;L, OTA receivables ageing, voucher liability balance.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 15 SPRINTS ═══════════════════════════════ -->
+<div class="wrap" id="sprints">
+  <p class="section-label">15 · Quick Wins &amp; Sprint Plan</p>
+  <h2 class="section-title">Ship Early,<br>Ship Often</h2>
+  <p class="section-intro">
+    The temptation is to build everything before launching anything. The smarter play is to ship the smallest valuable thing in week 4, then add. Below: the first six 2-week sprints, each ending with something live that the team can actually use.
+  </p>
+
+  <div class="sprint-grid">
+    <div class="sprint current">
+      <div class="sprint-weeks">S1</div>
+      <div class="sprint-title">Foundation Standup</div>
+      <div class="sprint-outcome">Weeks 1-2 · Dev env live</div>
+      <p><strong>Outcome:</strong> Medusa running locally and in staging. Postgres + Redis up. CI/CD pipeline live. Sentry connected. First TypeScript model: <code>boat</code>.</p>
+      <p>Nothing user-facing yet — but every subsequent sprint depends on this being clean.</p>
+    </div>
+    <div class="sprint">
+      <div class="sprint-weeks">S2</div>
+      <div class="sprint-title">Direct Booking MVP</div>
+      <div class="sprint-outcome">Weeks 3-4 · First Win</div>
+      <p><strong>Outcome:</strong> A customer can book a Berlin slot end-to-end. Single boat. Direct only. Stripe test mode.</p>
+      <ul>
+        <li>Booking module + minimal schema</li>
+        <li>Availability endpoint with cache</li>
+        <li>Next.js booking flow (one page)</li>
+        <li>Stripe PaymentIntent integration</li>
+        <li>Confirmation email via Novu</li>
+      </ul>
+      <p style="margin-top: var(--sm); font-weight: 500; color: var(--teal-dark);">This is the first quick win. By week 4 there is a real product taking a real booking.</p>
+    </div>
+    <div class="sprint">
+      <div class="sprint-weeks">S3</div>
+      <div class="sprint-title">Voucher Engine</div>
+      <div class="sprint-outcome">Weeks 5-6 · Cash flows in</div>
+      <p><strong>Outcome:</strong> Gift vouchers sold on badedampfer.de. Cash flows in immediately, redeemable later.</p>
+      <ul>
+        <li>Medusa Gift Card module configured</li>
+        <li>Voucher checkout flow</li>
+        <li>Voucher redemption at booking checkout</li>
+        <li>Voucher expiry job + reminders</li>
+      </ul>
+      <p style="margin-top: var(--sm); font-weight: 500; color: var(--teal-dark);">Second quick win. Christmas voucher revenue can start in mid-October.</p>
+    </div>
+    <div class="sprint">
+      <div class="sprint-weeks">S4</div>
+      <div class="sprint-title">Staff Tools (Internal)</div>
+      <div class="sprint-outcome">Weeks 7-8 · Mattia's Tools Retired</div>
+      <p><strong>Outcome:</strong> The crew uses the platform for shifts and daily ops. Mattia's tools formally archived.</p>
+      <ul>
+        <li>Shifts module + admin UI</li>
+        <li>Daily ops dashboard</li>
+        <li>Safety check-in flow (mobile-first PWA)</li>
+        <li>Migration script: import Mattia's data</li>
+      </ul>
+      <p style="margin-top: var(--sm); font-weight: 500; color: var(--teal-dark);">Third win. Internal validation before customer-facing launch.</p>
+    </div>
+    <div class="sprint">
+      <div class="sprint-weeks">S5</div>
+      <div class="sprint-title">Bókun + First OTA</div>
+      <div class="sprint-outcome">Weeks 9-10 · OTA Bookings Flow In</div>
+      <p><strong>Outcome:</strong> Viator bookings (via Bókun) appear in our system. Single OTA only at first — prove the pattern.</p>
+      <ul>
+        <li>Bókun adapter</li>
+        <li>Webhook handler</li>
+        <li>Reconciliation cron</li>
+        <li>OTA receivables tracking</li>
+      </ul>
+      <p style="margin-top: var(--sm); font-weight: 500; color: var(--teal-dark);">Fourth win. We can take OTA bookings — the highest-volume source — through our own platform.</p>
+    </div>
+    <div class="sprint">
+      <div class="sprint-weeks">S6</div>
+      <div class="sprint-title">Cutover Berlin</div>
+      <div class="sprint-outcome">Weeks 11-12 · Berlin Lives On New Platform</div>
+      <p><strong>Outcome:</strong> Berlin operates fully on The Boat House. Old systems retired. Public launch.</p>
+      <ul>
+        <li>GetYourGuide + Booking.com + Expedia activation</li>
+        <li>DATEV monthly export job live</li>
+        <li>Final data migration</li>
+        <li>Old Zapier flows deactivated</li>
+      </ul>
+      <p style="margin-top: var(--sm); font-weight: 500; color: var(--teal-dark);">End of week 12: Berlin runs on the platform. Vienna setup begins on the same codebase.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Why this order matters</div>
+    <div class="callout-title">Vouchers before OTAs. Internal users before public launch.</div>
+    <p>
+      Vouchers are pre-paid — no operational risk if something glitches. They generate cash, build the voucher liability we'll need to handle anyway, and exercise the Stripe path. <strong>It's the safest way to test a payment system with real money.</strong> Then crew validates the operational flows internally (S4) before we expose anything new to customers at scale. Then we add OTA volume (S5) once direct + crew flows are stable.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 16 CONFIDENCE ═══════════════════════════════ -->
+<div class="wrap" id="confidence">
+  <p class="section-label">16 · Confidence vs Headaches</p>
+  <h2 class="section-title">What We Know,<br>What Could Bite</h2>
+  <p class="section-intro">
+    Honest engineering self-assessment. Three buckets — high confidence (we know how to do this well), medium (knowable but needs care), and concerns (real headache potential if rushed).
+  </p>
+
+  <div class="confidence">
+    <div class="conf-col high">
+      <span class="conf-tag">High Confidence</span>
+      <div class="conf-title">We Know How to Do This Well</div>
+      <p>Solved patterns, well-documented, large community knowledge. Build with normal care.</p>
+      <ul>
+        <li><strong>Medusa module + workflow setup</strong> — patterns are well-documented</li>
+        <li><strong>Next.js storefront + admin extensions</strong> — standard React</li>
+        <li><strong>Stripe integration</strong> — best documentation in the industry</li>
+        <li><strong>Sentry + monitoring</strong> — 30-minute setup, just do it</li>
+        <li><strong>Documenso + Twenty API integration</strong> — REST, straightforward</li>
+        <li><strong>R2 storage + signed URLs</strong> — S3-compatible, well-trodden</li>
+        <li><strong>BullMQ job scheduling</strong> — mature, reliable</li>
+        <li><strong>Customer notifications (Novu)</strong> — adapter is small</li>
+        <li><strong>Audit logging</strong> — append-only table, simple discipline</li>
+      </ul>
+    </div>
+    <div class="conf-col med">
+      <span class="conf-tag">Medium Confidence</span>
+      <div class="conf-title">Doable With Real Care</div>
+      <p>Solvable, but the cost of being sloppy is high. Allocate buffer.</p>
+      <ul>
+        <li><strong>Bókun API integration</strong> — docs variable; needs defensive client</li>
+        <li><strong>Stripe Connect with separate charges + transfers</strong> — easy to get wrong day one; expensive to refactor</li>
+        <li><strong>Timezone + DST handling for availability</strong> — Cal.diy reference helps</li>
+        <li><strong>Multi-tenant scoping</strong> — requires explicit tests, can be subtle</li>
+        <li><strong>Voucher partial redemptions (JSMD rules)</strong> — needs JSMD docs + clear business rules</li>
+        <li><strong>DATEV export format</strong> — well-defined but accountant-specific account mappings</li>
+        <li><strong>Recurring slot logic + exceptions</strong> — booked patterns + holidays + weather closures interact</li>
+        <li><strong>OTA receivables tracking</strong> — needs careful state modelling</li>
+      </ul>
+    </div>
+    <div class="conf-col low">
+      <span class="conf-tag">Real Concerns</span>
+      <div class="conf-title">Could Bite Hard</div>
+      <p>Has caused outages and rewrites in other projects. Get these right or they will hurt.</p>
+      <ul>
+        <li><strong>Race conditions on the last slot</strong> — needs all three defences + load test, no shortcuts</li>
+        <li><strong>Webhook reliability (Bókun, Stripe, Documenso)</strong> — they can be dropped, retried, duplicated; idempotency everywhere</li>
+        <li><strong>Schema migrations on a live system</strong> — every migration tested in staging with prod-size data first</li>
+        <li><strong>AGPL boundary discipline (Documenso, Twenty)</strong> — one PR that imports their source instead of calling the API = legal exposure</li>
+        <li><strong>OTA payment reconciliation</strong> — when does the money arrive? from where? in what currency? matched to which booking?</li>
+        <li><strong>Refund logic for OTA bookings</strong> — we don't refund — they do — but our system must reflect both states</li>
+        <li><strong>Self-hosted Novu + Documenso operational load</strong> — backups, upgrades, monitoring of these too</li>
+        <li><strong>Stripe dispute defense</strong> — assembling evidence quickly when a customer charges back</li>
+        <li><strong>The first DATEV export reviewed by the accountant</strong> — almost certainly needs adjustments; build the iteration loop into the timeline</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">The Single Biggest Risk</div>
+    <div class="callout-title">Going Live Without Load-Testing the Booking Race Condition</div>
+    <p>
+      Most other risks have soft consequences — a bad DATEV export gets resubmitted; a Novu downtime delays a notification by an hour. The booking race condition is the only one where the failure mode is <strong>visible to a real paying customer as a broken transaction</strong>, and that's the one that has to be bulletproof before any external traffic.
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ 17 DAY ONE ═══════════════════════════════ -->
+<div class="wrap" id="day-one">
+  <p class="section-label">17 · The First 10 Days of Code</p>
+  <h2 class="section-title">What I'd Type<br>on Day One</h2>
+  <p class="section-intro">
+    To make the whole thing concrete: here's exactly what gets done in the first ten working days. No glamour, all foundation. Doing this right is the difference between a clean codebase six months in and a tangle.
+  </p>
+
+  <details class="dd" open>
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 1-2 — Boilerplate &amp; Infra</div>
+        <div class="dd-meta">Goal: <code>medusa develop</code> works locally</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Init Medusa v2 project, pin version</li>
+        <li>Docker compose with Postgres 16 + Redis 7</li>
+        <li>Git repo, branch protection rules, conventional commits</li>
+        <li>GitHub Actions CI (lint, type-check, test)</li>
+        <li>Sentry SDK configured (DSN via env)</li>
+        <li>Production VPS provisioned (Hetzner EU), Caddy in front for TLS</li>
+        <li>Staging environment mirrors production</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 3 — First Custom Module: boats</div>
+        <div class="dd-meta">Goal: a Boat can be created via admin and listed</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Module scaffold under <code>src/modules/boats</code></li>
+        <li>Schema migration: boats table</li>
+        <li>Service class with CRUD + scoping</li>
+        <li>Admin API: list, create, retrieve</li>
+        <li>Tests: scoping enforcement + basic CRUD</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 4-5 — Time Slot Templates + Exceptions</div>
+        <div class="dd-meta">Goal: schedules can be defined</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>time_slot_templates table + service</li>
+        <li>availability_exceptions table + service</li>
+        <li>Helper functions for "expand template into concrete slots for date range"</li>
+        <li>Timezone handling: everything UTC in DB, luxon for conversions</li>
+        <li>Admin endpoints to define schedules</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 6 — The Availability Function</div>
+        <div class="dd-meta">Goal: <code>getAvailability(boat_id, dateRange)</code> returns correct slots</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Implement the function with Cal.diy as reference</li>
+        <li>Cache layer using Redis (TTL: 3 minutes)</li>
+        <li>Unit tests including DST transitions (the March + October Sundays)</li>
+        <li>Public API endpoint: <code>GET /store/availability</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 7 — Bookings Table + Exclusion Constraint</div>
+        <div class="dd-meta">Goal: a booking can be inserted, double-booking impossible</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>bookings table migration with all indexes</li>
+        <li>The GIST exclusion constraint on overlapping ranges</li>
+        <li>Booking service with create/update/cancel</li>
+        <li>Test: try to insert two overlapping bookings → second must fail</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 8 — The create-booking Workflow</div>
+        <div class="dd-meta">Goal: end-to-end booking creation works in test</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Workflow definition with 5-6 steps</li>
+        <li>Redis lock acquisition step</li>
+        <li>Availability re-verification step</li>
+        <li>Booking record + Medusa cart creation</li>
+        <li>Stripe PaymentIntent (test mode)</li>
+        <li>Each step has its compensation handler</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 9 — Customer-Facing Booking Flow (UI)</div>
+        <div class="dd-meta">Goal: a real human can book end-to-end</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Next.js routes: home, choose date, choose slot, checkout, confirmation</li>
+        <li>Stripe Elements for card collection</li>
+        <li>Form validation with Zod</li>
+        <li>Mobile-first responsive layout</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="dd">
+    <summary>
+      <div class="dd-head">
+        <div class="dd-title">Day 10 — The Race-Condition Load Test</div>
+        <div class="dd-meta">Goal: prove the booking system holds under load</div>
+      </div>
+    </summary>
+    <div class="dd-body">
+      <ul>
+        <li>Write the 2000-concurrent-requests test</li>
+        <li>Run against staging</li>
+        <li>Verify exactly one success, 1999 SLOT_NO_LONGER_AVAILABLE</li>
+        <li>If anything else: stop and fix before moving on</li>
+        <li>Add the test to CI</li>
+      </ul>
+      <p style="margin-top: var(--sm); color: var(--teal-dark); font-weight: 500;">
+        At the end of day 10: there's a real working booking system. Single boat. Direct only. But functionally complete and load-tested. Everything from sprint 2 onwards adds capability on top of this foundation — it doesn't need to be rebuilt.
+      </p>
+    </div>
+  </details>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════ FINAL NOTE ═══════════════════════════════ -->
+<div class="wrap">
+  <div class="callout">
+    <div class="callout-label">Reading this on a flight</div>
+    <div class="callout-title">If you remember only three things</div>
+    <p>
+      <strong>One:</strong> Medusa is the spine, every booking lives there, external systems are satellites. Break this rule and the Zapier mess comes back. <br><br>
+      <strong>Two:</strong> the booking race condition gets all three defences (Redis lock, SELECT FOR UPDATE, exclusion constraint) plus a load test in CI. Anything less is a future outage. <br><br>
+      <strong>Three:</strong> ship voucher sales (Sprint 3) before OTAs (Sprint 5). Vouchers are pre-paid, low-risk, generate cash, and prove the payment path with real money before a single OTA booking exists.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-brand">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="22" cy="22" r="20" stroke="#1a1c28" stroke-width="2"/>
+      <circle cx="22" cy="11.5" r="3.2" stroke="#1a1c28" stroke-width="1.8"/>
+      <line x1="22" y1="14.7" x2="22" y2="32.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="14" y1="19.5" x2="30" y2="19.5" stroke="#1a1c28" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M22 32.5 Q15.5 30.5 13.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M22 32.5 Q28.5 30.5 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M13.5 26 Q13.5 36 22 36 Q30.5 36 30.5 26" stroke="#1a1c28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;line-height:1.2;">
+      <span style="font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:14px;letter-spacing:0.06em;color:#1a1c28;">BADEDAMPFER</span>
+      <span style="font-size:10px;color:oklch(0.63 0.095 191);letter-spacing:0.14em;text-transform:uppercase;">The Boat House · Engineering</span>
+    </div>
+  </div>
+  <div class="footer-info">
+    <div style="font-weight:500;color:oklch(0.40 0.015 252);">The Boat House — Engineering Deep Dive</div>
+    <div>Internal · For the builder · Read on the flight</div>
+    <div>Companions: the-boat-house-platform.html · distribution-architecture.html · vienna-launch-playbook.html</div>
+  </div>
+</footer>
+
+</body>
+</html>
