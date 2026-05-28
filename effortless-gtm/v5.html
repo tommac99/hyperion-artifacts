@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Effortless GTM — AI-Powered Sales & Marketing Systems</title>
+  <meta name="description" content="We build the systems that help your team sell more and spend less time on admin. Free assessment in 5 minutes." />
+
+  <style>
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff') format('woff');
+      font-weight: 200; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff') format('woff');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Italic-webfontkit/swiza-lightitalic-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Italic-webfontkit/swiza-lightitalic-webfont.woff') format('woff');
+      font-weight: 300; font-style: italic; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-regular-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-regular-webfont.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff') format('woff');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-semibold-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-semibold-webfont.woff') format('woff');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff') format('woff');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --canvas:        #022721;
+      --canvas-raised: #191e1d;
+      --text-primary:  #F3FFF0;
+      --text-body:     #E8E8E8;
+      --text-muted:    rgba(232,232,232,0.60);
+      --mint:          #bce0c6;
+      --mint-pale:     #F3FFF0;
+      --mint-bg:       rgba(188,224,198,0.08);
+      --mint-border:   rgba(188,224,198,0.22);
+      --mint-ghost:    rgba(188,224,198,0.12);
+      --plum:          #8671a5;
+      --plum-bg:       rgba(134,113,165,0.10);
+      --border:        rgba(188,224,198,0.12);
+      --border-strong: rgba(188,224,198,0.28);
+      --shadow-hover:  0 4px 16px rgba(0,0,0,0.35);
+      --focus-ring:    0 0 0 3px rgba(188,224,198,0.45);
+      --ease:          cubic-bezier(0.25,0,0,1);
+      --dur-fast:      120ms;
+      --dur-std:       160ms;
+      --gutter:        clamp(1.5rem,5vw,4rem);
+      --max-w:         1200px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Swiza', system-ui, sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      background: var(--canvas);
+      color: var(--text-body);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .skip-link {
+      position: absolute; top: -200%; left: 1rem; z-index: 9999;
+      background: var(--mint); color: var(--canvas);
+      padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; border-radius: 2px;
+      transition: top var(--dur-std) var(--ease);
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(2,39,33,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter);
+      height: 64px; display: flex; align-items: center;
+      justify-content: space-between; gap: 2rem;
+    }
+    .nav-logo {
+      display: flex; align-items: center; flex-shrink: 0;
+      text-decoration: none; opacity: 1;
+      transition: opacity var(--dur-fast) var(--ease);
+    }
+    .nav-logo:hover { opacity: 0.8; }
+    .nav-logo img { height: 44px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; }
+    .nav-link {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+      transition: color var(--dur-fast) var(--ease);
+    }
+    .nav-link:hover { color: var(--text-body); }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--canvas); text-decoration: none;
+      background: var(--mint); padding: 8px 20px; border-radius: 2px;
+      white-space: nowrap;
+      transition: background var(--dur-std) var(--ease);
+    }
+    .nav-cta:hover { background: var(--mint-pale); }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--mint); color: var(--canvas);
+      padding: 14px 32px; font-family: 'Swiza', sans-serif;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border: none; border-radius: 2px; cursor: pointer; white-space: nowrap;
+      transition: background var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
+    }
+    .btn-primary:hover { background: var(--mint-pale); transform: translateY(-2px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--mint);
+      padding: 14px 32px; font-family: 'Swiza', sans-serif;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid var(--mint-border); border-radius: 2px;
+      cursor: pointer; white-space: nowrap;
+      transition: background var(--dur-std) var(--ease), color var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
+    }
+    .btn-ghost:hover { background: var(--mint-ghost); color: var(--text-primary); transform: translateY(-2px); }
+    .btn-ghost:active { transform: translateY(0); }
+    .btn-ghost:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    /* ── SECTION SHELL ── */
+    .section {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: clamp(4rem,10vh,7rem) var(--gutter);
+    }
+    .section-eyebrow {
+      display: inline-block; font-size: 0.6875rem; font-weight: 300;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mint); margin-bottom: 1rem;
+    }
+    .section-headline {
+      font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--text-primary); margin-bottom: 0.875rem;
+    }
+    .section-sub {
+      font-size: 1rem; font-weight: 300; color: var(--text-muted);
+      max-width: 52ch; line-height: 1.7;
+    }
+    .section-header { margin-bottom: 3rem; }
+
+    /* ── HERO ── */
+    .hero-section {
+      position: relative; overflow: hidden;
+      background-image: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/VIsuals/Effortless_HG_v1.png');
+      background-size: cover; background-position: center center;
+    }
+    .hero-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(2,39,33,0.88) 0%, rgba(2,39,33,0.70) 100%);
+      pointer-events: none; z-index: 0;
+    }
+    .hero {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: clamp(6rem,14vh,10rem) var(--gutter) clamp(5rem,12vh,8rem);
+      position: relative; z-index: 1;
+      max-width: 760px;
+    }
+    .hero-eyebrow {
+      display: inline-block; font-size: 0.6875rem; font-weight: 300;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mint); margin-bottom: 1.75rem;
+    }
+    .hero-headline { margin-bottom: 1.75rem; line-height: 0.92; }
+    .hl-light {
+      display: block; font-size: clamp(3.5rem,8vw,7rem);
+      font-weight: 200; letter-spacing: -0.03em;
+      color: rgba(243,255,240,0.72);
+    }
+    .hl-bold {
+      display: block; font-size: clamp(3.5rem,8vw,7rem);
+      font-weight: 700; letter-spacing: -0.04em; color: var(--text-primary);
+    }
+    .hero-tagline {
+      font-size: clamp(1.0625rem,2vw,1.25rem); font-weight: 300;
+      letter-spacing: 0.005em; line-height: 1.6; color: var(--text-muted);
+      margin-bottom: 2.25rem; max-width: 48ch;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.75rem; }
+    .hero-trust { display: flex; flex-wrap: wrap; gap: 1.75rem; align-items: center; }
+    .trust-badge {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--mint); flex-shrink: 0; }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: var(--max-w); margin: 0 auto;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .testimonial-card {
+      background: var(--canvas-raised); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: transform var(--dur-std) var(--ease), box-shadow var(--dur-std) var(--ease);
+    }
+    .testimonial-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+    .testimonial-tag {
+      display: inline-block; font-size: 0.625rem; font-weight: 300;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 999px;
+      background: var(--mint-bg); color: var(--mint);
+    }
+    .testimonial-quote {
+      font-size: 1rem; font-weight: 300; font-style: italic;
+      line-height: 1.65; color: var(--text-body); flex: 1;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.875rem; }
+    .author-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--mint-ghost); border: 1px solid var(--mint-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600; color: var(--mint); flex-shrink: 0;
+    }
+    .author-name { font-size: 0.875rem; font-weight: 400; color: var(--text-primary); }
+    .author-role { font-size: 0.6875rem; font-weight: 300; color: var(--text-muted); }
+
+    /* ── PROCESS ── */
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 2rem; margin-top: 3rem; position: relative;
+    }
+    .process-steps::before {
+      content: ''; position: absolute;
+      top: 1.75rem;
+      left: calc(25% + 1rem); right: calc(25% + 1rem);
+      height: 1px;
+      background: linear-gradient(90deg, var(--mint-border), transparent 50%, var(--mint-border));
+      pointer-events: none;
+    }
+    .process-step { display: flex; flex-direction: column; gap: 1rem; }
+    .step-number {
+      width: 3.5rem; height: 3.5rem; border-radius: 50%;
+      background: var(--canvas-raised); border: 1px solid var(--mint-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mint); flex-shrink: 0;
+    }
+    .step-title { font-size: 1.125rem; font-weight: 500; letter-spacing: -0.01em; color: var(--text-primary); }
+    .step-desc { font-size: 0.9375rem; font-weight: 300; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── BENEFITS ── */
+    .benefits-wrapper {
+      background: var(--canvas-raised);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .benefits-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: clamp(4rem,10vh,7rem) var(--gutter);
+    }
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+      margin-top: 3rem;
+    }
+    .benefit-item {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--dur-std) var(--ease);
+    }
+    .benefit-item:nth-child(2n)   { border-right: none; }
+    .benefit-item:nth-child(3),
+    .benefit-item:nth-child(4)    { border-bottom: none; }
+    .benefit-item:hover           { background: rgba(188,224,198,0.03); }
+    .benefit-icon { width: 2rem; height: 2rem; margin-bottom: 1rem; color: var(--mint); }
+    .benefit-metric {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: 0.5rem;
+    }
+    .benefit-title {
+      font-size: 1.125rem; font-weight: 500; letter-spacing: -0.01em;
+      color: var(--text-primary); margin-bottom: 0.625rem;
+    }
+    .benefit-desc { font-size: 0.9375rem; font-weight: 300; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── SOLUTIONS ── */
+    .solutions-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .solution-card {
+      background: var(--canvas-raised); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1.75rem;
+      transition: transform var(--dur-std) var(--ease), box-shadow var(--dur-std) var(--ease), border-color var(--dur-std) var(--ease);
+    }
+    .solution-card:hover {
+      transform: translateY(-2px); box-shadow: var(--shadow-hover);
+      border-color: var(--mint-border);
+    }
+    .solution-card--featured {
+      grid-column: span 2;
+      display: flex; flex-direction: row; align-items: flex-start; gap: 2rem;
+      background: rgba(188,224,198,0.04); border-color: var(--mint-border);
+    }
+    .solution-card--featured:hover { background: rgba(188,224,198,0.07); }
+    .solution-number {
+      font-size: 0.625rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.875rem;
+    }
+    .solution-title {
+      font-size: 1.125rem; font-weight: 500; letter-spacing: -0.01em;
+      color: var(--text-primary); margin-bottom: 0.625rem;
+    }
+    .solution-desc { font-size: 0.9375rem; font-weight: 300; color: var(--text-muted); line-height: 1.65; }
+    .solution-tag {
+      display: inline-block; margin-top: 1rem;
+      font-size: 0.625rem; font-weight: 300; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
+      background: var(--plum-bg); color: var(--plum);
+    }
+    .solutions-cta { margin-top: 2.5rem; display: flex; justify-content: center; }
+
+    /* ── FAQ ── */
+    .faq-list {
+      margin-top: 3rem; display: flex; flex-direction: column;
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+    }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-question {
+      width: 100%; background: var(--canvas-raised); border: none;
+      padding: 1.5rem 1.75rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      cursor: pointer; text-align: left;
+      font-family: 'Swiza', sans-serif; font-size: 1rem; font-weight: 400;
+      color: var(--text-primary); letter-spacing: -0.01em;
+      transition: background var(--dur-std) var(--ease);
+    }
+    .faq-question:hover { background: rgba(188,224,198,0.04); }
+    .faq-chevron {
+      width: 20px; height: 20px; color: var(--text-muted); flex-shrink: 0;
+      transition: transform var(--dur-std) var(--ease);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      background: var(--canvas-raised);
+      padding: 0 1.75rem; max-height: 0; overflow: hidden;
+      transition: max-height 300ms var(--ease), padding 300ms var(--ease);
+    }
+    .faq-item.open .faq-answer { max-height: 400px; padding-bottom: 1.5rem; }
+    .faq-answer p { font-size: 0.9375rem; font-weight: 300; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── FINAL CTA ── */
+    .cta-section {
+      background: var(--canvas-raised);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .cta-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: clamp(4rem,10vh,7rem) var(--gutter); text-align: center;
+    }
+    .cta-eyebrow {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: 1.25rem;
+    }
+    .cta-headline {
+      font-size: clamp(2.5rem,5vw,4rem); font-weight: 200;
+      letter-spacing: -0.03em; color: var(--text-primary);
+      line-height: 1.0; margin-bottom: 0.25rem;
+    }
+    .cta-headline strong { font-weight: 700; }
+    .cta-sub {
+      font-size: 1rem; font-weight: 300;
+      color: var(--text-muted); margin-top: 1.25rem; margin-bottom: 2.5rem;
+    }
+    .cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+
+    /* ── FOOTER ── */
+    .site-footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: var(--max-w); margin: 0 auto; padding: 3rem var(--gutter) 2rem; }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-logo { display: block; margin-bottom: 1rem; }
+    .footer-logo img { height: 80px; width: auto; opacity: 0.7; }
+    .footer-tagline {
+      font-size: 0.875rem; font-weight: 300; color: var(--text-muted);
+      line-height: 1.65; max-width: 28ch;
+    }
+    .footer-col-title {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.625rem; }
+    .footer-link {
+      font-size: 0.875rem; font-weight: 300; color: var(--text-muted);
+      text-decoration: none; transition: color var(--dur-fast) var(--ease);
+    }
+    .footer-link:hover { color: var(--text-body); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.06em; color: var(--text-muted); }
+    .footer-legal { display: flex; gap: 1.5rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-section { background-position: center top; }
+      .hero { max-width: 100%; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .benefit-item { border-right: none !important; }
+      .benefit-item:nth-child(1),
+      .benefit-item:nth-child(2),
+      .benefit-item:nth-child(3) { border-bottom: 1px solid var(--border) !important; }
+      .solutions-grid { grid-template-columns: 1fr; }
+      .solution-card--featured { grid-column: span 1; flex-direction: column; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+<!-- PW GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:999999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;flex-direction:column;">
+  <p style="color:#555;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Password required</p>
+  <input id="pw-in" type="password" placeholder="Enter password" autocomplete="off" style="background:#111;border:1px solid #2a2a2a;color:#fff;padding:10px 18px;font-size:14px;outline:none;width:240px;text-align:center;border-radius:6px;">
+  <p id="pw-err" style="color:#e55;font-size:12px;margin-top:10px;height:14px;"></p>
+</div>
+<script>
+(function(){
+  var KEY='egtm_v1';
+  var gate=document.getElementById('pw-gate');
+  if(localStorage.getItem(KEY)==='1'){gate.remove();return;}
+  var inp=document.getElementById('pw-in');
+  var err=document.getElementById('pw-err');
+  setTimeout(function(){inp.focus();},50);
+  function check(){
+    if(inp.value==='effortlessgtm'){
+      localStorage.setItem(KEY,'1');
+      gate.style.transition='opacity 0.3s';
+      gate.style.opacity='0';
+      setTimeout(function(){gate.remove();},300);
+    } else {
+      err.textContent='Incorrect password';
+      inp.value='';
+      setTimeout(function(){inp.focus();},10);
+    }
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+})();
+</script>
+<!-- END PW GATE -->
+
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- NAV -->
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Effortless GTM — Home">
+      <img src="../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Logo Suite/SVG/Primary Logo - SVG/Primary Logo - Mint.svg"
+           alt="Effortless GTM" />
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#services"  class="nav-link">Services</a></li>
+      <li><a href="#process"   class="nav-link">How it works</a></li>
+      <li><a href="#results"   class="nav-link">Results</a></li>
+      <li><a href="#faq"       class="nav-link">FAQ</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Start free assessment</a>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ── HERO ── -->
+  <section class="hero-section" aria-labelledby="hero-headline">
+    <div class="hero">
+      <span class="hero-eyebrow">AI-powered sales &amp; marketing</span>
+      <h1 class="hero-headline" id="hero-headline">
+        <span class="hl-light">Automate how you sell.</span>
+        <span class="hl-bold">Intelligently.</span>
+      </h1>
+      <p class="hero-tagline">
+        Find out in 5 minutes how much time your team spends on administrative work instead of selling — and get a free plan to fix it.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Start free assessment</a>
+        <a href="#services" class="btn-ghost">Our services</a>
+      </div>
+      <div class="hero-trust">
+        <span class="trust-badge"><span class="trust-dot" aria-hidden="true"></span>GDPR &amp; EU AI Act compliant</span>
+        <span class="trust-badge"><span class="trust-dot" aria-hidden="true"></span>Under 5 minutes</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── TESTIMONIALS ── -->
+  <section class="section" aria-labelledby="testimonials-title" id="results">
+    <header class="section-header">
+      <span class="section-eyebrow">Client results</span>
+      <h2 class="section-headline" id="testimonials-title">What our clients say</h2>
+    </header>
+    <div class="testimonials-grid">
+      <article class="testimonial-card">
+        <span class="testimonial-tag">Outreach automation</span>
+        <p class="testimonial-quote">"We used to spend half our mornings figuring out who to call. Now the system tells us. Response time went from 3 days to under 4 hours."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">BL</div>
+          <div>
+            <p class="author-name">Björn Larsen</p>
+            <p class="author-role">VP Sales · Solvenna</p>
+          </div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <span class="testimonial-tag">Sales operations</span>
+        <p class="testimonial-quote">"I finally have a pipeline I can trust. Monday morning used to mean two hours of data cleanup. Now it's 15 minutes of actual decisions."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">MD</div>
+          <div>
+            <p class="author-name">Marie Dubois</p>
+            <p class="author-role">Head of Revenue Ops · Nexio Group</p>
+          </div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <span class="testimonial-tag">Lead qualification</span>
+        <p class="testimonial-quote">"Our team closes 40% more because they stop wasting time on bad leads. The system filters for them before they even pick up the phone."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" aria-hidden="true">TK</div>
+          <div>
+            <p class="author-name">Thomas Keller</p>
+            <p class="author-role">CEO · Brandwerk GmbH</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── PROCESS ── -->
+  <section class="section" aria-labelledby="process-title" id="process">
+    <header class="section-header">
+      <span class="section-eyebrow">How it works</span>
+      <h2 class="section-headline" id="process-title">Four stages. Built to last.</h2>
+      <p class="section-sub">Not a one-off project. A system that gets smarter the longer you run it.</p>
+    </header>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-number" aria-hidden="true">01</div>
+        <h3 class="step-title">Assessment</h3>
+        <p class="step-desc">We map how your team sells today — where time is lost, what's slowing deals down, and which problems are worth fixing first.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number" aria-hidden="true">02</div>
+        <h3 class="step-title">Implementation</h3>
+        <p class="step-desc">We build and deploy your system. Specific tools, tested workflows, handed over documented and running — ready from day one.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number" aria-hidden="true">03</div>
+        <h3 class="step-title">Maintenance</h3>
+        <p class="step-desc">We keep everything running cleanly. Tools update, processes shift, markets change — your system stays current without extra work from your team.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number" aria-hidden="true">04</div>
+        <h3 class="step-title">Iteration &amp; betterment</h3>
+        <p class="step-desc">We review what's working, sharpen what isn't, and expand into new areas. The system compounds — it gets better the longer you run it.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── BENEFITS ── -->
+  <div class="benefits-wrapper" id="services">
+    <div class="benefits-inner">
+      <header class="section-header">
+        <span class="section-eyebrow">What changes</span>
+        <h2 class="section-headline" id="benefits-title">What your sales team looks like after</h2>
+      </header>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="benefit-metric">Better leads, less effort</p>
+          <h3 class="benefit-title">Your team stops hunting. Starts closing.</h3>
+          <p class="benefit-desc">AI monitors hundreds of companies and flags the right ones the moment they show signs of buying. Your team focuses on conversations, not research.</p>
+        </div>
+        <div class="benefit-item">
+          <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="benefit-metric">Every rep at their best</p>
+          <h3 class="benefit-title">Your best process becomes the default.</h3>
+          <p class="benefit-desc">We turn what your top salesperson does instinctively into a system everyone follows. Better calls, shorter cycles, fewer things falling through the cracks.</p>
+        </div>
+        <div class="benefit-item">
+          <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="benefit-metric">Revenue you can predict</p>
+          <h3 class="benefit-title">Know what's coming before month end.</h3>
+          <p class="benefit-desc">Clean data, automatic reports, and a pipeline your whole team actually updates. No more guessing. No more end-of-quarter surprises.</p>
+        </div>
+        <div class="benefit-item">
+          <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="benefit-metric">Win on speed</p>
+          <h3 class="benefit-title">Be first. Every time.</h3>
+          <p class="benefit-desc">Automated follow-up and instant lead sorting mean you reach the right person at the right moment — before your competitors even know they're looking.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SOLUTIONS ── -->
+  <section class="section" aria-labelledby="solutions-title">
+    <header class="section-header">
+      <span class="section-eyebrow">What we build</span>
+      <h2 class="section-headline" id="solutions-title">Six systems. One sales machine.</h2>
+      <p class="section-sub">Each works on its own or connects into a full end-to-end setup.</p>
+    </header>
+    <div class="solutions-grid">
+      <div class="solution-card solution-card--featured">
+        <div>
+          <p class="solution-number">01 · Most requested</p>
+          <h3 class="solution-title">Automated Outreach</h3>
+          <p class="solution-desc">Find the right people, write the right message, send it at the right moment — without your team lifting a finger. From trigger to first reply, fully automated.</p>
+          <span class="solution-tag">Where most clients start</span>
+        </div>
+        <svg style="width:80px;height:80px;flex-shrink:0;color:rgba(188,224,198,0.15);margin-top:0.25rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="solution-card">
+        <p class="solution-number">02</p>
+        <h3 class="solution-title">Lead Prioritisation</h3>
+        <p class="solution-desc">Stop treating every lead the same. The system scores each one so your team knows exactly where to spend their time today.</p>
+      </div>
+      <div class="solution-card">
+        <p class="solution-number">03</p>
+        <h3 class="solution-title">CRM That Actually Works</h3>
+        <p class="solution-desc">A setup your team will use — clean stages, automatic updates, and data that reflects how you actually sell.</p>
+      </div>
+      <div class="solution-card">
+        <p class="solution-number">04</p>
+        <h3 class="solution-title">Revenue Reports</h3>
+        <p class="solution-desc">One dashboard. Every number that matters. Updated automatically, so you always know where you stand — no spreadsheet required.</p>
+      </div>
+      <div class="solution-card">
+        <p class="solution-number">05</p>
+        <h3 class="solution-title">Buying Signal Detection</h3>
+        <p class="solution-desc">Know when a company is ready to buy before they reach out. Catch the right moment — a new hire, a funding round, a tool change — and act first.</p>
+      </div>
+      <div class="solution-card">
+        <p class="solution-number">06</p>
+        <h3 class="solution-title">Customer Health Monitoring</h3>
+        <p class="solution-desc">Spot customers at risk before they leave. Keep the revenue you already have with early warnings and automated check-ins.</p>
+      </div>
+    </div>
+    <div class="solutions-cta">
+      <a href="#contact" class="btn-ghost">Book a free assessment →</a>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ── FAQ ── -->
+  <section class="section" aria-labelledby="faq-title" id="faq">
+    <header class="section-header">
+      <span class="section-eyebrow">Common questions</span>
+      <h2 class="section-headline" id="faq-title">Things people ask before booking</h2>
+    </header>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+          Is this right for my business?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Best fit: B2B companies in Europe with 10–200 people and a sales team that spends too much time on admin. You don't need to be technical or know anything about AI — we handle all of that. If you sell to other businesses and feel like your team is working hard but not getting the results they should, this is for you.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+          Do you build it, or just tell us what to do?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>We build it. You get a working system, not a list of recommendations. Everything is set up, tested, and handed over with clear documentation so your team can run it without needing us again.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+          How long before we see results?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>First call to first live system: two to four weeks. Most clients notice time savings within the first month. The assessment itself takes under 5 minutes and already gives you a clear picture of where you're losing time and money.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+          Do we need a tech team or any technical knowledge?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>No. Everything is built on tools your sales or operations team can manage day-to-day without any technical background. We choose tools that fit your team — not the most complicated option.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+          Which tools do you use?
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <p>Whatever fits your team best — HubSpot, Attio, Clay, lemlist, n8n, Make, and more. We don't push a favourite tool stack. We pick what's right for your budget, your people, and the way you sell.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <div class="cta-section" id="contact">
+    <div class="cta-inner">
+      <p class="cta-eyebrow">Free. Five minutes. No commitment.</p>
+      <h2 class="cta-headline">
+        Ready to find out<br>
+        <strong>what you're leaving behind?</strong>
+      </h2>
+      <p class="cta-sub">Take the free assessment. See exactly where your team is losing time — and what to do about it.</p>
+      <div class="cta-actions">
+        <a href="mailto:hello@effortlessgtm.com" class="btn-primary">Start free assessment</a>
+        <a href="#services" class="btn-ghost">See what we build</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <a href="/" class="footer-logo" aria-label="Effortless GTM">
+          <img src="../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Logo Suite/SVG/Primary Logo - SVG/Primary Logo - Mint.svg"
+               alt="Effortless GTM" />
+        </a>
+        <p class="footer-tagline">AI-powered sales &amp; marketing systems for European B2B companies. Less admin, more revenue.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Pages</p>
+        <ul class="footer-links" role="list">
+          <li><a href="#"         class="footer-link">Home</a></li>
+          <li><a href="#services" class="footer-link">Services</a></li>
+          <li><a href="#process"  class="footer-link">How it works</a></li>
+          <li><a href="#results"  class="footer-link">Results</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Work with us</p>
+        <ul class="footer-links" role="list">
+          <li><a href="#contact" class="footer-link">Free assessment</a></li>
+          <li><a href="#faq"     class="footer-link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Legal</p>
+        <ul class="footer-links" role="list">
+          <li><a href="#" class="footer-link">Impressum</a></li>
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link">Cookie Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Effortless GTM</p>
+      <div class="footer-legal">
+        <a href="#" class="footer-link">Impressum</a>
+        <a href="#" class="footer-link">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  }
+</script>
+
+</body>
+</html>

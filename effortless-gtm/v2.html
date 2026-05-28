@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Effortless GTM — Signal-Driven GTM Automation for European B2B</title>
+  <meta name="description" content="Most B2B teams target on instinct. We build the signal layer that changes that — automated systems that surface ready buyers the moment they emerge.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================================
+       DESIGN TOKENS — Effortless GTM
+       Canonical source: design.json
+       Dark Forest primary · Mint accent · Plum secondary
+    ============================================================ */
+    :root {
+      /* Canvas surfaces */
+      --canvas:           oklch(17% 0.04 165);    /* Dark Forest — default */
+      --canvas-deep:      oklch(12% 0.032 165);   /* Hero base, footer, deep sections */
+      --canvas-raised:    oklch(20% 0.048 165);   /* Slightly elevated layer */
+      --card:             oklch(14% 0.008 160);   /* Deep Charcoal — cards */
+      --card-raised:      oklch(22% 0.008 160);   /* Card hover */
+
+      /* Mint — primary interactive signal */
+      --mint:             oklch(84% 0.06 155);    /* #bce0c6 */
+      --mint-hover:       oklch(91% 0.035 155);   /* Button hover */
+      --mint-dim:         rgba(188, 224, 198, 0.10);
+      --mint-border:      rgba(188, 224, 198, 0.12);
+      --mint-border-dim:  rgba(188, 224, 198, 0.06);
+
+      /* Plum — one per layout zone, secondary role */
+      --plum:             oklch(55% 0.09 305);
+      --plum-dim:         rgba(134, 113, 165, 0.12);
+
+      /* Lavender — focus/hover states only, never at rest */
+      --lavender-focus:   rgba(222, 227, 255, 0.45);
+
+      /* Text */
+      --text-primary:     oklch(97% 0.015 155);   /* F3FFF0 */
+      --text-secondary:   oklch(84% 0.022 155);   /* Body copy */
+      --text-muted:       oklch(65% 0.008 160);   /* Captions, meta */
+
+      /* Typography */
+      --font: 'Swiza', 'DM Sans', system-ui, -apple-system, sans-serif;
+
+      /* Spacing */
+      --sp-2:   2px;  --sp-4:   4px;  --sp-8:   8px;
+      --sp-12:  12px; --sp-16:  16px; --sp-20:  20px;
+      --sp-24:  24px; --sp-32:  32px; --sp-40:  40px;
+      --sp-48:  48px; --sp-64:  64px; --sp-80:  80px;
+      --sp-96:  96px; --sp-120: 120px;
+
+      /* Radius — restrained */
+      --r-sm:   2px;
+      --r-md:   6px;
+      --r-pill: 999px;
+
+      /* Motion */
+      --ease:   cubic-bezier(0.25, 0, 0, 1);
+      --t-fast: 120ms;
+      --t-std:  160ms;
+
+      /* Shadows — state-dependent only. Never at rest. */
+      --shadow-hover:    0 4px 16px rgba(0, 0, 0, 0.35);
+      --shadow-mint:     0 0 0 3px rgba(188, 224, 198, 0.45);
+      --shadow-lavender: 0 0 0 3px rgba(222, 227, 255, 0.45);
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    html {
+      font-size: 17px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--canvas);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-mint);
+      border-radius: var(--r-sm);
+    }
+
+    /* ============================================================
+       SKIP LINK
+    ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: var(--sp-16);
+      background: var(--mint);
+      color: var(--canvas);
+      padding: var(--sp-8) var(--sp-24);
+      border-radius: var(--r-sm);
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      z-index: 9999;
+    }
+    .skip-link:focus { top: var(--sp-16); }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+
+    /* Eyebrow: uppercase label, mint */
+    .eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mint);
+      line-height: 1;
+    }
+
+    /* Display: ExtraLight × Bold dissonance — the system's signature */
+    .display {
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+    }
+    .display em {
+      font-weight: 200;
+      font-style: normal;
+      color: rgba(243, 255, 240, 0.72);
+    }
+    .display strong {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Section headline: 500 weight */
+    .headline {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    /* Body: 300 weight, max 68ch */
+    .body {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      font-weight: 300;
+      line-height: 1.75;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      max-width: 64ch;
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: clamp(var(--sp-24), 5vw, var(--sp-80));
+    }
+
+    section {
+      padding-block: clamp(var(--sp-80), 10vw, var(--sp-120));
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-8);
+      background: var(--mint);
+      color: oklch(12% 0.032 165);
+      font-family: var(--font);
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 32px;
+      border: none;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition:
+        background var(--t-std) var(--ease),
+        transform var(--t-std) var(--ease);
+    }
+    .btn-primary:hover {
+      background: var(--mint-hover);
+      transform: translateY(-2px);
+    }
+    .btn-primary:focus-visible {
+      box-shadow: var(--shadow-mint);
+      transform: none;
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-8);
+      background: transparent;
+      color: var(--mint);
+      font-family: var(--font);
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 32px;
+      border: 1px solid var(--mint);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition:
+        background var(--t-std) var(--ease),
+        color var(--t-std) var(--ease),
+        transform var(--t-std) var(--ease);
+    }
+    .btn-ghost:hover {
+      background: var(--mint-dim);
+      color: var(--mint-hover);
+      transform: translateY(-2px);
+    }
+    .btn-ghost:focus-visible { box-shadow: var(--shadow-lavender); }
+
+    /* ============================================================
+       TAGS
+    ============================================================ */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      background: var(--mint-dim);
+      color: var(--mint);
+      padding: 3px 12px;
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: var(--r-pill);
+      border: 1px solid transparent;
+    }
+
+    .tag-plum {
+      background: var(--plum-dim);
+      color: var(--plum);
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .site-nav {
+      position: fixed;
+      inset-block-start: 0;
+      inset-inline: 0;
+      z-index: 100;
+      padding-block: var(--sp-16);
+      background: rgba(2, 32, 27, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--mint-border-dim);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-40);
+    }
+
+    .nav-logo {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--mint); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-32);
+      list-style: none;
+    }
+
+    .nav-links a:not(.btn-primary) {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(232, 232, 232, 0.5);
+      text-decoration: none;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .nav-links a:not(.btn-primary):hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links .btn-primary { padding: 9px 20px; }
+
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      padding-block-start: calc(var(--sp-120) + 64px);
+      padding-block-end: clamp(var(--sp-80), 12vw, var(--sp-120));
+      background: linear-gradient(170deg, var(--canvas-deep) 0%, var(--canvas) 60%);
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline: 0;
+      height: 1px;
+      background: var(--mint-border-dim);
+    }
+
+    .hero-eyebrow {
+      display: block;
+      margin-bottom: var(--sp-32);
+    }
+
+    .hero h1 {
+      margin-bottom: var(--sp-32);
+      max-width: 22ch;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      font-weight: 300;
+      line-height: 1.78;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      max-width: 55ch;
+      margin-bottom: var(--sp-48);
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-12);
+    }
+
+    .hero-cta-support {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    .stats-bar {
+      background: var(--canvas-deep);
+      border-block: 1px solid var(--mint-border-dim);
+      padding-block: var(--sp-48);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    @media (max-width: 680px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+
+    .stat-item {
+      padding-inline: var(--sp-48);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-8);
+      border-inline-end: 1px solid var(--mint-border-dim);
+    }
+    .stat-item:first-child { padding-inline-start: 0; }
+    .stat-item:last-child {
+      border-inline-end: none;
+      padding-inline-end: 0;
+    }
+
+    @media (max-width: 680px) {
+      .stat-item {
+        padding-inline: 0;
+        padding-block: var(--sp-24);
+        border-inline-end: none;
+        border-block-end: 1px solid var(--mint-border-dim);
+      }
+      .stat-item:last-child { border-block-end: none; padding-block-end: 0; }
+      .stat-item:first-child { padding-block-start: 0; }
+    }
+
+    .stat-number {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--mint);
+    }
+    .stat-number strong {
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .stat-source {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       PROBLEM
+    ============================================================ */
+    .problem {
+      background: var(--canvas);
+    }
+
+    .section-header {
+      margin-bottom: clamp(var(--sp-48), 6vw, var(--sp-80));
+    }
+
+    .section-header .eyebrow {
+      display: block;
+      margin-bottom: var(--sp-16);
+    }
+
+    .section-header .headline {
+      margin-bottom: var(--sp-20);
+    }
+
+    .problem-intro {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      font-weight: 300;
+      line-height: 1.78;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      max-width: 62ch;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .problem-grid { grid-template-columns: 1fr; }
+    }
+
+    .problem-card {
+      background: var(--card);
+      padding: var(--sp-40) var(--sp-32);
+      border-inline-end: 1px solid var(--mint-border);
+      transition: background var(--t-std) var(--ease);
+    }
+    .problem-card:last-child { border-inline-end: none; }
+
+    @media (max-width: 900px) {
+      .problem-card {
+        border-inline-end: none;
+        border-block-end: 1px solid var(--mint-border);
+      }
+      .problem-card:last-child { border-block-end: none; }
+    }
+
+    .problem-card:hover { background: var(--card-raised); }
+
+    .problem-num {
+      display: block;
+      font-size: clamp(2.25rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--mint);
+      opacity: 0.16;
+      margin-bottom: var(--sp-24);
+    }
+
+    .problem-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-16);
+    }
+
+    .problem-body {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      line-height: 1.78;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+    }
+
+    .problem-cost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-8);
+      margin-top: var(--sp-24);
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--plum);
+    }
+    .problem-cost::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--plum);
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SOLUTION
+    ============================================================ */
+    .solution {
+      background: var(--canvas-deep);
+    }
+
+    .solution-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(var(--sp-48), 8vw, var(--sp-96));
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .solution-inner { grid-template-columns: 1fr; }
+    }
+
+    .solution-copy .eyebrow {
+      display: block;
+      margin-bottom: var(--sp-24);
+    }
+
+    .solution-copy .headline { margin-bottom: var(--sp-24); }
+    .solution-copy .body { margin-bottom: var(--sp-32); }
+
+    .solution-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-12);
+    }
+
+    .solution-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-12);
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .solution-bullets li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--mint);
+      margin-top: 7px;
+    }
+
+    /* Signal flow */
+    .signal-flow {
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .signal-node {
+      padding: var(--sp-16) var(--sp-24);
+      background: var(--card);
+      border-block-end: 1px solid var(--mint-border);
+    }
+    .signal-node:last-child {
+      border-block-end: none;
+      background: var(--mint-dim);
+    }
+
+    .signal-node-label {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-4);
+    }
+    .signal-node:last-child .signal-node-label { color: var(--mint); }
+
+    .signal-node-value {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .signal-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 28px;
+      background: rgba(188, 224, 198, 0.025);
+      border-block-end: 1px solid var(--mint-border);
+    }
+
+    .signal-connector-label {
+      font-size: 0.5625rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .signal-active-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--mint);
+      margin-inline-end: var(--sp-8);
+      vertical-align: middle;
+      position: relative;
+      inset-block-start: -1px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .signal-active-dot {
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.28; }
+    }
+
+    /* ============================================================
+       AUTOMATION PILLARS
+    ============================================================ */
+    .pillars {
+      background: var(--canvas);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-16);
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+
+    @media (max-width: 860px) {
+      .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-12);
+      }
+    }
+
+    .pillar-card {
+      background: var(--card);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      padding: var(--sp-40) var(--sp-32);
+      transition:
+        transform var(--t-std) var(--ease),
+        box-shadow var(--t-std) var(--ease),
+        background var(--t-std) var(--ease);
+    }
+    .pillar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      background: var(--card-raised);
+    }
+
+    .pillar-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--mint-dim);
+      border-radius: var(--r-sm);
+      margin-bottom: var(--sp-24);
+      color: var(--mint);
+    }
+
+    .pillar-tag {
+      display: block;
+      margin-bottom: var(--sp-16);
+    }
+
+    .pillar-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-16);
+    }
+
+    .pillar-body {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      line-height: 1.78;
+      color: var(--text-secondary);
+      margin-bottom: var(--sp-24);
+    }
+
+    .pillar-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-8);
+    }
+
+    .pillar-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-8);
+      font-size: 0.875rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .pillar-list li::before {
+      content: '→';
+      color: var(--mint);
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      margin-top: 1px;
+    }
+
+    /* ============================================================
+       ASSESSMENT — LEAD MAGNET
+    ============================================================ */
+    .assessment {
+      background: var(--canvas-deep);
+    }
+
+    .assessment-wrap {
+      max-width: 800px;
+      margin-inline: auto;
+    }
+
+    .assessment-header {
+      text-align: center;
+      margin-bottom: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+
+    .assessment-header .eyebrow {
+      display: block;
+      margin-bottom: var(--sp-16);
+    }
+
+    .assessment-header .headline { margin-bottom: var(--sp-16); }
+
+    .assessment-header .body {
+      margin-inline: auto;
+    }
+
+    /* Progress indicator */
+    .assessment-progress {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-8);
+      margin-bottom: var(--sp-48);
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-8);
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .progress-step.active { color: var(--mint); }
+    .progress-step.done { color: oklch(68% 0.045 155); }
+
+    .progress-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+      transition: background var(--t-fast) var(--ease);
+    }
+    .progress-step.active .progress-dot,
+    .progress-step.done .progress-dot {
+      background: var(--mint);
+    }
+
+    .progress-line {
+      flex: 1;
+      height: 1px;
+      background: var(--mint-border);
+    }
+
+    /* Steps */
+    .assessment-step {
+      display: none;
+    }
+    .assessment-step.active {
+      display: block;
+      animation: fadeUp 0.22s var(--ease) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-question {
+      font-size: clamp(1.25rem, 3vw, 1.625rem);
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-8);
+    }
+
+    .step-sub {
+      font-size: 0.875rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-32);
+    }
+
+    /* Option grid — checkboxes */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-10, 10px);
+      margin-bottom: var(--sp-32);
+    }
+
+    @media (max-width: 600px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+
+    .option-check,
+    .option-radio {
+      position: relative;
+    }
+
+    .option-check input[type="checkbox"],
+    .option-radio input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+    }
+
+    .option-check label,
+    .option-radio label {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-12);
+      padding: var(--sp-16) var(--sp-20);
+      background: var(--card);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition:
+        background var(--t-fast) var(--ease),
+        border-color var(--t-fast) var(--ease),
+        transform var(--t-std) var(--ease);
+    }
+
+    .option-check label:hover,
+    .option-radio label:hover {
+      background: var(--card-raised);
+      border-color: rgba(188, 224, 198, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .option-check input:checked + label,
+    .option-radio input:checked + label {
+      background: var(--mint-dim);
+      border-color: var(--mint);
+    }
+
+    .option-check input:focus-visible + label,
+    .option-radio input:focus-visible + label {
+      box-shadow: var(--shadow-mint);
+    }
+
+    .option-indicator {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border: 1px solid rgba(188, 224, 198, 0.22);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      transition:
+        background var(--t-fast) var(--ease),
+        border-color var(--t-fast) var(--ease);
+    }
+
+    .option-check input:checked + label .option-indicator {
+      background: var(--mint);
+      border-color: var(--mint);
+    }
+
+    .option-radio .option-indicator {
+      border-radius: 50%;
+    }
+
+    .option-radio input:checked + label .option-indicator {
+      background: var(--mint);
+      border-color: var(--mint);
+    }
+
+    .option-indicator svg {
+      opacity: 0;
+      transition: opacity var(--t-fast) var(--ease);
+    }
+    input:checked + label .option-indicator svg { opacity: 1; }
+
+    .option-text {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      transition: color var(--t-fast) var(--ease);
+    }
+    input:checked + label .option-text { color: var(--text-primary); }
+
+    /* Radio list — team size */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-8);
+      margin-bottom: var(--sp-32);
+    }
+
+    /* Form fields */
+    .form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-20);
+      margin-bottom: var(--sp-32);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-16);
+    }
+
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    .ds-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-8);
+    }
+
+    .ds-field-label {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .ds-input {
+      background: var(--card);
+      border: 1px solid rgba(188, 224, 198, 0.2);
+      border-radius: var(--r-sm);
+      padding: 12px 16px;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-primary);
+      outline: none;
+      width: 100%;
+      transition:
+        border-color var(--t-fast) var(--ease),
+        box-shadow var(--t-fast) var(--ease);
+    }
+    .ds-input::placeholder { color: rgba(232, 232, 232, 0.28); }
+    .ds-input:focus {
+      border-color: var(--mint);
+      box-shadow: var(--shadow-mint);
+    }
+
+    .form-privacy {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-24);
+    }
+
+    /* Validation */
+    .validation-msg {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: oklch(70% 0.1 30);
+      margin-top: calc(-1 * var(--sp-20));
+      margin-bottom: var(--sp-16);
+      display: none;
+    }
+    .validation-msg.visible { display: block; }
+
+    /* Step nav */
+    .step-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-16);
+    }
+
+    .step-back {
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .step-back:hover { color: var(--text-secondary); }
+
+    /* Result */
+    .assessment-result {
+      display: none;
+      animation: fadeUp 0.25s var(--ease) both;
+    }
+    .assessment-result.active { display: block; }
+
+    .result-tag { margin-bottom: var(--sp-16); }
+
+    .result-headline {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-16);
+    }
+
+    .result-intro {
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      max-width: 62ch;
+      margin-bottom: var(--sp-40);
+    }
+
+    .result-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--mint-border);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      margin-bottom: var(--sp-40);
+    }
+
+    @media (max-width: 580px) {
+      .result-metrics { grid-template-columns: 1fr; }
+    }
+
+    .result-metric {
+      background: var(--card);
+      padding: var(--sp-32) var(--sp-24);
+      text-align: center;
+    }
+
+    .result-metric-number {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--mint);
+      margin-bottom: var(--sp-8);
+    }
+    .result-metric-number strong { font-weight: 700; }
+
+    .result-metric-label {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .result-fixes-title {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-16);
+    }
+
+    .fix-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-8);
+      margin-bottom: var(--sp-40);
+    }
+
+    .fix-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-12);
+      padding: var(--sp-16) var(--sp-20);
+      background: var(--mint-dim);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+    }
+
+    .fix-item-check {
+      color: var(--mint);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .fix-item-content {}
+
+    .fix-item-title {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: var(--sp-4);
+    }
+
+    .fix-item-desc {
+      font-size: 0.875rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .result-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-12);
+    }
+
+    .result-cta-note {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       HOW IT WORKS
+    ============================================================ */
+    .how { background: var(--canvas); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-48);
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+
+    @media (max-width: 800px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-40);
+      }
+    }
+
+    .step-num {
+      display: block;
+      font-size: clamp(2.25rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--mint);
+      opacity: 0.14;
+      margin-bottom: var(--sp-20);
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-12);
+    }
+
+    .step-body {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      line-height: 1.78;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       PROOF
+    ============================================================ */
+    .proof { background: var(--canvas-deep); }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-24);
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+
+    @media (max-width: 700px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    .testimonial {
+      background: var(--card);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+      padding: var(--sp-40) var(--sp-32);
+      transition:
+        transform var(--t-std) var(--ease),
+        box-shadow var(--t-std) var(--ease);
+    }
+    .testimonial:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .testimonial-quote {
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      line-height: 1.78;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: var(--sp-24);
+    }
+
+    .testimonial-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: var(--sp-2);
+    }
+
+    .testimonial-role {
+      font-size: 0.8125rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    /* ============================================================
+       FINAL CTA
+    ============================================================ */
+    .cta-final { background: var(--canvas); }
+
+    .cta-final-inner {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: clamp(var(--sp-48), 8vw, var(--sp-96));
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .cta-final-inner {
+        grid-template-columns: 1fr;
+        gap: var(--sp-48);
+      }
+    }
+
+    .cta-copy .eyebrow {
+      display: block;
+      margin-bottom: var(--sp-24);
+    }
+
+    .cta-copy .headline { margin-bottom: var(--sp-24); }
+    .cta-copy .body    { margin-bottom: var(--sp-40); }
+
+    .cta-aside {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-16);
+    }
+
+    .cta-detail {
+      padding: var(--sp-20) var(--sp-24);
+      background: var(--card);
+      border: 1px solid var(--mint-border);
+      border-radius: var(--r-md);
+    }
+
+    .cta-detail-label {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: var(--sp-4);
+    }
+
+    .cta-detail-body {
+      font-size: 0.875rem;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      background: var(--canvas-deep);
+      padding-block: var(--sp-40);
+      border-block-start: 1px solid var(--mint-border-dim);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-24);
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--mint); }
+
+    .footer-note {
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+  </style>
+</head>
+<body>
+<!-- PW GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:999999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;flex-direction:column;">
+  <p style="color:#555;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Password required</p>
+  <input id="pw-in" type="password" placeholder="Enter password" autocomplete="off" style="background:#111;border:1px solid #2a2a2a;color:#fff;padding:10px 18px;font-size:14px;outline:none;width:240px;text-align:center;border-radius:6px;">
+  <p id="pw-err" style="color:#e55;font-size:12px;margin-top:10px;height:14px;"></p>
+</div>
+<script>
+(function(){
+  var KEY='egtm_v1';
+  var gate=document.getElementById('pw-gate');
+  if(localStorage.getItem(KEY)==='1'){gate.remove();return;}
+  var inp=document.getElementById('pw-in');
+  var err=document.getElementById('pw-err');
+  setTimeout(function(){inp.focus();},50);
+  function check(){
+    if(inp.value==='effortlessgtm'){
+      localStorage.setItem(KEY,'1');
+      gate.style.transition='opacity 0.3s';
+      gate.style.opacity='0';
+      setTimeout(function(){gate.remove();},300);
+    } else {
+      err.textContent='Incorrect password';
+      inp.value='';
+      setTimeout(function(){inp.focus();},10);
+    }
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+})();
+</script>
+<!-- END PW GATE -->
+
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">Effortless<span>GTM</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#assessment">Assessment</a></li>
+        <li><a href="#how">Process</a></li>
+        <li>
+          <a href="#assessment" class="btn-primary">
+            Run the assessment
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <div class="container">
+
+        <span class="eyebrow hero-eyebrow">Signal-Driven GTM Systems</span>
+
+        <h1 id="hero-headline" class="display">
+          <em>The best accounts in your market<br>are ready to buy.</em>
+          <br><strong>Right now.</strong>
+        </h1>
+
+        <p class="hero-subhead">
+          Most B2B teams target on instinct. They reach the right companies at the wrong time — or miss them entirely. We build the signal layer that changes that: automated systems that surface ready buyers the moment they emerge.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#assessment" class="btn-primary">
+            Run the free assessment
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+              <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <p class="hero-cta-support">Takes 4 minutes. Get a personalized breakdown of what you're leaving on the table.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS BAR
+    ============================================================ -->
+    <div class="stats-bar" aria-label="Key statistics">
+      <div class="container">
+        <dl class="stats-grid">
+
+          <div class="stat-item">
+            <dt class="visually-hidden">Average hours lost per rep per week to manual research and wrong-fit outreach</dt>
+            <dd class="stat-number">Ø <strong>8 hrs</strong>/week</dd>
+            <span class="stat-label">Lost per rep to manual research and wrong-fit outreach</span>
+            <span class="stat-source">Across 100+ analyzed GTM processes</span>
+          </div>
+
+          <div class="stat-item">
+            <dt class="visually-hidden">Hours reclaimed per week when the signal layer runs</dt>
+            <dd class="stat-number">Up to <strong>32 hrs</strong>/week</dd>
+            <span class="stat-label">Reclaimed per person when automation handles prioritization</span>
+            <span class="stat-source">Signal-driven GTM vs. manual targeting</span>
+          </div>
+
+          <div class="stat-item">
+            <dt class="visually-hidden">Stage where most GTM advice stops</dt>
+            <dd class="stat-number"><strong>Stage 2</strong> of 8</dd>
+            <span class="stat-label">Where most GTM advice stops. "Get more leads" is stage 2. The problem lives earlier.</span>
+            <span class="stat-source">EffortlessGTM 8-stage framework</span>
+          </div>
+
+        </dl>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         THE PROBLEM
+    ============================================================ -->
+    <section id="problem" class="problem" aria-labelledby="problem-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">The system is broken. Here's the evidence.</span>
+          <h2 id="problem-headline" class="headline">
+            These aren't effort problems.<br>They're architecture problems.
+          </h2>
+          <p class="problem-intro">
+            Most European B2B teams work hard. They still miss their number. Not because of the people — because the system underneath tells them the wrong things about who to contact, when, and why.
+          </p>
+        </header>
+
+        <div class="problem-grid" role="list">
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">01</span>
+            <h3 class="problem-title">You're reaching out blind.</h3>
+            <p class="problem-body">
+              Reps make targeting decisions on firmographic data — company size, industry, tech stack. That tells you <em>who</em> they are. It doesn't tell you whether they're ready to move. The accounts ready to buy today look identical on a spreadsheet to the ones who won't engage for six months.
+            </p>
+            <span class="problem-cost">Ø 3 hrs/week per rep in misdirected outreach</span>
+          </article>
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">02</span>
+            <h3 class="problem-title">Timing is intuition, not intelligence.</h3>
+            <p class="problem-body">
+              A funding round closes. A new VP Sales starts. A competitor gets acquired. Each of these is a buying window — narrow, specific, and invisible unless you're watching. By the time a rep notices, the window is closed. Someone else walked through it first.
+            </p>
+            <span class="problem-cost">Conversion 2–5× higher when triggered by a signal</span>
+          </article>
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">03</span>
+            <h3 class="problem-title">The pipeline looks healthy. Until it doesn't.</h3>
+            <p class="problem-body">
+              Activity metrics — calls, emails, meetings booked — give the illusion of momentum. None of it measures whether the right accounts are moving. The gap between busy and productive is invisible until it's a missed quarter and a board conversation nobody wants to have.
+            </p>
+            <span class="problem-cost">Most GTM failure is a measurement problem</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SOLUTION
+    ============================================================ -->
+    <section id="solution" class="solution" aria-labelledby="solution-headline">
+      <div class="container">
+        <div class="solution-inner">
+
+          <div class="solution-copy">
+            <span class="eyebrow">What we build</span>
+            <h2 id="solution-headline" class="headline" style="margin-top: var(--sp-16);">
+              The intelligence layer your GTM is missing.
+            </h2>
+            <p class="body">
+              Between your market and your team, there's a gap. Signals that matter — funding rounds, hiring patterns, tool changes, intent spikes — are firing constantly. Without a system to capture, score, and route them, they disappear. We build that system.
+            </p>
+
+            <ul class="solution-bullets" aria-label="What the system does">
+              <li>Signal sources configured for your market and ICP</li>
+              <li>Scoring and routing logic built for your specific motion</li>
+              <li>Outreach triggers that fire at the right moment, not the convenient one</li>
+              <li>Rep alerts with full context loaded — no research required</li>
+            </ul>
+          </div>
+
+          <div aria-label="Signal-driven GTM in action" role="img">
+            <div class="signal-flow">
+              <div class="signal-node">
+                <div class="signal-node-label">Signal detected</div>
+                <div class="signal-node-value">Funding round — Series B, €14M · VP Sales hired</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Scored</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">ICP match</div>
+                <div class="signal-node-value">B2B SaaS · 50–200 employees · DACH · 94% fit</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Enriched</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Buying triggers</div>
+                <div class="signal-node-value">3 open RevOps roles · CRM migration signal detected</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Routed</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Prioritized for outreach</div>
+                <div class="signal-node-value">
+                  <span class="signal-active-dot" aria-hidden="true"></span>
+                  Rep notified. Context loaded. Ready to act.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         AUTOMATION PILLARS
+    ============================================================ -->
+    <section id="pillars" class="pillars" aria-labelledby="pillars-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">What we automate</span>
+          <h2 id="pillars-headline" class="headline" style="margin-top: var(--sp-16);">
+            Three functions. One automated system.
+          </h2>
+          <p class="problem-intro">
+            Sales, marketing, and customer success are usually three separate conversations. In a signal-driven system, they're one loop — each function feeding the next.
+          </p>
+        </header>
+
+        <div class="pillars-grid" role="list">
+
+          <!-- Sales -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L13 8H17L13.5 12L15 18L10 15L5 18L6.5 12L3 8H7L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Lead Generation</span>
+            <h3 class="pillar-title">Sales & Outbound</h3>
+            <p class="pillar-body">
+              Stop guessing which accounts to target. Signal monitoring, ICP scoring, and outreach triggers fire the moment an account is ready — not when a rep gets around to reviewing a static list.
+            </p>
+            <ul class="pillar-list" aria-label="Sales automation capabilities">
+              <li>Signal monitoring: funding, hiring, intent spikes</li>
+              <li>Automated ICP scoring and account prioritization</li>
+              <li>Outreach sequences triggered by readiness, not schedule</li>
+              <li>Rep alerts with full buying context pre-loaded</li>
+            </ul>
+          </article>
+
+          <!-- Marketing -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Demand Generation</span>
+            <h3 class="pillar-title">Marketing & Nurture</h3>
+            <p class="pillar-body">
+              Marketing's job isn't to generate leads. It's to surface qualified buyers. We build automation that scores every lead against behavioral signals and routes only the ones worth your sales team's time.
+            </p>
+            <ul class="pillar-list" aria-label="Marketing automation capabilities">
+              <li>Lead scoring against intent and behavioral signals</li>
+              <li>Automated nurture sequences by segment and stage</li>
+              <li>MQL → SQL handoff automation with full context</li>
+              <li>Campaign attribution tied to closed revenue</li>
+            </ul>
+          </article>
+
+          <!-- Customer Success -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 17C10 17 3 13 3 7.5C3 5.57 4.57 4 6.5 4C7.74 4 8.82 4.65 9.5 5.63C10.18 4.65 11.26 4 12.5 4C14.43 4 16 5.57 16 7.5C16 13 10 17 10 17Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Customer Success</span>
+            <h3 class="pillar-title">Retention & Expansion</h3>
+            <p class="pillar-body">
+              Churn is almost always predictable. The signals — engagement drops, usage shifts, support spikes — appear before the customer says anything. We automate the detection so your team can act, not react.
+            </p>
+            <ul class="pillar-list" aria-label="Customer success automation capabilities">
+              <li>Health scoring with automated churn risk alerting</li>
+              <li>Expansion triggers based on usage and fit signals</li>
+              <li>NPS and feedback loop automation</li>
+              <li>Renewal risk flagging before the window closes</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ASSESSMENT — LEAD MAGNET
+    ============================================================ -->
+    <section id="assessment" class="assessment" aria-labelledby="assessment-headline">
+      <div class="container">
+        <div class="assessment-wrap">
+
+          <header class="assessment-header">
+            <span class="eyebrow">The GTM Gap Assessment</span>
+            <h2 id="assessment-headline" class="headline" style="margin-top: var(--sp-16);">
+              Find out what your system is costing you.
+            </h2>
+            <p class="body" style="margin-top: var(--sp-16);">
+              Most teams underestimate the gap between their current system and a signal-driven one. This assessment maps your situation in four minutes — and gives you a personalized output: what's broken, what it costs, and where to fix first.
+            </p>
+          </header>
+
+          <!-- Progress -->
+          <div class="assessment-progress" role="progressbar" aria-label="Assessment progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
+            <div class="progress-step active" id="prog-1">
+              <span class="progress-dot"></span>
+              <span>Challenges</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="prog-2">
+              <span class="progress-dot"></span>
+              <span>Team size</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="prog-3">
+              <span class="progress-dot"></span>
+              <span>Your results</span>
+            </div>
+          </div>
+
+          <!-- Step 1: Problems -->
+          <div class="assessment-step active" id="step-1" role="group" aria-labelledby="step-1-question">
+            <h3 class="step-question" id="step-1-question">
+              What's slowing down your GTM right now?
+            </h3>
+            <p class="step-sub">Select all that apply. The more specific you are, the more useful your results.</p>
+
+            <div class="options-grid" role="group" aria-label="GTM challenges">
+
+              <div class="option-check">
+                <input type="checkbox" id="p-wrong-accounts" value="wrong-accounts">
+                <label for="p-wrong-accounts">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">We target accounts that aren't ready to buy</span>
+                </label>
+              </div>
+
+              <div class="option-check">
+                <input type="checkbox" id="p-bad-timing" value="bad-timing">
+                <label for="p-bad-timing">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">We miss the buying window — outreach comes too late</span>
+                </label>
+              </div>
+
+              <div class="option-check">
+                <input type="checkbox" id="p-stale-crm" value="stale-crm">
+                <label for="p-stale-crm">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">CRM data goes stale before we can act on it</span>
+                </label>
+              </div>
+
+              <div class="option-check">
+                <input type="checkbox" id="p-followup" value="followup">
+                <label for="p-followup">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">Follow-up falls through the cracks between sequences</span>
+                </label>
+              </div>
+
+              <div class="option-check">
+                <input type="checkbox" id="p-mql" value="mql-quality">
+                <label for="p-mql">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">Marketing leads don't convert to real pipeline</span>
+                </label>
+              </div>
+
+              <div class="option-check">
+                <input type="checkbox" id="p-churn" value="churn">
+                <label for="p-churn">
+                  <span class="option-indicator">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">Customer churn signals reach us too late to act</span>
+                </label>
+              </div>
+
+            </div>
+
+            <p class="validation-msg" id="step-1-error" role="alert">Select at least one challenge to continue.</p>
+
+            <div class="step-nav">
+              <button class="btn-primary" onclick="nextStep(1)">
+                Continue
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Team size -->
+          <div class="assessment-step" id="step-2" role="group" aria-labelledby="step-2-question">
+            <h3 class="step-question" id="step-2-question">
+              How many people work in your revenue function?
+            </h3>
+            <p class="step-sub">Sales, marketing, and customer success combined.</p>
+
+            <div class="options-list" role="radiogroup" aria-label="Team size">
+
+              <div class="option-radio">
+                <input type="radio" name="team-size" id="ts-1-5" value="1-5">
+                <label for="ts-1-5">
+                  <span class="option-indicator">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                      <circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">1–5 people</span>
+                </label>
+              </div>
+
+              <div class="option-radio">
+                <input type="radio" name="team-size" id="ts-6-15" value="6-15">
+                <label for="ts-6-15">
+                  <span class="option-indicator">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                      <circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">6–15 people</span>
+                </label>
+              </div>
+
+              <div class="option-radio">
+                <input type="radio" name="team-size" id="ts-16-50" value="16-50">
+                <label for="ts-16-50">
+                  <span class="option-indicator">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                      <circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">16–50 people</span>
+                </label>
+              </div>
+
+              <div class="option-radio">
+                <input type="radio" name="team-size" id="ts-50plus" value="50+">
+                <label for="ts-50plus">
+                  <span class="option-indicator">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                      <circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/>
+                    </svg>
+                  </span>
+                  <span class="option-text">50+ people</span>
+                </label>
+              </div>
+
+            </div>
+
+            <p class="validation-msg" id="step-2-error" role="alert">Select a team size to continue.</p>
+
+            <div class="step-nav">
+              <button class="btn-primary" onclick="nextStep(2)">
+                See my results
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="step-back" onclick="prevStep(2)">Back</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Email capture -->
+          <div class="assessment-step" id="step-3" role="group" aria-labelledby="step-3-question">
+            <h3 class="step-question" id="step-3-question">
+              Where should we send your results?
+            </h3>
+            <p class="step-sub">Your personalized breakdown — what it's costing you, and what fixing it looks like.</p>
+
+            <div class="form-fields">
+              <div class="form-row">
+                <div class="ds-field">
+                  <label class="ds-field-label" for="f-name">Your name</label>
+                  <input class="ds-input" id="f-name" type="text" placeholder="Sarah Müller" autocomplete="name">
+                </div>
+                <div class="ds-field">
+                  <label class="ds-field-label" for="f-company">Company</label>
+                  <input class="ds-input" id="f-company" type="text" placeholder="Acme GmbH" autocomplete="organization">
+                </div>
+              </div>
+              <div class="ds-field">
+                <label class="ds-field-label" for="f-email">Work email</label>
+                <input class="ds-input" id="f-email" type="email" placeholder="sarah@acme.com" autocomplete="email">
+              </div>
+            </div>
+
+            <p class="validation-msg" id="step-3-error" role="alert">Please enter your name and a valid work email.</p>
+
+            <p class="form-privacy">No spam. No cold outreach without your go-ahead. Just your results and, if relevant, a conversation.</p>
+
+            <div class="step-nav">
+              <button class="btn-primary" onclick="submitAssessment()">
+                Get my assessment
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="step-back" onclick="prevStep(3)">Back</button>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div class="assessment-result" id="assessment-result" aria-live="polite">
+            <div class="result-tag">
+              <span class="tag">Your GTM Gap Assessment</span>
+            </div>
+            <h3 class="result-headline" id="result-headline">
+              Here's what your system is costing you.
+            </h3>
+            <p class="result-intro" id="result-intro">
+              Based on your inputs, here's an estimate of the capacity your team is losing to problems that automation should be handling — and what addressing them would look like in practice.
+            </p>
+
+            <div class="result-metrics" role="list">
+              <div class="result-metric" role="listitem">
+                <div class="result-metric-number" id="result-weekly">
+                  <em>~</em><strong id="result-weekly-num">—</strong> hrs
+                </div>
+                <div class="result-metric-label">Per week lost to<br>system gaps</div>
+              </div>
+              <div class="result-metric" role="listitem">
+                <div class="result-metric-number" id="result-annual">
+                  <em>~</em><strong id="result-annual-num">—</strong> hrs
+                </div>
+                <div class="result-metric-label">Per year in GTM<br>capacity you could reclaim</div>
+              </div>
+              <div class="result-metric" role="listitem">
+                <div class="result-metric-number">
+                  <em>€</em><strong id="result-revenue-num">—</strong>
+                </div>
+                <div class="result-metric-label">Estimated annual<br>revenue impact</div>
+              </div>
+            </div>
+
+            <p class="result-fixes-title">Highest-impact fixes for your situation</p>
+            <ul class="fix-list" id="fix-list" aria-label="Recommended fixes">
+              <!-- Populated by JS -->
+            </ul>
+
+            <div class="result-cta">
+              <a href="mailto:hello@effortlessgtm.com?subject=GTM Assessment — Let's talk" class="btn-primary">
+                Get the full breakdown
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <p class="result-cta-note">30 minutes. We walk through your situation. No commitment.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HOW IT WORKS
+    ============================================================ -->
+    <section id="how" class="how" aria-labelledby="how-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Three steps</span>
+          <h2 id="how-headline" class="headline" style="margin-top: var(--sp-16);">
+            Simple process. No ambiguity.
+          </h2>
+        </header>
+
+        <ol class="steps-grid" role="list">
+
+          <li role="listitem">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3 class="step-title">Diagnose</h3>
+            <p class="step-body">
+              Map your GTM motion. Find the gaps. Quantify the cost. Clear baseline before we touch anything. No workshops that produce a slide deck. Just a sharp read on where the system is failing.
+            </p>
+          </li>
+
+          <li role="listitem">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3 class="step-title">Build</h3>
+            <p class="step-body">
+              Design and implement the automation layer. Built for your stack, your market, your motion. Working system in two weeks, not a prototype. Not a roadmap to one.
+            </p>
+          </li>
+
+          <li role="listitem">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3 class="step-title">Run</h3>
+            <p class="step-body">
+              The system runs. Your team acts on prioritized opportunities. We monitor outcomes, resolve edge cases, and iterate. The motion gets sharper every cycle.
+            </p>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROOF
+    ============================================================ -->
+    <section id="proof" class="proof" aria-labelledby="proof-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Built with practitioners, for practitioners</span>
+          <h2 id="proof-headline" class="headline" style="margin-top: var(--sp-16);">
+            Trusted by GTM teams across Europe.
+          </h2>
+        </header>
+
+        <div class="testimonials-grid">
+
+          <blockquote class="testimonial">
+            <p class="testimonial-quote">
+              "The system changed how we think about outbound entirely. We stopped chasing and started responding to signals we didn't know we were missing. The shift in how reps spend their time is measurable."
+            </p>
+            <footer>
+              <cite class="testimonial-name">Head of Sales</cite>
+              <span class="testimonial-role">B2B SaaS company, DACH region</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial">
+            <p class="testimonial-quote">
+              "Two weeks from brief to a working system. No fluff, no endless workshops. They mapped the gaps, built the logic, and handed us something we could actually use the day we got it."
+            </p>
+            <footer>
+              <cite class="testimonial-name">VP Revenue Operations</cite>
+              <span class="testimonial-role">Series A fintech, Europe</span>
+            </footer>
+          </blockquote>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL CTA
+    ============================================================ -->
+    <section class="cta-final" aria-labelledby="cta-headline">
+      <div class="container">
+        <div class="cta-final-inner">
+
+          <div class="cta-copy">
+            <span class="eyebrow">A specialist practice. Not an agency.</span>
+            <h2 id="cta-headline" class="headline" style="margin-top: var(--sp-16);">
+              We fix the system underneath.
+            </h2>
+            <p class="body">
+              Effortless GTM designs and implements AI-native go-to-market systems for European B2B companies. We work with sales leaders, revenue operators, and founders who know the problem isn't effort. It's the system underneath. That's what we fix.
+            </p>
+            <a href="#assessment" class="btn-primary">
+              Start with the assessment
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
+          <aside class="cta-aside" aria-label="Practice details">
+            <div class="cta-detail">
+              <p class="cta-detail-label">Location</p>
+              <p class="cta-detail-body">Based in Vienna, Austria. Working across European B2B markets in English, German, and French.</p>
+            </div>
+            <div class="cta-detail">
+              <p class="cta-detail-label">Approach</p>
+              <p class="cta-detail-body">Practitioners first. Every system is grounded in GTM reality, not theoretical frameworks or vendor playbooks.</p>
+            </div>
+            <div class="cta-detail">
+              <p class="cta-detail-label">Engagements</p>
+              <p class="cta-detail-body">Tight and accountable. You get a working system, not a roadmap to one. No retainer lock-in before we've proven the value.</p>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-logo">Effortless<span>GTM</span></a>
+      <p class="footer-note">AI-native GTM systems for European B2B &nbsp;·&nbsp; Vienna, Austria</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       ASSESSMENT JAVASCRIPT
+  ============================================================ -->
+  <script>
+    'use strict';
+
+    /* ——————————————————————————————————————————————
+       Data: problem definitions and scoring
+    —————————————————————————————————————————————— */
+    const PROBLEMS = {
+      'wrong-accounts': {
+        label: 'Targeting wrong-fit accounts',
+        hoursPerPerson: 2.5,
+        fix: 'ICP scoring + signal-based account prioritization',
+        detail: 'Automatically score every account against your ICP, refreshed continuously — so reps only touch accounts worth touching.'
+      },
+      'bad-timing': {
+        label: 'Missing the buying window',
+        hoursPerPerson: 2.0,
+        fix: 'Trigger-based outreach with real-time signal monitoring',
+        detail: 'Monitor funding rounds, exec hires, tool changes, and intent signals — and route them to reps the same day they happen.'
+      },
+      'stale-crm': {
+        label: 'Stale CRM data',
+        hoursPerPerson: 1.5,
+        fix: 'Automated CRM enrichment and data hygiene workflows',
+        detail: 'Keep contacts, accounts, and firmographics updated continuously — without manual intervention eating up rep time.'
+      },
+      'followup': {
+        label: 'Follow-up falling through the cracks',
+        hoursPerPerson: 1.5,
+        fix: 'Automated follow-up sequences and CRM task routing',
+        detail: 'Every contact that doesn\'t respond enters a smart sequence. Every rep gets a cleared task queue and no dropped threads.'
+      },
+      'mql-quality': {
+        label: 'Marketing leads that don\'t convert',
+        hoursPerPerson: 2.0,
+        fix: 'Behavioral lead scoring with automated sales handoff',
+        detail: 'Score every lead on buying intent and behavior — and only hand off to sales when the signal crosses the threshold.'
+      },
+      'churn': {
+        label: 'Late churn signals',
+        hoursPerPerson: 2.0,
+        fix: 'Customer health scoring with automated churn alerting',
+        detail: 'Detect engagement drops, usage shifts, and support spikes automatically — before the customer says anything.'
+      }
+    };
+
+    const TEAM_SIZES = {
+      '1-5':  { count: 3 },
+      '6-15': { count: 10 },
+      '16-50':{ count: 28 },
+      '50+':  { count: 65 }
+    };
+
+    const GTM_HOUR_VALUE = 120; // €/hr, conservative GTM capacity estimate
+
+    /* ——————————————————————————————————————————————
+       State
+    —————————————————————————————————————————————— */
+    let currentStep = 1;
+
+    /* ——————————————————————————————————————————————
+       Navigation
+    —————————————————————————————————————————————— */
+    function nextStep(from) {
+      if (from === 1) {
+        const selected = getSelectedProblems();
+        if (selected.length === 0) {
+          showError('step-1-error');
+          return;
+        }
+        hideError('step-1-error');
+      }
+
+      if (from === 2) {
+        const size = getTeamSize();
+        if (!size) {
+          showError('step-2-error');
+          return;
+        }
+        hideError('step-2-error');
+      }
+
+      setStep(from + 1);
+    }
+
+    function prevStep(from) {
+      setStep(from - 1);
+    }
+
+    function setStep(n) {
+      // Deactivate current
+      const current = document.getElementById('step-' + currentStep);
+      if (current) current.classList.remove('active');
+
+      // Update progress
+      updateProgress(currentStep, 'done');
+
+      // Activate new
+      currentStep = n;
+      const next = document.getElementById('step-' + n);
+      if (next) next.classList.add('active');
+      updateProgress(n, 'active');
+
+      // Scroll to assessment section
+      document.getElementById('assessment').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateProgress(stepNum, state) {
+      const dot = document.getElementById('prog-' + stepNum);
+      if (!dot) return;
+      dot.classList.remove('active', 'done');
+      if (state) dot.classList.add(state);
+    }
+
+    /* ——————————————————————————————————————————————
+       Form helpers
+    —————————————————————————————————————————————— */
+    function getSelectedProblems() {
+      return Array.from(
+        document.querySelectorAll('#step-1 input[type="checkbox"]:checked')
+      ).map(el => el.value);
+    }
+
+    function getTeamSize() {
+      const radio = document.querySelector('input[name="team-size"]:checked');
+      return radio ? radio.value : null;
+    }
+
+    function showError(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('visible');
+    }
+
+    function hideError(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('visible');
+    }
+
+    /* ——————————————————————————————————————————————
+       Submission + result generation
+    —————————————————————————————————————————————— */
+    function submitAssessment() {
+      const name  = document.getElementById('f-name').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+
+      if (!name || !isValidEmail(email)) {
+        showError('step-3-error');
+        return;
+      }
+      hideError('step-3-error');
+
+      const selectedProblems = getSelectedProblems();
+      const teamSize = getTeamSize();
+      const results = calculate(selectedProblems, teamSize);
+
+      renderResults(results, name, selectedProblems);
+      showResults();
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function calculate(problemIds, teamSizeKey) {
+      const hoursPerPerson = problemIds.reduce((sum, id) => {
+        return sum + (PROBLEMS[id] ? PROBLEMS[id].hoursPerPerson : 0);
+      }, 0);
+
+      const teamCount = (TEAM_SIZES[teamSizeKey] || { count: 5 }).count;
+      const weeklyHours = Math.round(hoursPerPerson * teamCount);
+      const annualHours = weeklyHours * 48;
+      const revenueImpact = Math.round((annualHours * GTM_HOUR_VALUE) / 1000) * 1000;
+
+      return { weeklyHours, annualHours, revenueImpact };
+    }
+
+    function renderResults(results, name, problemIds) {
+      // Metrics
+      document.getElementById('result-weekly-num').textContent = results.weeklyHours;
+      document.getElementById('result-annual-num').textContent = results.annualHours.toLocaleString('de-DE');
+      document.getElementById('result-revenue-num').textContent = formatCurrency(results.revenueImpact);
+
+      // Personalised intro
+      const firstName = name.split(' ')[0];
+      document.getElementById('result-intro').textContent =
+        firstName + ', based on your inputs, here\'s an estimate of the capacity your team is losing to problems automation should be handling — and where to fix first.';
+
+      // Fix list
+      const list = document.getElementById('fix-list');
+      list.innerHTML = '';
+      problemIds.forEach(id => {
+        const p = PROBLEMS[id];
+        if (!p) return;
+        const li = document.createElement('li');
+        li.className = 'fix-item';
+        li.innerHTML = `
+          <span class="fix-item-check" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M5 8L7 10L11 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div class="fix-item-content">
+            <p class="fix-item-title">${p.fix}</p>
+            <p class="fix-item-desc">${p.detail}</p>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function showResults() {
+      // Hide all steps
+      document.querySelectorAll('.assessment-step').forEach(el => el.classList.remove('active'));
+
+      // Mark all progress done
+      [1, 2, 3].forEach(n => updateProgress(n, 'done'));
+
+      // Show result
+      const result = document.getElementById('assessment-result');
+      result.classList.add('active');
+
+      // Scroll
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function formatCurrency(n) {
+      if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0', '') + 'M';
+      if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+      return n.toString();
+    }
+
+  </script>
+
+</body>
+</html>

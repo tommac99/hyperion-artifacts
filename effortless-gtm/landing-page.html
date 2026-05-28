@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal to Close — The B2B GTM Podcast</title>
+  <meta name="description" content="Signal to Close is the B2B podcast at the intersection of AI and go-to-market. Two hosts, real systems, one actionable AI tip per episode. Listen on Spotify and Apple Podcasts." />
+
+  <style>
+    /* ==========================================================
+       FONTS — Swiza (self-hosted)
+    ========================================================== */
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff') format('woff');
+      font-weight: 200;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff') format('woff');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Italic-webfontkit/swiza-lightitalic-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Italic-webfontkit/swiza-lightitalic-webfont.woff') format('woff');
+      font-weight: 300;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-regular-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-regular-webfont.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-semibold-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-semibold-webfont.woff') format('woff');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ==========================================================
+       RESET + TOKENS
+    ========================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Canvas */
+      --canvas:          oklch(17% 0.04 165);
+      --canvas-raised:   oklch(14% 0.008 160);
+      --canvas-mid:      oklch(20% 0.025 163);
+
+      /* Text */
+      --text-primary:    oklch(98% 0.02 155);
+      --text-body:       oklch(92% 0 0);
+      --text-muted:      oklch(80% 0.005 160);
+
+      /* Mint — sole primary interactive signal */
+      --mint:            oklch(84% 0.06 155);
+      --mint-pale:       oklch(98% 0.02 155);
+      --mint-bg:         oklch(84% 0.06 155 / 0.08);
+      --mint-border:     oklch(84% 0.06 155 / 0.22);
+      --mint-ghost:      oklch(84% 0.06 155 / 0.12);
+
+      /* Plum — secondary, one use per zone */
+      --plum:            oklch(55% 0.09 305);
+      --plum-bg:         oklch(55% 0.09 305 / 0.10);
+      --plum-border:     oklch(55% 0.09 305 / 0.22);
+
+      /* Structural */
+      --border:          oklch(84% 0.06 155 / 0.12);
+      --border-strong:   oklch(84% 0.06 155 / 0.28);
+      --shadow-hover:    0 4px 20px oklch(0% 0 0 / 0.40);
+      --focus-ring:      0 0 0 3px oklch(84% 0.06 155 / 0.45);
+      --focus-ring-plum: 0 0 0 3px oklch(55% 0.09 305 / 0.35);
+
+      /* Motion */
+      --ease:            cubic-bezier(0.25, 0, 0, 1);
+      --dur-fast:        120ms;
+      --dur-std:         160ms;
+
+      /* Layout */
+      --gutter:          clamp(1.5rem, 5vw, 4rem);
+      --max-w:           1200px;
+    }
+
+    /* ==========================================================
+       BASE
+    ========================================================== */
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Swiza', system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.005em;
+      background: var(--canvas);
+      color: var(--text-body);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -200%;
+      left: 1rem;
+      z-index: 9999;
+      background: var(--mint);
+      color: var(--canvas);
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: top var(--dur-std) var(--ease);
+    }
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    /* ==========================================================
+       NAVIGATION
+    ========================================================== */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: oklch(17% 0.04 165 / 0.93);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .nav-wordmark {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease);
+      flex-shrink: 0;
+    }
+    .nav-wordmark:hover { color: var(--mint); }
+    .nav-wordmark:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 2px; }
+    .nav-wordmark .accent { color: var(--mint); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease);
+    }
+    .nav-link:hover { color: var(--text-body); }
+    .nav-link:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 2px; }
+
+    .nav-cta {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mint);
+      text-decoration: none;
+      border: 1px solid var(--mint-border);
+      padding: 7px 18px;
+      border-radius: 2px;
+      transition: background var(--dur-std) var(--ease), color var(--dur-std) var(--ease);
+    }
+    .nav-cta:hover {
+      background: var(--mint-bg);
+      color: var(--text-primary);
+    }
+    .nav-cta:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    /* ==========================================================
+       BUTTONS
+    ========================================================== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--mint);
+      color: var(--canvas);
+      padding: 13px 28px;
+      font-family: 'Swiza', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
+    }
+    .btn-primary:hover {
+      background: var(--mint-pale);
+      transform: translateY(-2px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--mint);
+      padding: 13px 28px;
+      font-family: 'Swiza', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--mint-border);
+      border-radius: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--dur-std) var(--ease), color var(--dur-std) var(--ease), border-color var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
+    }
+    .btn-ghost:hover {
+      background: var(--mint-ghost);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+    .btn-ghost:active { transform: translateY(0); }
+    .btn-ghost:focus-visible { outline: none; box-shadow: var(--focus-ring-plum); }
+
+    .platform-icon {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================
+       HERO
+    ========================================================== */
+    .hero {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: clamp(5rem, 12vh, 9rem) var(--gutter) clamp(4rem, 10vh, 7rem);
+      display: grid;
+      grid-template-columns: 55fr 45fr;
+      gap: clamp(2rem, 5vw, 6rem);
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-headline {
+      margin-bottom: 1.5rem;
+      line-height: 0.9;
+    }
+
+    .hl-light {
+      display: block;
+      font-size: clamp(3.75rem, 8.5vw, 8rem);
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      color: oklch(98% 0.02 155 / 0.72);
+    }
+
+    .hl-bold {
+      display: block;
+      font-size: clamp(3.75rem, 8.5vw, 8rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2vw, 1.1875rem);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.01em;
+      line-height: 1.55;
+      color: var(--text-muted);
+      margin-bottom: 1.875rem;
+      max-width: 42ch;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .meta-item {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: oklch(80% 0.005 160 / 0.7);
+    }
+    .meta-item + .meta-item::before {
+      content: '\00B7';
+      margin-right: 1rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .signal-svg {
+      width: 100%;
+      max-width: 520px;
+      height: auto;
+    }
+
+    /* ==========================================================
+       SECTION CHROME
+    ========================================================== */
+    .section-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: clamp(4rem, 8vh, 7rem) var(--gutter);
+    }
+
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 2.25rem;
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ==========================================================
+       THESIS
+    ========================================================== */
+    .thesis-band {
+      background: var(--canvas-raised);
+    }
+
+    .thesis-statement {
+      font-size: clamp(1.625rem, 3.75vw, 3rem);
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+      color: var(--text-primary);
+      max-width: 22ch;
+      margin-bottom: 2.75rem;
+    }
+
+    .thesis-statement strong {
+      font-weight: 700;
+      color: var(--mint);
+    }
+
+    .thesis-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1.25rem, 3vw, 3rem);
+      max-width: 860px;
+    }
+
+    .thesis-col {
+      padding-top: 1.125rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .thesis-col p {
+      font-size: 0.9375rem;
+      line-height: 1.72;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================
+       HOSTS
+    ========================================================== */
+    .hosts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.125rem;
+      margin-bottom: 1.125rem;
+    }
+
+    .host-card {
+      background: var(--canvas-raised);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      transition: transform var(--dur-std) var(--ease), box-shadow var(--dur-std) var(--ease);
+    }
+    .host-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .host-role {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.875rem;
+    }
+    .host-card--gtm .host-role { color: var(--mint); }
+    .host-card--eng .host-role { color: var(--plum); }
+
+    .host-name {
+      font-size: 1.4375rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .host-bio {
+      font-size: 0.9375rem;
+      line-height: 1.72;
+      color: var(--text-muted);
+      margin-bottom: 1.375rem;
+      max-width: 50ch;
+    }
+
+    .host-lens {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      color: var(--text-body);
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--mint-border);
+      background: var(--mint-bg);
+      border-radius: 4px;
+    }
+    .host-card--eng .host-lens {
+      border-color: var(--plum-border);
+      background: var(--plum-bg);
+    }
+
+    .host-lens strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tension-bar {
+      background: var(--canvas-raised);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.375rem 1.875rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.75rem;
+    }
+
+    .tension-label {
+      font-size: 0.625rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: oklch(80% 0.005 160 / 0.55);
+      padding-top: 0.2rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tension-copy {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-body);
+    }
+
+    .tension-copy strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================
+       EPISODES
+    ========================================================== */
+    .episodes-band {
+      border-top: 1px solid var(--border);
+    }
+
+    .episodes-list {
+      list-style: none;
+    }
+
+    .ep {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 2.5rem;
+      padding: clamp(2rem, 4vw, 2.75rem) 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .ep:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .ep-num {
+      font-size: clamp(2.75rem, 5vw, 4.25rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: oklch(84% 0.06 155 / 0.10);
+      padding-top: 0.375rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ep-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--mint-bg);
+      color: var(--mint);
+      padding: 2px 10px;
+      font-size: 0.625rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      border: 1px solid var(--mint-border);
+      margin-bottom: 1rem;
+    }
+
+    .ep-title {
+      font-size: clamp(1.125rem, 2.25vw, 1.5625rem);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.22;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .ep-thesis {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 64ch;
+      margin-bottom: 1.375rem;
+    }
+
+    .ep-hook {
+      max-width: 62ch;
+    }
+
+    .hook-opener {
+      display: block;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 0.55;
+      color: var(--mint);
+      opacity: 0.28;
+      margin-bottom: 0.625rem;
+      user-select: none;
+    }
+
+    .hook-text {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--text-body);
+    }
+
+    /* ==========================================================
+       ANATOMY — EPISODE FORMAT
+    ========================================================== */
+    .anatomy-band {
+      background: var(--canvas-mid);
+    }
+
+    .anatomy-intro {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 2.25rem;
+      max-width: 58ch;
+    }
+
+    .anatomy-track {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .seg {
+      padding: 1.25rem 1.125rem;
+      border-right: 1px solid var(--border);
+    }
+    .seg:last-child { border-right: none; }
+
+    /* Segment accent: top border as category marker */
+    .seg--open  { border-top: 2px solid oklch(80% 0.005 160 / 0.35); }
+    .seg--signal{ border-top: 2px solid var(--mint); }
+    .seg--main  { border-top: 2px solid oklch(84% 0.06 155 / 0.55); }
+    .seg--monday{ border-top: 2px solid var(--plum); }         /* plum — one use in this zone */
+    .seg--aitip { border-top: 2px solid oklch(84% 0.06 155 / 0.8); }
+    .seg--outro { border-top: 2px solid oklch(80% 0.005 160 / 0.35); }
+
+    .seg-time {
+      font-size: 0.625rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: oklch(80% 0.005 160 / 0.55);
+      margin-bottom: 0.5rem;
+    }
+
+    .seg-name {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.375rem;
+      line-height: 1.3;
+    }
+
+    .seg-desc {
+      font-size: 0.75rem;
+      line-height: 1.58;
+      color: var(--text-muted);
+    }
+
+    .seg-dur {
+      margin-top: 1rem;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--mint);
+    }
+    .seg--monday .seg-dur { color: var(--plum); }
+    .seg--open .seg-dur,
+    .seg--outro .seg-dur { color: oklch(80% 0.005 160 / 0.55); }
+
+    /* ==========================================================
+       LISTEN CTA
+    ========================================================== */
+    .listen-band {
+      background: var(--canvas-raised);
+    }
+
+    .listen-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .listen-headline {
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 0.875rem;
+    }
+    .listen-headline .lh-light { font-weight: 200; }
+    .listen-headline .lh-bold  { font-weight: 700; }
+
+    .listen-sub {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 50ch;
+    }
+
+    .listen-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================
+       FOOTER
+    ========================================================== */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: clamp(1.75rem, 4vh, 2.75rem) var(--gutter);
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .footer-brand {
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+    .footer-brand .accent { color: var(--mint); }
+
+    .footer-meta {
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: oklch(80% 0.005 160 / 0.6);
+      margin-top: 0.25rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-link {
+      font-size: 0.6875rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease);
+    }
+    .footer-link:hover { color: var(--mint); }
+    .footer-link:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 2px; }
+
+    /* ==========================================================
+       RESPONSIVE
+    ========================================================== */
+    @media (max-width: 1024px) {
+      .anatomy-track {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .seg:nth-child(3) { border-right: none; }
+      .seg:nth-child(4),
+      .seg:nth-child(5),
+      .seg:nth-child(6) {
+        border-top: 1px solid var(--border);
+      }
+      /* Override segment-specific top borders for rows 2+ on tablet */
+      .seg:nth-child(4).seg--monday { border-top: 2px solid var(--plum); }
+      .seg:nth-child(5).seg--aitip  { border-top: 2px solid oklch(84% 0.06 155 / 0.8); }
+      .seg:nth-child(6).seg--outro  { border-top: 2px solid oklch(80% 0.005 160 / 0.35); }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-bottom: clamp(3.5rem, 8vh, 5.5rem);
+      }
+      .hero-visual { display: none; }
+
+      .thesis-two-col { grid-template-columns: 1fr; }
+
+      .hosts-grid { grid-template-columns: 1fr; }
+
+      .ep {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      .ep-num {
+        font-size: 1.5rem;
+        display: inline;
+        color: oklch(84% 0.06 155 / 0.18);
+      }
+
+      .listen-inner {
+        grid-template-columns: 1fr;
+      }
+      .listen-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .anatomy-track {
+        grid-template-columns: 1fr 1fr;
+      }
+      .seg:nth-child(2) { border-right: none; }
+      .seg:nth-child(3),
+      .seg:nth-child(4),
+      .seg:nth-child(5),
+      .seg:nth-child(6) { border-top: 1px solid var(--border); }
+      .seg:nth-child(4) { border-right: none; }
+      .seg:nth-child(6) { border-right: none; }
+
+      .nav-links .nav-link { display: none; }
+
+      .tension-bar {
+        flex-direction: column;
+        gap: 0.625rem;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .anatomy-track {
+        grid-template-columns: 1fr;
+      }
+      .seg { border-right: none; border-top: 1px solid var(--border); }
+      .seg:first-child { border-top: none; }
+      /* Restore category top borders */
+      .seg--signal { border-top: 2px solid var(--mint); }
+      .seg--monday { border-top: 2px solid var(--plum); }
+      .seg--aitip  { border-top: 2px solid oklch(84% 0.06 155 / 0.8); }
+    }
+
+    /* ==========================================================
+       REDUCED MOTION
+    ========================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- PW GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:999999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;flex-direction:column;">
+  <p style="color:#555;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Password required</p>
+  <input id="pw-in" type="password" placeholder="Enter password" autocomplete="off" style="background:#111;border:1px solid #2a2a2a;color:#fff;padding:10px 18px;font-size:14px;outline:none;width:240px;text-align:center;border-radius:6px;">
+  <p id="pw-err" style="color:#e55;font-size:12px;margin-top:10px;height:14px;"></p>
+</div>
+<script>
+(function(){
+  var KEY='egtm_v1';
+  var gate=document.getElementById('pw-gate');
+  if(localStorage.getItem(KEY)==='1'){gate.remove();return;}
+  var inp=document.getElementById('pw-in');
+  var err=document.getElementById('pw-err');
+  setTimeout(function(){inp.focus();},50);
+  function check(){
+    if(inp.value==='effortlessgtm'){
+      localStorage.setItem(KEY,'1');
+      gate.style.transition='opacity 0.3s';
+      gate.style.opacity='0';
+      setTimeout(function(){gate.remove();},300);
+    } else {
+      err.textContent='Incorrect password';
+      inp.value='';
+      setTimeout(function(){inp.focus();},10);
+    }
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+})();
+</script>
+<!-- END PW GATE -->
+
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ====================================================
+     NAVIGATION
+==================================================== -->
+<header>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-wordmark" aria-label="Signal to Close — home">
+        Signal to <span class="accent">Close</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#episodes" class="nav-link">Episodes</a></li>
+        <li><a href="#hosts" class="nav-link">Hosts</a></li>
+        <li><a href="#listen" class="nav-cta">Listen now</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+
+  <!-- ====================================================
+       HERO
+  ==================================================== -->
+  <section class="hero" aria-labelledby="hero-heading">
+
+    <div class="hero-content">
+      <span class="hero-eyebrow">B2B GTM Operations Podcast</span>
+
+      <h1 class="hero-headline" id="hero-heading">
+        <span class="hl-light">Signal to</span>
+        <span class="hl-bold">Close.</span>
+      </h1>
+
+      <p class="hero-tagline">Read the signal. Build the system. Close the deal.</p>
+
+      <p class="hero-meta" aria-label="Show details">
+        <span class="meta-item">Etienne Frelechoz + Thomas MacFarlaine</span>
+        <span class="meta-item">45&#8211;60 min</span>
+        <span class="meta-item">Biweekly</span>
+        <span class="meta-item">English</span>
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn-primary" aria-label="Listen on Spotify">
+          <svg class="platform-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M8 0C3.579 0 0 3.579 0 8s3.579 8 8 8 8-3.579 8-8S12.421 0 8 0zm3.669 11.538a.499.499 0 0 1-.686.166c-1.879-1.147-4.243-1.407-7.028-.771a.499.499 0 0 1-.222-.973c3.049-.696 5.662-.396 7.771.892a.5.5 0 0 1 .165.686zm.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.987 1.063a.624.624 0 0 1 .205.858zm.084-2.268C10.153 5.56 5.9 5.418 3.438 6.166a.749.749 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.748.748 0 0 1-.764 1.288z"/>
+          </svg>
+          Spotify
+        </a>
+        <a href="#" class="btn-ghost" aria-label="Listen on Apple Podcasts">
+          <svg class="platform-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M7.5 2a5.5 5.5 0 1 0 0 11A5.5 5.5 0 0 0 7.5 2zM0 7.5a7.5 7.5 0 1 1 15 0 7.5 7.5 0 0 1-15 0zm7.5-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 5.5c-.728 0-1.378-.25-1.89-.664L4.5 13.5h6l-1.11-3.164A3 3 0 0 1 7.5 11z"/>
+          </svg>
+          Apple Podcasts
+        </a>
+      </div>
+    </div>
+
+    <!-- Signal-to-close SVG visualization -->
+    <div class="hero-visual" aria-hidden="true">
+      <svg class="signal-svg" viewBox="0 0 520 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Noisy signal: left zone — irregular bars representing raw data -->
+        <rect x="0"   y="124" width="7" height="72"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.12"/>
+        <rect x="13"  y="138" width="7" height="44"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.16"/>
+        <rect x="26"  y="108" width="7" height="104" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.12"/>
+        <rect x="39"  y="148" width="7" height="24"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.20"/>
+        <rect x="52"  y="118" width="7" height="84"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.13"/>
+        <rect x="65"  y="130" width="7" height="60"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.17"/>
+        <rect x="78"  y="100" width="7" height="120" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.12"/>
+        <rect x="91"  y="142" width="7" height="36"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.18"/>
+        <rect x="104" y="125" width="7" height="70"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.14"/>
+
+        <!-- Transition zone — regularising, opacity rising -->
+        <rect x="124" y="120" width="7" height="80"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.28"/>
+        <rect x="137" y="108" width="7" height="104" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.33"/>
+        <rect x="150" y="116" width="7" height="88"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.38"/>
+        <rect x="163" y="104" width="7" height="112" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.44"/>
+        <rect x="176" y="112" width="7" height="96"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.50"/>
+
+        <!-- Resolving signal — ascending, clarifying -->
+        <rect x="200" y="136" width="7" height="64"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.52"/>
+        <rect x="213" y="118" width="7" height="90"  rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.57"/>
+        <rect x="226" y="98"  width="7" height="120" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.63"/>
+        <rect x="239" y="78"  width="7" height="148" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.68"/>
+        <rect x="252" y="60"  width="7" height="176" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.74"/>
+        <rect x="265" y="42"  width="7" height="210" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.80"/>
+        <rect x="278" y="26"  width="7" height="240" rx="3.5" fill="oklch(84% 0.06 155)" opacity="0.86"/>
+
+        <!-- Peak -->
+        <rect x="300" y="12"  width="9" height="272" rx="4.5" fill="oklch(84% 0.06 155)" opacity="0.92"/>
+
+        <!-- Close mark: checkmark resolving the signal -->
+        <path d="M 330 96 L 368 172 L 440 52" stroke="oklch(84% 0.06 155)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.78" fill="none"/>
+        <!-- Subtle horizontal rule below close mark -->
+        <line x1="330" y1="210" x2="450" y2="210" stroke="oklch(84% 0.06 155)" stroke-width="1" opacity="0.18"/>
+      </svg>
+    </div>
+
+  </section>
+
+  <!-- ====================================================
+       THESIS
+  ==================================================== -->
+  <section class="thesis-band" aria-labelledby="thesis-heading">
+    <div class="section-wrap">
+      <p class="section-label" style="border-bottom:none; padding-bottom:0; margin-bottom:1.75rem;">The thesis</p>
+      <h2 id="thesis-heading" class="thesis-statement">
+        AI is <strong>collapsing the distinction</strong> between GTM operators and decision-makers.
+      </h2>
+      <div class="thesis-two-col">
+        <div class="thesis-col">
+          <p>The operator who can't think strategically gets replaced. The executive who can't build gets outpaced.</p>
+        </div>
+        <div class="thesis-col">
+          <p>Signal to Close is for the people becoming both: practitioners at the intersection of AI, revenue operations, and go-to-market execution.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       HOSTS
+  ==================================================== -->
+  <section class="section-wrap" id="hosts" aria-labelledby="hosts-heading">
+    <h2 class="section-label" id="hosts-heading">The hosts</h2>
+    <div class="hosts-grid">
+
+      <article class="host-card host-card--gtm">
+        <p class="host-role">GTM Operator &amp; Consultant</p>
+        <h3 class="host-name">Etienne Frelechoz</h3>
+        <p class="host-bio">B2B go-to-market operator specialising in AI-native GTM systems: sales, marketing, customer success, and revenue operations. European market focus.</p>
+        <div class="host-lens">
+          <strong>On air:</strong> Drives GTM framing and operational use cases. Pushes for simplicity and what teams can realistically maintain.
+        </div>
+      </article>
+
+      <article class="host-card host-card--eng">
+        <p class="host-role">AI Engineer</p>
+        <h3 class="host-name">Thomas MacFarlaine</h3>
+        <p class="host-bio">AI engineer with deep expertise in building intelligent systems and automation. Brings the architecture layer to every topic: how to actually build what GTM teams need, not just describe it.</p>
+        <div class="host-lens">
+          <strong>On air:</strong> Leads technical architecture and tooling specifics. Pushes for building it right and challenges oversimplification.
+        </div>
+      </article>
+
+    </div>
+
+    <div class="tension-bar" role="note" aria-label="The structural dynamic between hosts">
+      <span class="tension-label">The dynamic</span>
+      <p class="tension-copy">
+        <strong>Etienne pushes for operational simplicity and fast implementation.</strong> Thomas pushes for engineering correctness and scalable architecture. Disagreement is not smoothed over: it is the main event. Two complementary lenses on the same problem.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       EPISODES
+  ==================================================== -->
+  <section class="section-wrap episodes-band" id="episodes" aria-labelledby="episodes-heading">
+    <h2 class="section-label" id="episodes-heading">Episodes</h2>
+
+    <ol class="episodes-list" aria-label="Planned episodes">
+
+      <li class="ep">
+        <span class="ep-num" aria-hidden="true">001</span>
+        <div>
+          <span class="ep-badge">Manifesto</span>
+          <h3 class="ep-title">Your AI Second-Brain for Go-to-Market</h3>
+          <p class="ep-thesis">Most GTM teams use AI like a faster search engine. The real play is a persistent, queryable intelligence layer holding your ICP, deal history, playbooks, and pipeline signals, available to every revenue team member in real time.</p>
+          <div class="ep-hook">
+            <span class="hook-opener" aria-hidden="true">&#8220;</span>
+            <p class="hook-text">Your CRM is not your second brain. It&#8217;s a graveyard of data no one looks at. Here&#8217;s what the second brain actually looks like.</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="ep">
+        <span class="ep-num" aria-hidden="true">002</span>
+        <div>
+          <span class="ep-badge">Tactical</span>
+          <h3 class="ep-title">How to Build a Pipeline That Actually Predicts Revenue</h3>
+          <p class="ep-thesis">Most pipelines are wishlists, not forecasts. A predictive pipeline is not more data. It is the right signals, measured at the right stages, with the right exit criteria. This episode is the build guide.</p>
+          <div class="ep-hook">
+            <span class="hook-opener" aria-hidden="true">&#8220;</span>
+            <p class="hook-text">Your pipeline has $2.3M in it. Your CFO wants to know how much you&#8217;re going to close this quarter. You look at the number and you honestly have no idea. That&#8217;s not a forecasting problem. That&#8217;s a pipeline instrumentation problem.</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="ep">
+        <span class="ep-num" aria-hidden="true">003</span>
+        <div>
+          <span class="ep-badge">Contrarian</span>
+          <h3 class="ep-title">AI Won&#8217;t Replace Your CRM. Here&#8217;s Why You Should Fix It First.</h3>
+          <p class="ep-thesis">The &#8220;CRM is dead&#8221; narrative is everywhere. This episode pushes back hard. AI doesn&#8217;t eliminate the need for a CRM; it makes clean, structured data more valuable than ever. Teams replacing their CRM with AI tools are solving the wrong problem.</p>
+          <div class="ep-hook">
+            <span class="hook-opener" aria-hidden="true">&#8220;</span>
+            <p class="hook-text">I&#8217;ve heard three founders this month tell me they ditched their CRM for AI. Two of them had no idea what their win rate was. One couldn&#8217;t tell me their average deal cycle. That&#8217;s not AI-native. That&#8217;s flying blind with a chatbot.</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="ep">
+        <span class="ep-num" aria-hidden="true">004</span>
+        <div>
+          <span class="ep-badge">Advanced</span>
+          <h3 class="ep-title">Building the GTM Brain, Part 2: From Starter Kit to Live Intelligence</h3>
+          <p class="ep-thesis">A GTM brain you manually maintain is a wiki. One that updates itself from live signals is intelligence. This episode covers connecting live signal sources, automating updates, governance, and making it team-wide.</p>
+          <div class="ep-hook">
+            <span class="hook-opener" aria-hidden="true">&#8220;</span>
+            <p class="hook-text">You made a Claude project, dumped in your ICP and your objection library. And then two weeks later, you realised the problem: it was already out of date. Today we&#8217;re fixing that.</p>
+          </div>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <!-- ====================================================
+       ANATOMY — EPISODE FORMAT
+  ==================================================== -->
+  <section class="anatomy-band" aria-labelledby="anatomy-heading">
+    <div class="section-wrap">
+      <h2 class="section-label" id="anatomy-heading">Episode format</h2>
+      <p class="anatomy-intro">45 to 60 minutes. Every episode follows the same shape so you always know where you are.</p>
+
+      <div class="anatomy-track" role="list" aria-label="Episode segment breakdown">
+
+        <div class="seg seg--open" role="listitem">
+          <p class="seg-time">0:00</p>
+          <p class="seg-name">Cold Open</p>
+          <p class="seg-desc">Starts mid-conversation or with a strong position. No ramp-up.</p>
+          <p class="seg-dur">2 min</p>
+        </div>
+
+        <div class="seg seg--signal" role="listitem">
+          <p class="seg-time">2:00</p>
+          <p class="seg-name">Today&#8217;s Signal</p>
+          <p class="seg-desc">One timely GTM topic. Both hosts react. The clip-able moment.</p>
+          <p class="seg-dur">8 min</p>
+        </div>
+
+        <div class="seg seg--main" role="listitem">
+          <p class="seg-time">13:00</p>
+          <p class="seg-name">Main Topic</p>
+          <p class="seg-desc">Problem, framework, real examples, common mistakes. One host drives; one interrogates.</p>
+          <p class="seg-dur">32 min</p>
+        </div>
+
+        <div class="seg seg--monday" role="listitem">
+          <p class="seg-time">45:00</p>
+          <p class="seg-name">What to Do Monday</p>
+          <p class="seg-desc">3 to 5 specific, actionable moves for this week.</p>
+          <p class="seg-dur">7 min</p>
+        </div>
+
+        <div class="seg seg--aitip" role="listitem">
+          <p class="seg-time">52:00</p>
+          <p class="seg-name">AI Tip</p>
+          <p class="seg-desc">One tool. One exact prompt. Vagueness kills credibility.</p>
+          <p class="seg-dur">5 min</p>
+        </div>
+
+        <div class="seg seg--outro" role="listitem">
+          <p class="seg-time">57:00</p>
+          <p class="seg-name">Outro</p>
+          <p class="seg-desc">One shared takeaway. Next episode tease. One CTA.</p>
+          <p class="seg-dur">3 min</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       LISTEN CTA
+  ==================================================== -->
+  <section class="listen-band" id="listen" aria-labelledby="listen-heading">
+    <div class="section-wrap">
+      <div class="listen-inner">
+        <div>
+          <h2 id="listen-heading" class="listen-headline">
+            <span class="lh-light">From first intent</span><br>
+            <span class="lh-bold">to closed deal.</span>
+          </h2>
+          <p class="listen-sub">New episodes every two weeks. Subscribe now and get the next one the moment it lands.</p>
+        </div>
+        <div class="listen-actions">
+          <a href="#" class="btn-primary" aria-label="Listen on Spotify">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.579 0 0 3.579 0 8s3.579 8 8 8 8-3.579 8-8S12.421 0 8 0zm3.669 11.538a.499.499 0 0 1-.686.166c-1.879-1.147-4.243-1.407-7.028-.771a.499.499 0 0 1-.222-.973c3.049-.696 5.662-.396 7.771.892a.5.5 0 0 1 .165.686zm.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.987 1.063a.624.624 0 0 1 .205.858zm.084-2.268C10.153 5.56 5.9 5.418 3.438 6.166a.749.749 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.748.748 0 0 1-.764 1.288z"/>
+            </svg>
+            Listen on Spotify
+          </a>
+          <a href="#" class="btn-ghost" aria-label="Listen on Apple Podcasts">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M7.5 2a5.5 5.5 0 1 0 0 11A5.5 5.5 0 0 0 7.5 2zM0 7.5a7.5 7.5 0 1 1 15 0 7.5 7.5 0 0 1-15 0zm7.5-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 5.5c-.728 0-1.378-.25-1.89-.664L4.5 13.5h6l-1.11-3.164A3 3 0 0 1 7.5 11z"/>
+            </svg>
+            Apple Podcasts
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================================================
+     FOOTER
+==================================================== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">Signal to <span class="accent">Close</span></p>
+      <p class="footer-meta">Etienne Frelechoz + Thomas MacFarlaine &nbsp;&middot;&nbsp; Biweekly &nbsp;&middot;&nbsp; &copy; 2026</p>
+    </div>
+    <ul class="footer-links" role="list">
+      <li><a href="#" class="footer-link">Spotify</a></li>
+      <li><a href="#" class="footer-link">Apple Podcasts</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

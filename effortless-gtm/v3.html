@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EffortlessGTM — AI-Native GTM Systems for B2B Sales Teams</title>
+  <meta name="description" content="We build AI workflows that eliminate manual research, admin overhead, and follow-up gaps—so your sales team focuses on closing, not data entry." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet" />
+
+  <style>
+
+    /* ============================================================
+       FONTS — Swiza (self-hosted)
+    ============================================================ */
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-extralight-webfont.woff') format('woff');
+      font-weight: 200; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-light-webfont.woff') format('woff');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-medium-webfont.woff') format('woff');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swiza';
+      src: url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff2') format('woff2'),
+           url('../EffortlessGTM Knowledgebank/raw/assets/EffortlessGTM Branding/Fonts/Swiza Complete Webfont/Swiza-Roman-webfontkit/swiza-bold-webfont.woff') format('woff');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --canvas:           oklch(17% 0.04 165);
+      --canvas-deep:      oklch(12% 0.032 165);
+      --canvas-raised:    oklch(20% 0.048 165);
+      --card:             oklch(14% 0.008 160);
+      --card-raised:      oklch(22% 0.008 160);
+
+      --mint:             oklch(84% 0.06 155);
+      --mint-hover:       oklch(91% 0.035 155);
+      --mint-dim:         rgba(188, 224, 198, 0.10);
+      --mint-border:      rgba(188, 224, 198, 0.12);
+      --mint-border-dim:  rgba(188, 224, 198, 0.06);
+
+      --plum:             oklch(55% 0.09 305);
+      --plum-dim:         rgba(134, 113, 165, 0.12);
+
+      --text-primary:     oklch(97% 0.015 155);
+      --text-secondary:   oklch(84% 0.022 155);
+      --text-muted:       oklch(65% 0.008 160);
+
+      --font: 'Swiza', 'DM Sans', system-ui, -apple-system, sans-serif;
+
+      --sp-4: 4px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px;
+      --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-40: 40px;
+      --sp-48: 48px; --sp-64: 64px; --sp-80: 80px; --sp-96: 96px;
+      --sp-120: 120px;
+
+      --r-sm: 2px; --r-md: 6px; --r-pill: 999px;
+
+      --ease:   cubic-bezier(0.25, 0, 0, 1);
+      --t-fast: 120ms;
+      --t-std:  160ms;
+
+      --shadow-hover:    0 4px 16px rgba(0,0,0,0.35);
+      --shadow-mint:     0 0 0 3px rgba(188, 224, 198, 0.45);
+      --shadow-lavender: 0 0 0 3px rgba(222, 227, 255, 0.45);
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    html { font-size: 17px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font);
+      background: var(--canvas);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    :focus-visible { outline: none; box-shadow: var(--shadow-mint); border-radius: var(--r-sm); }
+
+    .skip-link {
+      position: absolute; top: -100%; left: var(--sp-16);
+      background: var(--mint); color: var(--canvas);
+      padding: var(--sp-8) var(--sp-24); border-radius: var(--r-sm);
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none; z-index: 9999;
+    }
+    .skip-link:focus { top: var(--sp-16); }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    .eyebrow {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mint); line-height: 1;
+    }
+
+    .display {
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      line-height: 1.0; letter-spacing: -0.025em;
+    }
+    .display em  { font-weight: 200; font-style: normal; color: rgba(243,255,240,0.72); }
+    .display strong { font-weight: 700; color: var(--text-primary); }
+
+    .headline {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .body {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      font-weight: 300; line-height: 1.75; letter-spacing: 0.005em;
+      color: var(--text-secondary); max-width: 64ch;
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container {
+      width: 100%; max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: clamp(var(--sp-24), 5vw, var(--sp-80));
+    }
+
+    section { padding-block: clamp(var(--sp-80), 10vw, var(--sp-120)); }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: var(--sp-8);
+      background: var(--mint); color: oklch(12% 0.032 165);
+      font-family: var(--font); font-size: 0.6875rem; font-weight: 300;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      padding: 14px 32px; border: none; border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background var(--t-std) var(--ease), transform var(--t-std) var(--ease);
+    }
+    .btn-primary:hover { background: var(--mint-hover); transform: translateY(-2px); }
+    .btn-primary:focus-visible { box-shadow: var(--shadow-mint); transform: none; }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: var(--sp-8);
+      background: transparent; color: var(--mint);
+      font-family: var(--font); font-size: 0.6875rem; font-weight: 300;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      padding: 14px 32px; border: 1px solid var(--mint); border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background var(--t-std) var(--ease), color var(--t-std) var(--ease), transform var(--t-std) var(--ease);
+    }
+    .btn-ghost:hover { background: var(--mint-dim); color: var(--mint-hover); transform: translateY(-2px); }
+    .btn-ghost:focus-visible { box-shadow: var(--shadow-lavender); }
+
+    .btn-text {
+      background: none; border: none; font-family: var(--font);
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); cursor: pointer; padding: 0;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .btn-text:hover { color: var(--text-secondary); }
+
+    /* ============================================================
+       TAGS
+    ============================================================ */
+    .tag {
+      display: inline-flex; align-items: center;
+      background: var(--mint-dim); color: var(--mint);
+      padding: 3px 12px; font-size: 0.6875rem; font-weight: 300;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      border-radius: var(--r-pill); border: 1px solid transparent;
+    }
+    .tag-plum { background: var(--plum-dim); color: var(--plum); }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .site-nav {
+      position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 100;
+      padding-block: var(--sp-16);
+      background: rgba(2, 32, 27, 0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--mint-border-dim);
+    }
+
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--sp-40);
+    }
+
+    .nav-logo {
+      font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--text-primary); text-decoration: none; flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--mint); }
+
+    .nav-links { display: flex; align-items: center; gap: var(--sp-32); list-style: none; }
+    .nav-links a:not(.btn-primary) {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(232,232,232,0.5); text-decoration: none;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .nav-links a:not(.btn-primary):hover { color: var(--text-primary); }
+    .nav-links .btn-primary { padding: 9px 20px; }
+
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      padding-block-start: calc(var(--sp-120) + 64px);
+      padding-block-end: clamp(var(--sp-80), 12vw, var(--sp-120));
+      background: linear-gradient(170deg, var(--canvas-deep) 0%, var(--canvas) 60%);
+      position: relative;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset-block-end: 0; inset-inline: 0;
+      height: 1px; background: var(--mint-border-dim);
+    }
+
+    .hero-eyebrow { display: block; margin-bottom: var(--sp-32); }
+
+    .hero h1 { margin-bottom: var(--sp-32); max-width: 22ch; }
+
+    .hero-subhead {
+      font-size: clamp(1rem, 2vw, 1.125rem); font-weight: 300;
+      line-height: 1.78; letter-spacing: 0.005em;
+      color: var(--text-secondary); max-width: 55ch; margin-bottom: var(--sp-48);
+    }
+
+    .hero-cta-group { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-12); }
+
+    .hero-cta-row { display: flex; align-items: center; gap: var(--sp-16); flex-wrap: wrap; }
+
+    .hero-cta-support {
+      font-size: 0.8125rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    .stats-bar {
+      background: var(--canvas-deep);
+      border-block: 1px solid var(--mint-border-dim);
+      padding-block: var(--sp-48);
+    }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 680px) { .stats-grid { grid-template-columns: 1fr; } }
+
+    .stat-item {
+      padding-inline: var(--sp-48); display: flex; flex-direction: column; gap: var(--sp-8);
+      border-inline-end: 1px solid var(--mint-border-dim);
+    }
+    .stat-item:first-child { padding-inline-start: 0; }
+    .stat-item:last-child { border-inline-end: none; padding-inline-end: 0; }
+
+    @media (max-width: 680px) {
+      .stat-item {
+        padding-inline: 0; padding-block: var(--sp-24);
+        border-inline-end: none; border-block-end: 1px solid var(--mint-border-dim);
+      }
+      .stat-item:last-child { border-block-end: none; padding-block-end: 0; }
+      .stat-item:first-child { padding-block-start: 0; }
+    }
+
+    .stat-number {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 200;
+      letter-spacing: -0.03em; line-height: 1; color: var(--mint);
+    }
+    .stat-number strong { font-weight: 700; }
+
+    .stat-label {
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-secondary); line-height: 1.5;
+    }
+
+    .stat-source {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* ============================================================
+       SECTION HEADER
+    ============================================================ */
+    .section-header { margin-bottom: clamp(var(--sp-48), 6vw, var(--sp-80)); }
+    .section-header .eyebrow { display: block; margin-bottom: var(--sp-16); }
+    .section-header .headline { margin-bottom: var(--sp-20); }
+
+    .section-intro {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem); font-weight: 300;
+      line-height: 1.78; letter-spacing: 0.005em;
+      color: var(--text-secondary); max-width: 62ch;
+    }
+
+    /* ============================================================
+       PROBLEM
+    ============================================================ */
+    .problem { background: var(--canvas); }
+
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--mint-border); border-radius: var(--r-md); overflow: hidden;
+    }
+    @media (max-width: 900px) { .problem-grid { grid-template-columns: 1fr; } }
+
+    .problem-card {
+      background: var(--card); padding: var(--sp-40) var(--sp-32);
+      border-inline-end: 1px solid var(--mint-border);
+      transition: background var(--t-std) var(--ease);
+    }
+    .problem-card:last-child { border-inline-end: none; }
+    .problem-card:hover { background: var(--card-raised); }
+
+    @media (max-width: 900px) {
+      .problem-card { border-inline-end: none; border-block-end: 1px solid var(--mint-border); }
+      .problem-card:last-child { border-block-end: none; }
+    }
+
+    .problem-num {
+      display: block; font-size: clamp(2.25rem, 4vw, 3rem); font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1; color: var(--mint);
+      opacity: 0.16; margin-bottom: var(--sp-24);
+    }
+
+    .problem-title {
+      font-size: 1.125rem; font-weight: 500; letter-spacing: -0.015em;
+      line-height: 1.3; color: var(--text-primary); margin-bottom: var(--sp-16);
+    }
+
+    .problem-body {
+      font-size: 0.9375rem; font-weight: 300; line-height: 1.78;
+      letter-spacing: 0.005em; color: var(--text-secondary);
+    }
+
+    .problem-cost {
+      display: inline-flex; align-items: center; gap: var(--sp-8);
+      margin-top: var(--sp-24); font-size: 0.8125rem; font-weight: 300;
+      letter-spacing: 0.05em; text-transform: uppercase; color: var(--plum);
+    }
+    .problem-cost::before {
+      content: ''; display: inline-block; width: 4px; height: 4px;
+      border-radius: 50%; background: var(--plum); flex-shrink: 0;
+    }
+
+    /* ============================================================
+       SOLUTION — 2-col with signal flow
+    ============================================================ */
+    .solution { background: var(--canvas-deep); }
+
+    .solution-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(var(--sp-48), 8vw, var(--sp-96)); align-items: start;
+    }
+    @media (max-width: 860px) { .solution-inner { grid-template-columns: 1fr; } }
+
+    .solution-copy .eyebrow { display: block; margin-bottom: var(--sp-24); }
+    .solution-copy .headline { margin-bottom: var(--sp-24); }
+    .solution-copy .body { margin-bottom: var(--sp-32); }
+
+    .solution-bullets { list-style: none; display: flex; flex-direction: column; gap: var(--sp-12); }
+    .solution-bullets li {
+      display: flex; align-items: flex-start; gap: var(--sp-12);
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-secondary); line-height: 1.6;
+    }
+    .solution-bullets li::before {
+      content: ''; flex-shrink: 0; width: 5px; height: 5px;
+      border-radius: 50%; background: var(--mint); margin-top: 7px;
+    }
+
+    .signal-flow { border: 1px solid var(--mint-border); border-radius: var(--r-md); overflow: hidden; }
+
+    .signal-node {
+      padding: var(--sp-16) var(--sp-24); background: var(--card);
+      border-block-end: 1px solid var(--mint-border);
+    }
+    .signal-node:last-child { border-block-end: none; background: var(--mint-dim); }
+
+    .signal-node-label {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-4);
+    }
+    .signal-node:last-child .signal-node-label { color: var(--mint); }
+
+    .signal-node-value {
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-secondary); line-height: 1.5;
+    }
+
+    .signal-connector {
+      display: flex; align-items: center; justify-content: center;
+      height: 28px; background: rgba(188, 224, 198, 0.025);
+      border-block-end: 1px solid var(--mint-border);
+    }
+    .signal-connector-label {
+      font-size: 0.5625rem; font-weight: 300; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    .signal-active-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--mint); margin-inline-end: var(--sp-8);
+      vertical-align: middle; position: relative; inset-block-start: -1px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .signal-active-dot { animation: pulse 2.4s ease-in-out infinite; }
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.28; } }
+
+    /* ============================================================
+       PILLARS — 2×2 grid
+    ============================================================ */
+    .pillars { background: var(--canvas); }
+
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-16); margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+    @media (max-width: 768px) { .pillars-grid { grid-template-columns: 1fr; } }
+
+    .pillar-card {
+      background: var(--card); border: 1px solid var(--mint-border);
+      border-radius: var(--r-md); padding: var(--sp-40) var(--sp-32);
+      transition: transform var(--t-std) var(--ease), box-shadow var(--t-std) var(--ease), background var(--t-std) var(--ease);
+    }
+    .pillar-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); background: var(--card-raised); }
+
+    .pillar-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; background: var(--mint-dim);
+      border-radius: var(--r-sm); margin-bottom: var(--sp-24); color: var(--mint);
+    }
+
+    .pillar-tag { display: block; margin-bottom: var(--sp-16); }
+
+    .pillar-title {
+      font-size: 1.25rem; font-weight: 500; letter-spacing: -0.015em;
+      line-height: 1.25; color: var(--text-primary); margin-bottom: var(--sp-16);
+    }
+
+    .pillar-body {
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      line-height: 1.78; color: var(--text-secondary); margin-bottom: var(--sp-24);
+    }
+
+    .pillar-list { list-style: none; display: flex; flex-direction: column; gap: var(--sp-8); }
+    .pillar-list li {
+      display: flex; align-items: flex-start; gap: var(--sp-8);
+      font-size: 0.875rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-muted); line-height: 1.5;
+    }
+    .pillar-list li::before {
+      content: '→'; color: var(--mint); flex-shrink: 0;
+      font-size: 0.75rem; margin-top: 1px;
+    }
+
+    /* ============================================================
+       PROOF — case studies + tool badges
+    ============================================================ */
+    .proof { background: var(--canvas-raised); }
+
+    .proof-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--sp-16); margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+    }
+    @media (max-width: 768px) { .proof-grid { grid-template-columns: 1fr; } }
+
+    .proof-card {
+      background: var(--card); border: 1px solid var(--mint-border);
+      border-radius: var(--r-md); padding: var(--sp-40) var(--sp-32);
+      transition: background var(--t-std) var(--ease);
+    }
+    .proof-card:hover { background: var(--card-raised); }
+
+    .proof-industry {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: var(--sp-16);
+    }
+
+    .proof-company {
+      font-size: 1.25rem; font-weight: 500; letter-spacing: -0.015em;
+      line-height: 1.2; color: var(--text-primary); margin-bottom: var(--sp-16);
+    }
+
+    .proof-body {
+      font-size: 0.9375rem; font-weight: 300; line-height: 1.78;
+      letter-spacing: 0.005em; color: var(--text-secondary); margin-bottom: var(--sp-24);
+    }
+
+    .proof-result {
+      display: flex; align-items: flex-start; gap: var(--sp-8);
+      font-size: 0.875rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--mint); line-height: 1.5;
+    }
+    .proof-result::before { content: '→'; flex-shrink: 0; font-size: 0.75rem; margin-top: 1px; }
+
+    .tools-band {
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-64));
+      padding-top: var(--sp-40); border-top: 1px solid var(--mint-border-dim);
+    }
+
+    .tools-label {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--sp-20);
+    }
+
+    .tools-row { display: flex; flex-wrap: wrap; gap: var(--sp-8); }
+
+    .tool-badge {
+      display: inline-flex; align-items: center;
+      background: var(--card); border: 1px solid var(--mint-border);
+      border-radius: var(--r-sm); padding: 7px 16px;
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+    }
+    .tool-badge:hover { color: var(--text-secondary); border-color: rgba(188, 224, 198, 0.24); }
+
+    /* ============================================================
+       ASSESSMENT — 3-step lead capture
+    ============================================================ */
+    .assessment { background: var(--canvas-deep); }
+
+    .assessment-wrap { max-width: 800px; margin-inline: auto; }
+
+    .assessment-header { text-align: center; margin-bottom: clamp(var(--sp-48), 6vw, var(--sp-64)); }
+    .assessment-header .eyebrow { display: block; margin-bottom: var(--sp-16); }
+    .assessment-header .headline { margin-bottom: var(--sp-16); }
+    .assessment-header .body { margin-inline: auto; }
+
+    /* Progress */
+    .assessment-progress { display: flex; align-items: center; gap: var(--sp-8); margin-bottom: var(--sp-48); }
+
+    .progress-step {
+      display: flex; align-items: center; gap: var(--sp-8);
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      white-space: nowrap; transition: color var(--t-fast) var(--ease);
+    }
+    .progress-step.active { color: var(--mint); }
+    .progress-step.done  { color: oklch(68% 0.045 155); }
+
+    .progress-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted); flex-shrink: 0;
+      transition: background var(--t-fast) var(--ease);
+    }
+    .progress-step.active .progress-dot,
+    .progress-step.done  .progress-dot { background: var(--mint); }
+
+    .progress-line { flex: 1; height: 1px; background: var(--mint-border); }
+
+    /* Steps */
+    .assessment-step { display: none; }
+    .assessment-step.active { display: block; animation: fadeUp 0.22s var(--ease) both; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-question {
+      font-size: clamp(1.25rem, 3vw, 1.625rem); font-weight: 500;
+      letter-spacing: -0.015em; line-height: 1.3; color: var(--text-primary);
+      margin-bottom: var(--sp-8);
+    }
+
+    .step-sub {
+      font-size: 0.875rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-muted); margin-bottom: var(--sp-32);
+    }
+
+    /* Question blocks */
+    .question-block { margin-bottom: var(--sp-40); }
+    .question-block-label {
+      font-size: 0.8125rem; font-weight: 300; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: var(--sp-16); padding-bottom: var(--sp-12);
+      border-bottom: 1px solid var(--mint-border-dim);
+    }
+
+    /* Option grids */
+    .options-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: var(--sp-8);
+    }
+    @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+
+    .options-list { display: flex; flex-direction: column; gap: var(--sp-8); }
+
+    .option-check, .option-radio { position: relative; }
+
+    .option-check input[type="checkbox"],
+    .option-radio input[type="radio"] {
+      position: absolute; opacity: 0; width: 1px; height: 1px;
+    }
+
+    .option-check label,
+    .option-radio label {
+      display: flex; align-items: flex-start; gap: var(--sp-12);
+      padding: var(--sp-16) var(--sp-20);
+      background: var(--card); border: 1px solid var(--mint-border);
+      border-radius: var(--r-md); cursor: pointer;
+      transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), transform var(--t-std) var(--ease);
+    }
+    .option-check label:hover,
+    .option-radio label:hover {
+      background: var(--card-raised);
+      border-color: rgba(188, 224, 198, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .option-check input:checked + label,
+    .option-radio input:checked + label {
+      background: var(--mint-dim); border-color: var(--mint);
+    }
+
+    .option-check input:focus-visible + label,
+    .option-radio input:focus-visible + label { box-shadow: var(--shadow-mint); }
+
+    .option-indicator {
+      flex-shrink: 0; width: 18px; height: 18px;
+      border: 1px solid rgba(188, 224, 198, 0.22); border-radius: 3px;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+      transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+    }
+    .option-check input:checked + label .option-indicator {
+      background: var(--mint); border-color: var(--mint);
+    }
+    .option-radio .option-indicator { border-radius: 50%; }
+    .option-radio input:checked + label .option-indicator {
+      background: var(--mint); border-color: var(--mint);
+    }
+
+    .option-indicator svg { opacity: 0; transition: opacity var(--t-fast) var(--ease); }
+    input:checked + label .option-indicator svg { opacity: 1; }
+
+    .option-text {
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-secondary); line-height: 1.5;
+      transition: color var(--t-fast) var(--ease);
+    }
+    input:checked + label .option-text { color: var(--text-primary); }
+
+    /* Form fields */
+    .form-fields { display: flex; flex-direction: column; gap: var(--sp-20); margin-bottom: var(--sp-32); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-16); }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+    .ds-field { display: flex; flex-direction: column; gap: var(--sp-8); }
+
+    .ds-field-label {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-secondary);
+    }
+
+    .ds-input {
+      background: var(--card); border: 1px solid rgba(188, 224, 198, 0.2);
+      border-radius: var(--r-sm); padding: 12px 16px;
+      font-family: var(--font); font-size: 1rem; font-weight: 300;
+      letter-spacing: 0.005em; color: var(--text-primary); outline: none; width: 100%;
+      transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+    }
+    .ds-input::placeholder { color: rgba(232, 232, 232, 0.28); }
+    .ds-input:focus { border-color: var(--mint); box-shadow: var(--shadow-mint); }
+
+    .form-privacy {
+      font-size: 0.8125rem; font-weight: 300; letter-spacing: 0.005em;
+      color: var(--text-muted); margin-bottom: var(--sp-24);
+    }
+
+    /* Validation */
+    .validation-msg {
+      font-size: 0.8125rem; font-weight: 300; letter-spacing: 0.005em;
+      color: oklch(70% 0.1 30); margin-bottom: var(--sp-16); display: none;
+    }
+    .validation-msg.visible { display: block; }
+
+    /* Step nav */
+    .step-nav { display: flex; align-items: center; gap: var(--sp-16); }
+
+    .step-back {
+      background: none; border: none; font-family: var(--font);
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      cursor: pointer; padding: 0; transition: color var(--t-fast) var(--ease);
+    }
+    .step-back:hover { color: var(--text-secondary); }
+
+    /* Step 3 — confirmation + phone upsell */
+    .step3-confirm {
+      text-align: center; margin-bottom: var(--sp-40);
+    }
+
+    .step3-confirm-icon { margin-bottom: var(--sp-24); }
+
+    .step3-headline {
+      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--text-primary); margin-bottom: var(--sp-16);
+    }
+
+    .step3-sub {
+      font-size: 1rem; font-weight: 300; letter-spacing: 0.005em;
+      line-height: 1.75; color: var(--text-secondary);
+      max-width: 50ch; margin: 0 auto;
+    }
+
+    .phone-upsell {
+      background: var(--card); border: 1px solid var(--mint-border);
+      border-radius: var(--r-md); padding: var(--sp-32);
+    }
+
+    .phone-upsell-label {
+      font-size: 0.6875rem; font-weight: 300; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: var(--sp-12);
+    }
+
+    .phone-upsell-text {
+      font-size: 0.9375rem; font-weight: 300; line-height: 1.7;
+      color: var(--text-secondary); margin-bottom: var(--sp-20);
+    }
+
+    .phone-upsell-actions {
+      display: flex; align-items: center; gap: var(--sp-16); flex-wrap: wrap;
+    }
+
+    /* Final confirm */
+    .final-confirm {
+      display: none; text-align: center;
+      padding-block: var(--sp-48);
+      animation: fadeUp 0.25s var(--ease) both;
+    }
+    .final-confirm.active { display: block; }
+
+    .final-headline {
+      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--text-primary); margin-block: var(--sp-24) var(--sp-16);
+    }
+
+    .final-sub {
+      font-size: 1rem; font-weight: 300; letter-spacing: 0.005em;
+      line-height: 1.75; color: var(--text-secondary);
+      max-width: 50ch; margin: 0 auto var(--sp-40);
+    }
+
+    /* ============================================================
+       FOOTER CTA
+    ============================================================ */
+    .footer-cta { background: var(--canvas); border-top: 1px solid var(--mint-border-dim); }
+
+    .footer-cta-inner {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: var(--sp-64); align-items: center;
+    }
+    @media (max-width: 768px) { .footer-cta-inner { grid-template-columns: 1fr; gap: var(--sp-32); } }
+
+    .footer-cta-hl {
+      font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05;
+      letter-spacing: -0.025em; margin-bottom: var(--sp-16);
+    }
+    .footer-cta-hl em     { font-weight: 200; font-style: normal; color: rgba(243,255,240,0.72); }
+    .footer-cta-hl strong { font-weight: 700; color: var(--text-primary); }
+
+    .footer-cta-sub {
+      font-size: 0.9375rem; font-weight: 300; letter-spacing: 0.005em;
+      line-height: 1.7; color: var(--text-secondary); max-width: 48ch;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      background: var(--canvas-deep);
+      border-block-start: 1px solid var(--mint-border-dim);
+      padding-block: var(--sp-32);
+    }
+
+    .footer-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--sp-24); flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 0.875rem; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--text-muted); text-decoration: none;
+    }
+    .footer-logo span { color: var(--mint); }
+
+    .footer-note {
+      font-size: 0.75rem; font-weight: 300; letter-spacing: 0.05em; color: var(--text-muted);
+    }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* SVG check mark icon shared */
+    .check-icon { display: block; margin-inline: auto; }
+
+  </style>
+</head>
+<body>
+<!-- PW GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:999999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;flex-direction:column;">
+  <p style="color:#555;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Password required</p>
+  <input id="pw-in" type="password" placeholder="Enter password" autocomplete="off" style="background:#111;border:1px solid #2a2a2a;color:#fff;padding:10px 18px;font-size:14px;outline:none;width:240px;text-align:center;border-radius:6px;">
+  <p id="pw-err" style="color:#e55;font-size:12px;margin-top:10px;height:14px;"></p>
+</div>
+<script>
+(function(){
+  var KEY='egtm_v1';
+  var gate=document.getElementById('pw-gate');
+  if(localStorage.getItem(KEY)==='1'){gate.remove();return;}
+  var inp=document.getElementById('pw-in');
+  var err=document.getElementById('pw-err');
+  setTimeout(function(){inp.focus();},50);
+  function check(){
+    if(inp.value==='effortlessgtm'){
+      localStorage.setItem(KEY,'1');
+      gate.style.transition='opacity 0.3s';
+      gate.style.opacity='0';
+      setTimeout(function(){gate.remove();},300);
+    } else {
+      err.textContent='Incorrect password';
+      inp.value='';
+      setTimeout(function(){inp.focus();},10);
+    }
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+})();
+</script>
+<!-- END PW GATE -->
+
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">Effortless<span>GTM</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#systems">What We Build</a></li>
+        <li><a href="#proof">Results</a></li>
+        <li><a href="#assessment" class="btn-primary">Run the assessment</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <div class="container">
+
+        <span class="eyebrow hero-eyebrow">AI-Native GTM Systems · European B2B</span>
+
+        <h1 id="hero-headline" class="display">
+          <em>You hired great salespeople.</em><br>
+          <strong>Then buried them in admin.</strong>
+        </h1>
+
+        <p class="hero-subhead">
+          Hours lost to manual research. Leads that fall through the gaps. Follow-up that never happens. These aren't effort problems—they're architecture problems. We build the AI systems that fix them.
+        </p>
+
+        <div class="hero-cta-group">
+          <div class="hero-cta-row">
+            <a href="#assessment" class="btn-primary">
+              Run the free assessment
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+                <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#" class="btn-ghost">Book a discovery call</a>
+          </div>
+          <p class="hero-cta-support">4 minutes. Personalised breakdown of what it's costing you.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS BAR
+    ============================================================ -->
+    <div class="stats-bar" aria-label="Key statistics">
+      <div class="container">
+        <dl class="stats-grid">
+
+          <div class="stat-item">
+            <dt class="visually-hidden">Average hours lost per rep per week to non-selling tasks</dt>
+            <dd class="stat-number">Ø <strong>8 hrs</strong>/week</dd>
+            <span class="stat-label">Lost per rep to manual data entry, research, and list maintenance</span>
+            <span class="stat-source">Across GTM processes we've audited</span>
+          </div>
+
+          <div class="stat-item">
+            <dt class="visually-hidden">Conversion lift from signal-triggered outreach</dt>
+            <dd class="stat-number"><strong>2–5×</strong> higher</dd>
+            <span class="stat-label">Conversion rate when outreach fires on a live buying signal vs. a static schedule</span>
+            <span class="stat-source">Signal-triggered outreach benchmarks</span>
+          </div>
+
+          <div class="stat-item">
+            <dt class="visually-hidden">How most missed revenue appears</dt>
+            <dd class="stat-number"><strong>Invisible</strong></dd>
+            <span class="stat-label">Most missed revenue never shows up as a loss. It just never shows up at all.</span>
+            <span class="stat-source">The gap between activity metrics and closed revenue</span>
+          </div>
+
+        </dl>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PROBLEM
+    ============================================================ -->
+    <section id="problem" class="problem" aria-labelledby="problem-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">The system is broken. Here's the evidence.</span>
+          <h2 id="problem-headline" class="headline" style="margin-top: var(--sp-16);">
+            These aren't effort problems.<br>They're architecture problems.
+          </h2>
+          <p class="section-intro">
+            Most B2B sales teams work hard. They still miss the number. Not because the people are wrong—because the process underneath gives them the wrong targets, wrong timing, and wrong information. That's not a performance problem. That's a system design problem.
+          </p>
+        </header>
+
+        <div class="problem-grid" role="list">
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">01</span>
+            <h3 class="problem-title">Your CRM hygiene is costing you quota.</h3>
+            <p class="problem-body">
+              Someone on your team is manually updating contact records, logging activities, and cleaning lists. That's not an ops problem—it's a quota problem. Every hour your reps spend inside the CRM is an hour they didn't spend talking to a buyer.
+            </p>
+            <span class="problem-cost">Ø 30% of rep time on non-selling tasks</span>
+          </article>
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">02</span>
+            <h3 class="problem-title">You're targeting a six-month-old snapshot of the market.</h3>
+            <p class="problem-body">
+              Static lists tell you who existed when the list was built. They don't tell you who's ready to move right now. A funding round closes. A VP joins. A competitor exits. Each one is a buying window—narrow, specific, and invisible without a signal layer.
+            </p>
+            <span class="problem-cost">2–5× higher conversion when timed to a buying signal</span>
+          </article>
+
+          <article class="problem-card" role="listitem">
+            <span class="problem-num" aria-hidden="true">03</span>
+            <h3 class="problem-title">Leads fall off because nothing catches them.</h3>
+            <p class="problem-body">
+              A warm prospect goes quiet. An upsell moment passes. A renewal window closes. Not because your team dropped the ball—because there was no system to surface the moment before it disappeared. Follow-up failure is always a systems failure.
+            </p>
+            <span class="problem-cost">Most churn and missed upsells are preventable</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SOLUTION — 2-col with signal flow diagram
+    ============================================================ -->
+    <section id="solution" class="solution" aria-labelledby="solution-headline">
+      <div class="container">
+        <div class="solution-inner">
+
+          <div class="solution-copy">
+            <span class="eyebrow">How it works</span>
+            <h2 id="solution-headline" class="headline" style="margin-top: var(--sp-16);">
+              One automated engine. Zero wasted cycles.
+            </h2>
+            <p class="body">
+              We design and implement AI workflows specific to your stack, your motion, and your team's actual capacity—not a template. The system handles the overhead so your team handles the conversations.
+            </p>
+            <ul class="solution-bullets" aria-label="System capabilities">
+              <li>Signal sources configured to your ICP and market</li>
+              <li>Automated scoring, enrichment, and account prioritisation</li>
+              <li>AI-generated, context-aware outreach at scale</li>
+              <li>CRM and pipeline automation with no manual hand-offs</li>
+            </ul>
+          </div>
+
+          <div aria-label="Automated GTM system in action" role="img">
+            <div class="signal-flow">
+              <div class="signal-node">
+                <div class="signal-node-label">Signal detected</div>
+                <div class="signal-node-value">Funding round — Series A, €8M · New VP Revenue hired</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Scored &amp; enriched</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">ICP match</div>
+                <div class="signal-node-value">B2B SaaS · 20–80 employees · DACH · 91% fit score</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Outreach triggered</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Context loaded</div>
+                <div class="signal-node-value">2 open RevOps roles · HubSpot migration signal · 3 hiring posts</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Rep alerted</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Ready to act</div>
+                <div class="signal-node-value">
+                  <span class="signal-active-dot" aria-hidden="true"></span>
+                  Personalised draft written. Context pre-loaded. No research required.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PILLARS — 4 capabilities, 2×2
+    ============================================================ -->
+    <section id="systems" class="pillars" aria-labelledby="pillars-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Four systems. One loop.</span>
+          <h2 id="pillars-headline" class="headline" style="margin-top: var(--sp-16);">
+            Every part of your GTM motion, automated.
+          </h2>
+          <p class="section-intro">
+            Sales, marketing, and customer success aren't separate conversations. In a signal-driven system, they're one continuous loop—each function feeding the next. We build the infrastructure that connects them.
+          </p>
+        </header>
+
+        <div class="pillars-grid" role="list">
+
+          <!-- Targeting -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="10" y1="1" x2="10" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="10" y1="17" x2="10" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="17" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="1" y1="10" x2="3" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Targeting</span>
+            <h3 class="pillar-title">Automated list building &amp; enrichment</h3>
+            <p class="pillar-body">
+              Stop working from static spreadsheets. We build automated pipelines that pull from live buying signals—funding rounds, leadership changes, hiring patterns, intent spikes—and rank accounts by fit and timing. Your team contacts the right accounts at the moment the window opens.
+            </p>
+            <ul class="pillar-list" aria-label="Targeting capabilities">
+              <li>Signal monitoring configured to your ICP</li>
+              <li>Automated scoring and account prioritisation</li>
+              <li>Live enrichment via Clay, Apollo, LinkedIn</li>
+              <li>Rep alerts with full buying context pre-loaded</li>
+            </ul>
+          </article>
+
+          <!-- Outreach -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 6l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Outreach</span>
+            <h3 class="pillar-title">AI-generated outreach at scale</h3>
+            <p class="pillar-body">
+              Sequences that personalise from company-specific signals—not merge tags. The system drafts first-touch emails, follow-up sequences, and sales enablement assets automatically. Personalised without manual research. Scalable without losing relevance.
+            </p>
+            <ul class="pillar-list" aria-label="Outreach capabilities">
+              <li>Signal-enriched first-touch drafts, auto-generated</li>
+              <li>Follow-up sequences triggered by account behaviour</li>
+              <li>Sales enablement content on demand</li>
+              <li>lemlist, Instantly, HubSpot Sequences integration</li>
+            </ul>
+          </article>
+
+          <!-- Inbound & CS -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8S14.42 2 10 2z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Operations</span>
+            <h3 class="pillar-title">AI agents for inbound &amp; customer success</h3>
+            <p class="pillar-body">
+              Deploy agents that qualify inbound before your team touches it. Agents that surface expansion signals before the moment passes. Agents that flag churn risk before the customer says anything. The system that catches what manual processes drop.
+            </p>
+            <ul class="pillar-list" aria-label="Operations capabilities">
+              <li>Inbound lead qualification and intelligent routing</li>
+              <li>Expansion and cross-sell signal detection</li>
+              <li>Churn risk alerting before the renewal window closes</li>
+              <li>Customer success workflow automation</li>
+            </ul>
+          </article>
+
+          <!-- Stack & Pipeline -->
+          <article class="pillar-card" role="listitem">
+            <div class="pillar-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="13" y="5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="7.5" y="12" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M7 7.5h6M4.5 10v2a1 1 0 0 0 1 1H10M15.5 10v2a1 1 0 0 1-1 1H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="tag pillar-tag">Infrastructure</span>
+            <h3 class="pillar-title">Pipeline architecture &amp; stack integration</h3>
+            <p class="pillar-body">
+              Connect your CRM—HubSpot, Odoo, or custom—so data flows clean without a human hand in the middle. No manual data entry. No hygiene debt. No gaps between tools. Pipeline instrumentation that shows you what's actually moving, not just what's logged.
+            </p>
+            <ul class="pillar-list" aria-label="Infrastructure capabilities">
+              <li>CRM automation and data hygiene (HubSpot, Odoo)</li>
+              <li>Cross-tool workflow architecture via Make or n8n</li>
+              <li>Pipeline instrumentation and stage-level reporting</li>
+              <li>Full GTM stack integration and documentation</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROOF — case studies + tool badges
+    ============================================================ -->
+    <section id="proof" class="proof" aria-labelledby="proof-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">The track record</span>
+          <h2 id="proof-headline" class="headline" style="margin-top: var(--sp-16);">
+            Systems we've built.<br>Results they're generating.
+          </h2>
+        </header>
+
+        <div class="proof-grid" role="list">
+
+          <article class="proof-card" role="listitem">
+            <p class="proof-industry">B2B AI · SaaS</p>
+            <h3 class="proof-company">FONIO AI</h3>
+            <p class="proof-body">
+              Built the complete sales and partnership pipeline from the ground up. ICP definition, signal-driven targeting, automated outreach sequences, partner tracking—all connected into one system. The system runs. The team sells.
+            </p>
+            <p class="proof-result">End-to-end pipeline currently powering ongoing growth</p>
+          </article>
+
+          <article class="proof-card" role="listitem">
+            <p class="proof-industry">Manufacturing · Industrial</p>
+            <h3 class="proof-company">Water Manufacturing</h3>
+            <p class="proof-body">
+              Automated the complete manufacturing and sales cycle inside Odoo. Manual data entry eliminated across order management, production tracking, and CRM updates. What previously required manual coordination across multiple teams now runs without a human hand in the middle.
+            </p>
+            <p class="proof-result">Manual bottlenecks eliminated across the full order cycle</p>
+          </article>
+
+        </div>
+
+        <div class="tools-band">
+          <p class="tools-label">Tools we work with</p>
+          <div class="tools-row">
+            <span class="tool-badge">Odoo</span>
+            <span class="tool-badge">HubSpot</span>
+            <span class="tool-badge">Make</span>
+            <span class="tool-badge">n8n</span>
+            <span class="tool-badge">Clay</span>
+            <span class="tool-badge">lemlist</span>
+            <span class="tool-badge">Instantly</span>
+            <span class="tool-badge">OpenAI</span>
+            <span class="tool-badge">Claude</span>
+            <span class="tool-badge">Apollo</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ASSESSMENT — 3-step lead capture
+    ============================================================ -->
+    <section id="assessment" class="assessment" aria-labelledby="assessment-headline">
+      <div class="container">
+        <div class="assessment-wrap">
+
+          <header class="assessment-header">
+            <span class="eyebrow">The GTM Gap Assessment</span>
+            <h2 id="assessment-headline" class="headline" style="margin-top: var(--sp-16);">
+              Find out exactly where your process is costing you revenue.
+            </h2>
+            <p class="body" style="margin-top: var(--sp-16);">
+              Map your gaps in 4 minutes. Get a personalised breakdown: what's broken, what it costs, and which systems to build first.
+            </p>
+          </header>
+
+          <!-- Progress indicator -->
+          <div class="assessment-progress"
+               role="progressbar"
+               aria-label="Assessment progress"
+               aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"
+               id="assessment-progress">
+            <div class="progress-step active" id="prog-1">
+              <span class="progress-dot"></span>
+              <span>Your challenges</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="prog-2">
+              <span class="progress-dot"></span>
+              <span>Your details</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" id="prog-3">
+              <span class="progress-dot"></span>
+              <span>Your guide</span>
+            </div>
+          </div>
+
+          <!-- ── Step 1: Diagnostic ── -->
+          <div class="assessment-step active" id="step-1" role="group" aria-labelledby="s1-label">
+
+            <div class="question-block">
+              <p class="question-block-label" id="s1-label">What's slowing down your GTM right now?</p>
+              <div class="options-grid" role="group" aria-label="GTM bottlenecks — select all that apply">
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-research" value="research">
+                  <label for="p-research">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">Too much manual research and list building</span>
+                  </label>
+                </div>
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-crm" value="crm">
+                  <label for="p-crm">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">CRM hygiene and data entry eating rep time</span>
+                  </label>
+                </div>
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-followup" value="followup">
+                  <label for="p-followup">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">Inconsistent follow-up — leads fall between steps</span>
+                  </label>
+                </div>
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-timing" value="timing">
+                  <label for="p-timing">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">Wrong targets or wrong timing — low outreach conversion</span>
+                  </label>
+                </div>
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-inbound" value="inbound">
+                  <label for="p-inbound">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">Inbound not qualified before reaching the team</span>
+                  </label>
+                </div>
+
+                <div class="option-check">
+                  <input type="checkbox" id="p-cs" value="cs">
+                  <label for="p-cs">
+                    <span class="option-indicator"><svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4L3.5 6.5L9 1" stroke="oklch(12% 0.032 165)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="option-text">Missed upsell, expansion, or churn signals post-sale</span>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="question-block">
+              <p class="question-block-label">How many hours per week does your team spend on non-selling tasks?</p>
+              <div class="options-list" role="radiogroup" aria-label="Weekly hours on admin">
+
+                <div class="option-radio">
+                  <input type="radio" name="hours" id="h-2" value="lt-2">
+                  <label for="h-2">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">Less than 2 hours — we're already lean</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="hours" id="h-5" value="2-5">
+                  <label for="h-5">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">2–5 hours — it adds up but we manage</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="hours" id="h-10" value="5-10">
+                  <label for="h-10">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">5–10 hours — it's a real drag</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="hours" id="h-10plus" value="10plus">
+                  <label for="h-10plus">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">More than 10 hours — admin is eating the team alive</span>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="question-block" style="margin-bottom: 0;">
+              <p class="question-block-label">How many people are on your revenue team?</p>
+              <div class="options-list" role="radiogroup" aria-label="Revenue team size">
+
+                <div class="option-radio">
+                  <input type="radio" name="team-size" id="ts-solo" value="solo">
+                  <label for="ts-solo">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">Just me — founder-led sales</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="team-size" id="ts-2-5" value="2-5">
+                  <label for="ts-2-5">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">2–5 people</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="team-size" id="ts-6-15" value="6-15">
+                  <label for="ts-6-15">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">6–15 people</span>
+                  </label>
+                </div>
+
+                <div class="option-radio">
+                  <input type="radio" name="team-size" id="ts-15plus" value="15+">
+                  <label for="ts-15plus">
+                    <span class="option-indicator"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><circle cx="4" cy="4" r="3" fill="oklch(12% 0.032 165)"/></svg></span>
+                    <span class="option-text">15+ people</span>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+
+            <p class="validation-msg" id="step-1-error" role="alert" style="margin-top: var(--sp-24);">
+              Select at least one bottleneck before continuing.
+            </p>
+
+            <div class="step-nav" style="margin-top: var(--sp-40);">
+              <button class="btn-primary" onclick="nextStep(1)">
+                Analyse my process
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- ── Step 2: Email capture ── -->
+          <div class="assessment-step" id="step-2" role="group" aria-labelledby="s2-label">
+
+            <h3 class="step-question" id="s2-label">We've mapped your gaps.</h3>
+            <p class="step-sub">Enter your details to get your personalised AI Best Practice &amp; ROI Guide—where the gaps are, and what to build first.</p>
+
+            <div class="form-fields">
+              <div class="form-row">
+                <div class="ds-field">
+                  <label class="ds-field-label" for="f-first">First name</label>
+                  <input class="ds-input" type="text" id="f-first" name="first-name" placeholder="Anna" autocomplete="given-name" required />
+                </div>
+                <div class="ds-field">
+                  <label class="ds-field-label" for="f-company">Company</label>
+                  <input class="ds-input" type="text" id="f-company" name="company" placeholder="Acme GmbH" autocomplete="organization" />
+                </div>
+              </div>
+              <div class="ds-field">
+                <label class="ds-field-label" for="f-email">Work email</label>
+                <input class="ds-input" type="email" id="f-email" name="email" placeholder="anna@acme.com" autocomplete="email" required />
+              </div>
+            </div>
+
+            <p class="form-privacy">No spam. One email with your guide. No list subscriptions without your consent.</p>
+
+            <p class="validation-msg" id="step-2-error" role="alert">
+              Enter your first name and a valid email to continue.
+            </p>
+
+            <div class="step-nav">
+              <button class="btn-primary" onclick="nextStep(2)">
+                Send my guide
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="step-back" onclick="goToStep(0)">← Back</button>
+            </div>
+
+          </div>
+
+          <!-- ── Step 3: Phone upsell ── -->
+          <div class="assessment-step" id="step-3" role="group" aria-labelledby="s3-label">
+
+            <div class="step3-confirm">
+              <svg class="check-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                <circle cx="24" cy="24" r="23" stroke="oklch(84% 0.06 155)" stroke-width="1.5" opacity="0.35"/>
+                <path d="M14 24l7 7L34 17" stroke="oklch(84% 0.06 155)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h3 class="step3-headline" id="s3-label">Your guide is on its way.</h3>
+              <p class="step3-sub">Check your inbox in the next few minutes. Want to skip the reading?</p>
+            </div>
+
+            <div class="phone-upsell">
+              <p class="phone-upsell-label">Optional · Talk it through directly</p>
+              <p class="phone-upsell-text">
+                Give us your number and an AI process expert will call you within 24 hours to walk through your results—what's broken, what it costs, and the highest-impact thing to build first.
+              </p>
+              <div class="ds-field" style="margin-bottom: var(--sp-20);">
+                <label class="ds-field-label" for="f-phone">Phone number</label>
+                <input class="ds-input" type="tel" id="f-phone" name="phone" placeholder="+43 1 234 56 78" autocomplete="tel" />
+              </div>
+              <div class="phone-upsell-actions">
+                <button class="btn-primary" onclick="completePurchase()">
+                  Yes, call me within 24 hours
+                </button>
+                <button class="btn-text" onclick="completePurchase()">
+                  No thanks, I'll read the guide
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── Final confirmation ── -->
+          <div class="final-confirm" id="final-confirm" aria-live="polite">
+            <svg class="check-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <circle cx="24" cy="24" r="23" stroke="oklch(84% 0.06 155)" stroke-width="1.5" opacity="0.35"/>
+              <path d="M14 24l7 7L34 17" stroke="oklch(84% 0.06 155)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="final-headline">Done. We'll be in touch.</h3>
+            <p class="final-sub">
+              Your guide is in your inbox. If you left your number, expect a call within 24 hours from someone who's actually read your answers.
+            </p>
+            <a href="#problem" class="btn-ghost" style="display: inline-flex;">Read about the system ↑</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER CTA
+    ============================================================ -->
+    <section class="footer-cta" aria-labelledby="fcta-headline">
+      <div class="container">
+        <div class="footer-cta-inner">
+          <div>
+            <p class="footer-cta-hl" id="fcta-headline">
+              <em>Ready to build</em><br>
+              <strong>the system?</strong>
+            </p>
+            <p class="footer-cta-sub">Tell us where the gap is. We'll show you what to build first—and how fast you can get there.</p>
+          </div>
+          <div>
+            <a href="#" class="btn-primary">
+              Book a free consultation
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+                <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-logo">Effortless<span>GTM</span></a>
+      <p class="footer-note">AI-native GTM systems for B2B &nbsp;·&nbsp; &copy; 2026</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       ASSESSMENT LOGIC
+  ============================================================ -->
+  <script>
+    let currentStep = 0;
+
+    function goToStep(n) {
+      const steps = document.querySelectorAll('.assessment-step');
+      const progSteps = document.querySelectorAll('.progress-step');
+      const progress = document.getElementById('assessment-progress');
+
+      steps[currentStep].classList.remove('active');
+      currentStep = n;
+      steps[currentStep].classList.add('active');
+
+      progSteps.forEach(function(s, i) {
+        s.classList.remove('active', 'done');
+        if (i < currentStep) s.classList.add('done');
+        else if (i === currentStep) s.classList.add('active');
+      });
+
+      progress.setAttribute('aria-valuenow', currentStep + 1);
+      document.getElementById('assessment').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function nextStep(from) {
+      if (from === 1) {
+        var checked = document.querySelectorAll('#step-1 input[type="checkbox"]:checked');
+        var err = document.getElementById('step-1-error');
+        if (checked.length === 0) { err.classList.add('visible'); return; }
+        err.classList.remove('visible');
+        goToStep(1);
+        return;
+      }
+
+      if (from === 2) {
+        var first = document.getElementById('f-first').value.trim();
+        var email = document.getElementById('f-email').value.trim();
+        var err = document.getElementById('step-2-error');
+        var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!first || !emailOk) { err.classList.add('visible'); return; }
+        err.classList.remove('visible');
+        goToStep(2);
+        return;
+      }
+    }
+
+    function completePurchase() {
+      var steps = document.querySelectorAll('.assessment-step');
+      var progress = document.getElementById('assessment-progress');
+      var finalConfirm = document.getElementById('final-confirm');
+
+      steps[currentStep].classList.remove('active');
+      progress.style.opacity = '0';
+      progress.style.pointerEvents = 'none';
+
+      document.querySelectorAll('.progress-step').forEach(function(s) {
+        s.classList.remove('active');
+        s.classList.add('done');
+      });
+
+      finalConfirm.classList.add('active');
+      document.getElementById('assessment').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Effortless GTM — AI-Native Go-to-Market Systems for European B2B</title>
+  <meta name="description" content="We build automated systems that surface your best opportunities the moment they're ready. Your pipeline fills on signal, not guesswork.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ============================================================
+       DESIGN SYSTEM — Effortless GTM v2
+       Light base, high contrast, European restraint
+    ============================================================ */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* --- Color palette --- */
+      /* Base surfaces */
+      --canvas:          oklch(97% 0.006 200);       /* cool near-white, slightly stone */
+      --canvas-alt:      oklch(95% 0.007 200);       /* slightly darker — section alternation */
+      --canvas-dark:     oklch(12% 0.008 200);       /* near-black for CTA inversion */
+
+      /* Text */
+      --text-primary:    oklch(12% 0.008 200);       /* near-black, cool tinted */
+      --text-secondary:  oklch(38% 0.010 200);       /* mid-dark for body, secondary labels */
+      --text-muted:      oklch(55% 0.010 200);       /* captions, meta, support text */
+      --text-inverted:   oklch(93% 0.008 200);       /* text on dark CTA block */
+      --text-inverted-muted: oklch(68% 0.010 200);   /* muted on dark */
+
+      /* Accent — deep slate-green */
+      --accent:          oklch(35% 0.060 160);       /* CTAs, labels, numbers, markers */
+      --accent-light:    oklch(92% 0.025 160);       /* accent tint for backgrounds */
+      --accent-mid:      oklch(55% 0.050 160);       /* hover states, icons */
+
+      /* Plum — secondary accent (#8671a5 family) */
+      --plum:            oklch(50% 0.09 295);        /* mid plum: numbers, eyebrows, markers */
+      --plum-deep:       oklch(25% 0.10 295);        /* deep plum: CTA block background */
+      --plum-light:      oklch(95% 0.04 295);        /* plum tint: badge backgrounds */
+
+      /* Borders */
+      --border:          oklch(88% 0.008 200);       /* standard border */
+      --border-strong:   oklch(78% 0.010 200);       /* emphasis border */
+
+      /* Typography */
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+
+      /* Spacing */
+      --sp-2:   2px;
+      --sp-4:   4px;
+      --sp-8:   8px;
+      --sp-12:  12px;
+      --sp-16:  16px;
+      --sp-20:  20px;
+      --sp-24:  24px;
+      --sp-32:  32px;
+      --sp-40:  40px;
+      --sp-48:  48px;
+      --sp-64:  64px;
+      --sp-80:  80px;
+      --sp-96:  96px;
+      --sp-120: 120px;
+
+      /* Radius */
+      --r-sm:   3px;
+      --r-md:   6px;
+      --r-pill: 999px;
+
+      /* Transitions */
+      --t-fast: 150ms ease-out;
+      --t-med:  220ms ease-out;
+    }
+
+    html {
+      font-size: 17px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--canvas);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* --- Reduced motion --- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* --- Focus styles --- */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--r-sm);
+    }
+
+    /* --- Skip link --- */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: var(--sp-16);
+      background: var(--accent);
+      color: #fff;
+      padding: var(--sp-8) var(--sp-24);
+      border-radius: var(--r-sm);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 9999;
+    }
+    .skip-link:focus {
+      top: var(--sp-16);
+    }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--plum);
+      line-height: 1;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+    }
+
+    .section-headline {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+    }
+
+    .body-text {
+      font-size: 1.0625rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 60ch;
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin-inline: auto;
+      padding-inline: clamp(var(--sp-24), 5vw, var(--sp-80));
+    }
+
+    .container--narrow {
+      max-width: 680px;
+    }
+
+    section {
+      padding-block: clamp(var(--sp-80), 10vw, var(--sp-120));
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-8);
+      background-color: var(--accent);
+      color: oklch(99% 0.004 160);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: var(--r-sm);
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .btn-primary {
+        transition: background-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
+      }
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-mid);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* Inverted button — for dark CTA block */
+    .btn-primary--inverted {
+      background-color: oklch(98% 0.005 295);
+      color: var(--accent);
+    }
+
+    .btn-primary--inverted:hover {
+      background-color: oklch(96% 0.006 295);
+      color: var(--accent);
+    }
+
+    /* Ghost inverted — secondary CTA on dark block */
+    .btn-ghost--inverted {
+      color: var(--text-inverted);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-ghost--inverted:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Ghost button */
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-8);
+      background-color: transparent;
+      color: var(--accent);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--accent);
+      cursor: pointer;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .btn-ghost {
+        transition: background-color var(--t-fast), color var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+      }
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--accent-light);
+      transform: translateY(-1px);
+    }
+
+    /* Timeframe badge */
+    .badge {
+      display: inline-block;
+      background-color: var(--plum-light);
+      color: var(--plum-deep);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding-block: var(--sp-16);
+      background: rgba(246, 248, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-40);
+    }
+
+    .nav-logo {
+      font-family: var(--font);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-32);
+      list-style: none;
+    }
+
+    .nav-links a:not(.btn-primary) {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-links a:not(.btn-primary) {
+        transition: color var(--t-fast);
+      }
+    }
+
+    .nav-links a:not(.btn-primary):hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links .btn-primary {
+      padding: 9px 20px;
+      font-size: 0.8125rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+
+    .hero {
+      padding-top: calc(var(--sp-120) + 60px);
+      padding-bottom: clamp(var(--sp-80), 12vw, var(--sp-120));
+      background: var(--canvas);
+    }
+
+    .hero-eyebrow {
+      margin-bottom: var(--sp-32);
+    }
+
+    .hero h1 {
+      margin-bottom: var(--sp-32);
+      max-width: 18ch;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      max-width: 50ch;
+      margin-bottom: var(--sp-40);
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-16);
+    }
+
+    .hero-cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-12);
+    }
+
+    .hero-cta-support {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       SECTION: PROBLEM
+       Surface: canvas-alt (slightly darker stone)
+    ============================================================ */
+
+    .problem {
+      background: var(--canvas-alt);
+    }
+
+    .section-header {
+      margin-bottom: clamp(var(--sp-48), 6vw, var(--sp-80));
+    }
+
+    .section-header .eyebrow {
+      margin-bottom: var(--sp-16);
+    }
+
+    .section-header .section-headline {
+      margin-top: var(--sp-16);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-48);
+    }
+
+    @media (max-width: 900px) {
+      .problem-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-40);
+      }
+    }
+
+    .problem-item-num {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: oklch(99% 0.004 295);
+      background: var(--plum);
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      margin-bottom: var(--sp-20);
+    }
+
+    .problem-item-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-12);
+    }
+
+    .problem-item-body {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       SECTION: SOLUTION
+       Surface: canvas (pure near-white)
+    ============================================================ */
+
+    .solution {
+      background: var(--canvas);
+    }
+
+    .solution-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(var(--sp-48), 8vw, var(--sp-96));
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .solution-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .solution-copy .eyebrow {
+      margin-bottom: var(--sp-24);
+    }
+
+    .solution-copy .section-headline {
+      margin-bottom: var(--sp-24);
+      margin-top: var(--sp-16);
+    }
+
+    .solution-copy .body-text {
+      margin-bottom: var(--sp-16);
+    }
+
+    .solution-bullets {
+      list-style: none;
+      margin-top: var(--sp-32);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-12);
+    }
+
+    .solution-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-12);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .solution-bullets li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--plum);
+      margin-top: 7px;
+    }
+
+    /* Signal flow visual */
+    .signal-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .signal-node {
+      padding: var(--sp-16) var(--sp-24);
+      background: var(--canvas);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .signal-node:last-child {
+      border-bottom: none;
+      background: var(--accent-light);
+    }
+
+    .signal-node-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-4);
+    }
+
+    .signal-node:last-child .signal-node-label {
+      color: var(--accent);
+    }
+
+    .signal-node-value {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .signal-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      background: var(--canvas-alt);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .signal-connector-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .signal-active-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--plum);
+      margin-right: var(--sp-8);
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .signal-active-dot {
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.35; }
+      }
+    }
+
+    /* ============================================================
+       SECTION: HOW IT WORKS
+       Surface: canvas-alt
+    ============================================================ */
+
+    .how {
+      background: var(--canvas-alt);
+    }
+
+    .how .section-header .section-headline {
+      margin-top: var(--sp-16);
+    }
+
+    .steps {
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-80));
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-48);
+    }
+
+    @media (max-width: 800px) {
+      .steps {
+        grid-template-columns: 1fr;
+        gap: var(--sp-40);
+      }
+    }
+
+    .step-num {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: oklch(99% 0.004 295);
+      background: var(--plum);
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      margin-bottom: var(--sp-20);
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-12);
+    }
+
+    .step-body {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       SECTION: PROOF
+       Surface: canvas
+    ============================================================ */
+
+    .proof {
+      background: var(--canvas);
+    }
+
+    .proof .section-header .section-headline {
+      margin-top: var(--sp-16);
+    }
+
+    .logos {
+      display: flex;
+      gap: clamp(var(--sp-32), 5vw, var(--sp-64));
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: clamp(var(--sp-64), 8vw, var(--sp-96));
+    }
+
+    .logo-wordmark {
+      font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--border-strong);
+    }
+
+    .logo-wordmark--alt {
+      font-size: clamp(1.125rem, 2.25vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-wordmark--alt strong {
+      font-weight: 700;
+    }
+
+    .testimonials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-24);
+    }
+
+    @media (max-width: 700px) {
+      .testimonials {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .testimonial {
+      padding: var(--sp-32);
+      background: var(--canvas-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .testimonial-quote {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: var(--sp-24);
+    }
+
+    .testimonial-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: block;
+    }
+
+    .testimonial-role {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: block;
+      margin-top: var(--sp-2);
+    }
+
+    /* ============================================================
+       SECTION: SERVICES
+       Surface: canvas-alt
+    ============================================================ */
+
+    .services {
+      background: var(--canvas-alt);
+    }
+
+    .services .section-header .section-headline {
+      margin-top: var(--sp-16);
+    }
+
+    .services-grid {
+      margin-top: clamp(var(--sp-48), 6vw, var(--sp-80));
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sp-16);
+    }
+
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .service-card {
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-32) var(--sp-24);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .service-card {
+        transition: border-color var(--t-fast), box-shadow var(--t-fast);
+      }
+    }
+
+    .service-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .service-card-num {
+      display: inline-block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: oklch(99% 0.004 295);
+      background: var(--plum);
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      margin-bottom: var(--sp-20);
+    }
+
+    .service-card-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      margin-bottom: var(--sp-12);
+    }
+
+    .service-card .badge {
+      margin-bottom: var(--sp-16);
+      display: inline-block;
+    }
+
+    .service-card-body {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       SECTION: CTA BLOCK — INVERTED
+       Only dark section. Makes it pop.
+    ============================================================ */
+
+    .cta-block {
+      background: var(--plum-deep);
+    }
+
+    .cta-block .eyebrow {
+      color: oklch(72% 0.07 295);
+      margin-bottom: var(--sp-24);
+    }
+
+    .cta-block .section-headline {
+      color: var(--text-inverted);
+      margin-bottom: var(--sp-24);
+    }
+
+    .cta-block .body-text {
+      color: var(--text-inverted-muted);
+      margin-bottom: var(--sp-40);
+    }
+
+    .cta-block-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--sp-12);
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-12);
+      margin-bottom: var(--sp-16);
+    }
+
+    .cta-narrow {
+      max-width: 680px;
+    }
+
+    .cta-note {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text-inverted-muted);
+    }
+
+    /* ============================================================
+       SECTION: ABOUT
+       Surface: canvas-alt
+    ============================================================ */
+
+    .about {
+      background: var(--canvas-alt);
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: clamp(var(--sp-48), 8vw, var(--sp-96));
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .about-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .about-main .eyebrow {
+      margin-bottom: var(--sp-24);
+    }
+
+    .about-main .section-headline {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: var(--sp-24);
+    }
+
+    .about-main .body-text {
+      margin-bottom: var(--sp-16);
+    }
+
+    .about-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-24);
+      padding-top: clamp(0px, 2vw, var(--sp-48));
+    }
+
+    .about-detail {
+      padding: var(--sp-16) var(--sp-20);
+      background: var(--canvas);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+
+    .about-detail p {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+
+    .site-footer {
+      background: var(--canvas);
+      padding-block: var(--sp-40);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-24);
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .footer-logo span {
+      color: var(--accent);
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .footer-legal {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-16);
+      flex-wrap: wrap;
+    }
+
+    .footer-legal a {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .footer-legal a {
+        transition: color var(--t-fast);
+      }
+    }
+
+    .footer-legal a:hover {
+      color: var(--text-secondary);
+    }
+
+    .footer-legal-sep {
+      font-size: 0.75rem;
+      color: var(--border-strong);
+      user-select: none;
+    }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+  </style>
+</head>
+<body>
+<!-- PW GATE -->
+<div id="pw-gate" style="position:fixed;inset:0;z-index:999999;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;flex-direction:column;">
+  <p style="color:#555;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;">Password required</p>
+  <input id="pw-in" type="password" placeholder="Enter password" autocomplete="off" style="background:#111;border:1px solid #2a2a2a;color:#fff;padding:10px 18px;font-size:14px;outline:none;width:240px;text-align:center;border-radius:6px;">
+  <p id="pw-err" style="color:#e55;font-size:12px;margin-top:10px;height:14px;"></p>
+</div>
+<script>
+(function(){
+  var KEY='egtm_v1';
+  var gate=document.getElementById('pw-gate');
+  if(localStorage.getItem(KEY)==='1'){gate.remove();return;}
+  var inp=document.getElementById('pw-in');
+  var err=document.getElementById('pw-err');
+  setTimeout(function(){inp.focus();},50);
+  function check(){
+    if(inp.value==='effortlessgtm'){
+      localStorage.setItem(KEY,'1');
+      gate.style.transition='opacity 0.3s';
+      gate.style.opacity='0';
+      setTimeout(function(){gate.remove();},300);
+    } else {
+      err.textContent='Incorrect password';
+      inp.value='';
+      setTimeout(function(){inp.focus();},10);
+    }
+  }
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+})();
+</script>
+<!-- END PW GATE -->
+
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">Effortless<span>GTM</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#how">How we work</a></li>
+        <li><a href="#proof">Clients</a></li>
+        <li><a href="#assessment">Assessment</a></li>
+        <li>
+          <a href="#assessment" class="btn-primary">
+            Get assessment
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero" aria-labelledby="hero-headline">
+      <div class="container">
+
+        <div class="hero-eyebrow">
+          <span class="eyebrow">AI-Native GTM Systems</span>
+        </div>
+
+        <h1 id="hero-headline" class="hero-headline">
+          Your team is talking<br>to the right companies.<br>At the wrong time.
+        </h1>
+
+        <p class="hero-subhead">
+          We build automated systems that surface your best opportunities the moment they're ready. Your pipeline fills on signal, not guesswork.
+        </p>
+
+        <div class="hero-cta-group">
+          <div class="hero-cta-buttons">
+            <a href="#assessment" class="btn-primary">
+              Get your free assessment
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+              <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#" class="btn-ghost">Book a call</a>
+          </div>
+          <p class="hero-cta-support">Takes 5 minutes. Personalized breakdown of what you're leaving on the table.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE PROBLEM
+    ============================================================ -->
+    <section id="problem" class="problem" aria-labelledby="problem-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Why most outbound underperforms</span>
+          <h2 id="problem-headline" class="section-headline">The gaps your pipeline is hiding.</h2>
+        </header>
+
+        <div class="problem-grid" role="list">
+
+          <article role="listitem">
+            <span class="problem-item-num" aria-hidden="true">01</span>
+            <h3 class="problem-item-title">You're reaching out blind.</h3>
+            <p class="problem-item-body">Reps spend cycles on companies that won't move for months. The accounts ready to buy today get ignored.</p>
+          </article>
+
+          <article role="listitem">
+            <span class="problem-item-num" aria-hidden="true">02</span>
+            <h3 class="problem-item-title">Timing is intuition, not intelligence.</h3>
+            <p class="problem-item-body">The best moment to reach a prospect passes before anyone notices. By the time you act, someone else already did.</p>
+          </article>
+
+          <article role="listitem">
+            <span class="problem-item-num" aria-hidden="true">03</span>
+            <h3 class="problem-item-title">The pipeline looks healthy until it doesn't.</h3>
+            <p class="problem-item-body">Activity metrics hide the gap between conversations and revenue. The problem is invisible until it's a missed quarter.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SOLUTION
+    ============================================================ -->
+    <section id="solution" class="solution" aria-labelledby="solution-headline">
+      <div class="container">
+        <div class="solution-inner">
+
+          <div class="solution-copy">
+            <span class="eyebrow">What we build</span>
+            <h2 id="solution-headline" class="section-headline">
+              The intelligence layer your GTM is missing.
+            </h2>
+            <p class="body-text">
+              We design and implement AI-native systems that tell your team who to contact, when, and why. No manual research. No spray-and-pray.
+            </p>
+
+            <ul class="solution-bullets" aria-label="What the system does">
+              <li>Signal sources configured for your market</li>
+              <li>Scoring and routing logic built for your motion</li>
+              <li>Outreach triggers that fire at the right moment</li>
+            </ul>
+          </div>
+
+          <div aria-label="How signal-driven GTM works" role="img">
+            <div class="signal-flow">
+              <div class="signal-node">
+                <div class="signal-node-label">Signal detected</div>
+                <div class="signal-node-value">Funding round — Series B, €12M</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Scored</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">ICP match</div>
+                <div class="signal-node-value">SaaS, 50–200 employees, VP Sales hiring</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Enriched</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Buying trigger</div>
+                <div class="signal-node-value">3 open RevOps roles, new CRM rollout signal</div>
+              </div>
+              <div class="signal-connector" aria-hidden="true">
+                <span class="signal-connector-label">Routed</span>
+              </div>
+              <div class="signal-node">
+                <div class="signal-node-label">Prioritized for outreach</div>
+                <div class="signal-node-value">
+                  <span class="signal-active-dot" aria-hidden="true"></span>Rep notified. Context loaded. Ready to act.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HOW IT WORKS
+    ============================================================ -->
+    <section id="how" class="how" aria-labelledby="how-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Three steps</span>
+          <h2 id="how-headline" class="section-headline">Simple process. No ambiguity.</h2>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3 class="step-title">Assess</h3>
+            <p class="step-body">Map your GTM motion. Find the gaps. Quantify the cost. Clear baseline before we touch anything.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3 class="step-title">Build</h3>
+            <p class="step-body">Design and implement the automation layer. Built for your stack, your market, your motion.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3 class="step-title">Run</h3>
+            <p class="step-body">The system runs. Your team acts on prioritized opportunities. We track outcomes and iterate.</p>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROOF
+    ============================================================ -->
+    <section id="proof" class="proof" aria-labelledby="proof-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">Built with practitioners, for practitioners</span>
+          <h2 id="proof-headline" class="section-headline">
+            Trusted by GTM teams across Europe.
+          </h2>
+        </header>
+
+        <div class="logos" aria-label="Client logos">
+          <div class="logo-wordmark" aria-label="Lebanza">Lebanza</div>
+          <div class="logo-wordmark logo-wordmark--alt" aria-label="foinio.ai">foinio<strong>.ai</strong></div>
+        </div>
+
+        <div class="testimonials">
+
+          <blockquote class="testimonial">
+            <p class="testimonial-quote">
+              "The system they built changed how we think about outbound entirely. We stopped chasing and started responding to signals we didn't even know we were missing."
+            </p>
+            <footer>
+              <strong class="testimonial-name">Head of Sales</strong>
+              <span class="testimonial-role">B2B SaaS company, DACH region</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial">
+            <p class="testimonial-quote">
+              "Two weeks from brief to a working system. No endless workshops. They mapped the gaps, built the logic, and handed us something we could actually use."
+            </p>
+            <footer>
+              <strong class="testimonial-name">VP Revenue Operations</strong>
+              <span class="testimonial-role">Series A fintech, Europe</span>
+            </footer>
+          </blockquote>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICES
+    ============================================================ -->
+    <section id="services" class="services" aria-labelledby="services-headline">
+      <div class="container">
+
+        <header class="section-header">
+          <span class="eyebrow">How we work</span>
+          <h2 id="services-headline" class="section-headline">
+            Four modes. One direction.
+          </h2>
+        </header>
+
+        <div class="services-grid" role="list">
+
+          <article class="service-card" role="listitem">
+            <span class="service-card-num" aria-hidden="true">01</span>
+            <h3 class="service-card-title">Diagnose</h3>
+            <span class="badge">A few hours</span>
+            <p class="service-card-body">We map your GTM motion fast. Clear picture, prioritized action plan.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <span class="service-card-num" aria-hidden="true">02</span>
+            <h3 class="service-card-title">Build</h3>
+            <span class="badge">Two weeks</span>
+            <p class="service-card-body">Signal sources, scoring logic, routing, outreach triggers. A working system, not a prototype.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <span class="service-card-num" aria-hidden="true">03</span>
+            <h3 class="service-card-title">Run</h3>
+            <span class="badge">Ongoing</span>
+            <p class="service-card-body">Your team acts on prioritized opportunities. We monitor, resolve, and keep the motion clean.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <span class="service-card-num" aria-hidden="true">04</span>
+            <h3 class="service-card-title">Scale</h3>
+            <span class="badge">Continuous</span>
+            <p class="service-card-body">The system learns. Every cycle sharpens the logic. We expand into new motions as you grow.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CTA BLOCK — INVERTED
+    ============================================================ -->
+    <section id="assessment" class="cta-block" aria-labelledby="assessment-headline">
+      <div class="container">
+        <div class="cta-narrow">
+
+          <span class="eyebrow">Find out what you're missing</span>
+          <h2 id="assessment-headline" class="section-headline">
+            See exactly what your pipeline is leaving on the table.
+          </h2>
+          <p class="body-text">
+            The assessment maps your current motion against the gaps we see across European B2B companies. You get a personalized output: what's broken, what it costs, and what fixing it looks like.
+          </p>
+
+          <div class="cta-block-group">
+            <div class="cta-buttons">
+              <a href="#" class="btn-primary btn-primary--inverted">
+                Get your free assessment
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="#" class="btn-ghost btn-ghost--inverted">Book a call</a>
+            </div>
+            <p class="cta-note">No sales call required. No commitment.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ABOUT
+    ============================================================ -->
+    <section id="about" class="about" aria-labelledby="about-headline">
+      <div class="container">
+        <div class="about-inner">
+
+          <div class="about-main">
+            <span class="eyebrow">Who we are</span>
+            <h2 id="about-headline" class="section-headline">
+              A specialist practice. Not an agency. Not a tool vendor.
+            </h2>
+            <p class="body-text">
+              Effortless GTM designs and implements AI-native go-to-market systems for European B2B companies.
+            </p>
+            <p class="body-text">
+              We work with sales leaders, revenue operators, and founders who know the problem isn't effort. It's the system underneath. That's what we fix.
+            </p>
+          </div>
+
+          <aside aria-label="Practice details">
+            <div class="about-details">
+              <div class="about-detail">
+                <p>Based in Vienna, Austria. Working across European B2B markets in English, German, and French.</p>
+              </div>
+              <div class="about-detail">
+                <p>Practitioners first. Every system we build is grounded in GTM reality, not theoretical frameworks.</p>
+              </div>
+              <div class="about-detail">
+                <p>We keep engagements tight and accountable. You get a working system, not a roadmap to one.</p>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-logo">Effortless<span>GTM</span></a>
+      <p class="footer-note">AI-native GTM systems for European B2B &nbsp;&middot;&nbsp; Vienna, Austria</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="imprint.html">Imprint</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
+        <a href="privacy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
