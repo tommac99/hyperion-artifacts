@@ -241,7 +241,7 @@
     .hero {
       padding-block-start: calc(var(--sp-120) + 64px);
       padding-block-end: clamp(var(--sp-80), 12vw, var(--sp-120));
-      background: linear-gradient(170deg, var(--canvas-deep) 0%, var(--canvas) 60%);
+      background: #050d08;
       position: relative;
     }
     .hero::after {
@@ -1606,10 +1606,11 @@
     const hero = canvas.parentElement;
 
     // ── Renderer ──────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x050d08, 1);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.9;
+    renderer.toneMappingExposure = 1.2;
 
     // ── Scene / Camera ─────────────────────────────────────────────────────
     const scene = new THREE.Scene();
@@ -1627,25 +1628,27 @@
     new ResizeObserver(resize).observe(hero);
 
     // ── Lights ─────────────────────────────────────────────────────────────
-    scene.add(new THREE.AmbientLight(0x0b2618, 3.0));
+    scene.add(new THREE.AmbientLight(0x204a30, 1.5));
 
-    const keyLight = new THREE.PointLight(0x1c7850, 12, 22);
-    keyLight.position.set(5, 6, 7);
+    const keyLight = new THREE.PointLight(0x40c878, 20, 30);
+    keyLight.position.set(6, 7, 8);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight(0x0d3a20, 5, 16);
-    rimLight.position.set(-6, -4, 4);
+    const rimLight = new THREE.PointLight(0x20a058, 10, 20);
+    rimLight.position.set(-5, -3, 5);
     scene.add(rimLight);
+
+    const backLight = new THREE.PointLight(0x0d4a28, 6, 18);
+    backLight.position.set(0, -6, -4);
+    scene.add(backLight);
 
     // ── Pill material ──────────────────────────────────────────────────────
     const pillMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x061a10),
-      emissive: new THREE.Color(0x020c06),
-      emissiveIntensity: 0.5,
-      roughness: 0.92,
-      metalness: 0.0,
-      transparent: true,
-      opacity: 0.96,
+      color: new THREE.Color(0x0f3020),
+      emissive: new THREE.Color(0x0a2818),
+      emissiveIntensity: 0.8,
+      roughness: 0.85,
+      metalness: 0.05,
     });
 
     // ── Pills (match the Blender logo-mark) ───────────────────────────────
@@ -1678,7 +1681,7 @@
       vy: (Math.random() - 0.5) * 0.00028,
     }));
 
-    const nodeMat = new THREE.MeshBasicMaterial({ color: 0x1f7040, transparent: true, opacity: 0.55 });
+    const nodeMat = new THREE.MeshBasicMaterial({ color: 0x3ab870, transparent: true, opacity: 0.65 });
     const nodeGeo = new THREE.SphereGeometry(0.045, 8, 6);
     const nodeMeshes = nodeData.map(n => {
       const m = new THREE.Mesh(nodeGeo, nodeMat);
@@ -1702,7 +1705,7 @@
     const linePos = new Float32Array(edges.length * 6);
     const lineGeo = new THREE.BufferGeometry();
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x1e6035, transparent: true, opacity: 0.16 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x2a8050, transparent: true, opacity: 0.22 });
     scene.add(new THREE.LineSegments(lineGeo, lineMat));
 
     // Sparks traveling along edges
